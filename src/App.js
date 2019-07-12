@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+// Components
+import Navbar from './Components/Navbar/Navbar.js';
+import FormOutputSidebar from './Components/FormOutputSidebar/FormOutputSidebar.js';
+
+// Colors
+import ColorPicker from './ColorPicker.js';
+let COLORS = new ColorPicker('green-blue', 'orange');
+
+class App extends Component {
+
+  constructor() {
+    super();
+  }
+
+
+  // render --------------------------------------------------------------------
+
+  render() {
+    return (
+      <div id="App">
+        <Navbar
+          colors={COLORS}
+        />
+
+        <div id='body_container'>
+
+          <div id='left_body_container'>
+
+          </div>
+
+          <div id='right_body_container'>
+            <FormOutputSidebar
+              colors={COLORS}
+            />
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
 }
 
 export default App;
