@@ -5,13 +5,14 @@ import './App.css';
 // Components
 import Navbar from './Components/Navbar/Navbar.js';
 import FormOutputSidebar from './Components/FormOutputSidebar/FormOutputSidebar.js';
+import FormMakerPage from './Components/FormMakerPage/FormMakerPage.js';
 
 // Ustra - for app.state management
 import Ustra from './Ustra';
 
 // Colors
 import ColorPicker from './ColorPicker.js';
-let COLORS = new ColorPicker('green-blue', 'orange');
+let COLORS = new ColorPicker('green-blue', 'lightgrey');
 
 
 
@@ -28,10 +29,27 @@ let COLORS = new ColorPicker('green-blue', 'orange');
 
 //
 let fakeFormData = {
-  pagesOrder: ["aboutForm", "submit"],
+  pageOrder: ["aboutForm"],
   pages: {
-    "aboutForm": {},
-    "submit": {}
+    "aboutForm": {
+      "sectionOrder": ["aboutSectionCard", "secondSection"],
+      "sections": {
+        "aboutSectionCard": {
+          "itemOrder": ["sectionTitle", "sectionDescription"],
+          "items": {
+            "sectionTitle": {"itemType": "sectionTitle", "value": "Test"},
+            "sectionDescription": {"itemType": "text", "value": "Description"}
+          }
+        },
+
+        "secondSection": {
+          "itemOrder": ["item1"],
+          "items": {
+            "item1": {"itemType": "sectionTitle", "value": "Test 2"}
+          }
+        }
+      }
+    }
   }
 }
 
@@ -81,6 +99,8 @@ class App extends Component {
   // render --------------------------------------------------------------------
 
   render() {
+    let truth = this.state.truth;
+
     return (
       <div id="App">
         <Navbar
@@ -90,7 +110,12 @@ class App extends Component {
         <div id='body_container'>
 
           <div id='left_body_container'>
-            <p>{JSON.stringify(this.state.truth[PT_formData])}</p>
+            <FormMakerPage
+              formData={truth[PT_formData]}
+              formDataTag={PT_formData}
+              colors={COLORS}
+              update={this.update}
+            />
           </div>
 
           <div id='right_body_container'>

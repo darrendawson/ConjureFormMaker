@@ -13,10 +13,12 @@ let schema1 = {
 }
 
 let schema2 = {
-  'orange': {
-
+  'lightgrey': {
+    1: '#ffffff',
+    2: '#ededed'
   }
 }
+
 
 
 // Color Picker class
@@ -30,6 +32,10 @@ class ColorPicker {
 
   getColor1(colorType, colorIntensity) {
     return {[colorType]: this.color1Scheme[colorIntensity]};
+  }
+
+  getColor2(colorType, colorIntensity) {
+    return {[colorType]: this.color2Scheme[colorIntensity]};
   }
 }
 
