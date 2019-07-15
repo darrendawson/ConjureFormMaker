@@ -8,42 +8,101 @@ class FormMakerPage extends Component {
   }
 
 
+  // onClick -------------------------------------------------------------------
+
+  // selects a page.section.item
+  onClick_SelectItem = (location) => {
+    if (! this.checkIfLocationsSame(this.props.selectedSection, location)) {
+      this.props.update(location, this.props.selectedSectionTag);
+    }
+  }
+
+  // Locations -----------------------------------------------------------------
+  /*
+    - location pathtags are used for referencing specific page.form.item
+  */
+
+
+  // form question/item locations are kept as path arrays to target
+  // this function is used to build up the correct path while rendering
+  // need to manually build up the array because of how JS referencing
+  addToLocation = (location, nextPath) => {
+    let newLocation = [];
+    for (let i = 0; i < location.length; i++) {
+      newLocation.push(location[i]);
+    }
+    newLocation.push(nextPath);
+    return newLocation;
+  }
+
+  // returns true if both locations are the same
+  // returns false otherwise
+  checkIfLocationsSame = (location1, location2) => {
+    if (location1.length !== location2.length) {
+      return false;
+    }
+
+    for (let i = 0; i < location1.length; i++) {
+      if (location1[i] !== location2[i]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   // render --------------------------------------------------------------------
 
 
-  renderItem = (item) => {
-
-    if (item["itemType"] === "sectionTitle") {
+  renderTextItem = (item) => {
+    if (item.itemType === "text") {
       return (
-        <div>
-          <h1>{item.value}</h1>
+        <div className="item_row">
+          <h1 className="section_title_text">{item.sectionTitle}</h1>
+          <h2 className="title_text">{item.title}</h2>
+          <p className="description_text">{item.description}</p>
         </div>
       );
     }
+  }
 
-    else if (item["itemType"] === "text") {
-      return (
-        <div>
-          <p>{item.value}</p>
-        </div>
-      );
+  // renders a page.section.item
+  renderItem = (item, location) => {
+
+    // 1) render the item
+    let itemToRender;
+
+    if (item["itemType"] === "text") {
+      itemToRender = this.renderTextItem(item);
     }
+
+
+    // 2) render border (colored if actively selected, non-colored otherwise)
+    let borderStyle = this.props.colors.getColor2("border-color", 1);
+    if (this.checkIfLocationsSame(location, this.props.selectedSection)) {
+      borderStyle = this.props.colors.getColor3("border-color", 4);
+    }
+
     return (
-      <div>
-        <p>{JSON.stringify(item)}</p>
+      <div
+        className="item_container"
+        style={borderStyle}
+        onClick={() => this.onClick_SelectItem(location)}>
+        {itemToRender}
       </div>
     );
   }
 
 
-  renderSection = (section) => {
+  // renders a section
+  // -> a section can either be a card or a subsection of a card
+  renderSection = (section, location) => {
 
     let items = [];
 
     for (let i = 0; i < section.itemOrder.length; i++) {
       let itemKey = section.itemOrder[i];
-      items.push(this.renderItem(section.items[itemKey]));
+      items.push(this.renderItem(section.items[itemKey], this.addToLocation(location, itemKey)));
     }
 
     return (
@@ -55,13 +114,13 @@ class FormMakerPage extends Component {
 
   // renders a page of the form
   // -> needs to render all the sections within the page
-  renderPage = (page) => {
+  renderPage = (page, location) => {
 
     let sections = [];
 
     for (let i = 0; i < page.sectionOrder.length; i++) {
       let sectionKey = page.sectionOrder[i];
-      sections.push(this.renderSection(page.sections[sectionKey]));
+      sections.push(this.renderSection(page.sections[sectionKey], this.addToLocation(location, sectionKey)));
     }
 
     return (
@@ -87,8 +146,9 @@ class FormMakerPage extends Component {
     let pages = [];
 
     for (let i = 0; i < formData.pageOrder.length; i++) {
-      let pageName = formData.pageOrder[i];
-      pages.push(this.renderPage(formData.pages[pageName]));
+      let pageKey = formData.pageOrder[i];
+      let location = [pageKey];
+      pages.push(this.renderPage(formData.pages[pageKey], location));
       if (i + 1 < formData.pageOrder.length) {
         pages.push(this.renderPageBreak())
       }
