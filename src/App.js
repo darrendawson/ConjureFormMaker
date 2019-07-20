@@ -188,6 +188,40 @@ class App extends Component {
   }
 
 
+
+  // - location: points to the location of the currently selected location
+  //             creates a new item right after this one!
+  createNewFormItem = (location) => {
+
+    // 1) get unique key for new item
+    let form = this.state.truth[PT_formData];
+    let formItem = this.getFormItemByLocation(form, location);
+    alert(JSON.stringify(formItem));
+    //let newKey = this.getNewKeyForItem();
+
+    //alert(JSON.stringify(location));
+  }
+
+
+
+  // gets a new random (unique) key for an item
+  getNewKeyForItem = (usedKeys) => {
+
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    while (true) {
+      let newID = "";
+      for (let i = 0; i < 5; i++) {
+        newID += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+
+      // make sure that the ID is new before sending it back
+      if (! (newID in usedKeys)) {
+        return newID;
+      }
+    }
+  }
+
   // render --------------------------------------------------------------------
 
 
@@ -233,6 +267,7 @@ class App extends Component {
             <FormMakerPage
               formData={truth[PT_formData]}
               formDataTag={PT_formData}
+              createNewFormItem={this.createNewFormItem}
               selectedSection={truth[PT_selectedFormSection]}
               selectedSectionTag={PT_selectedFormSection}
               colors={COLORS}

@@ -17,6 +17,11 @@ class FormMakerPage extends Component {
     }
   }
 
+
+  onClick_CreateNewItem = (location) => {
+    this.props.createNewFormItem(location);
+  }
+
   // Locations -----------------------------------------------------------------
   /*
     - location pathtags are used for referencing specific page.form.item
@@ -53,7 +58,32 @@ class FormMakerPage extends Component {
 
   // render --------------------------------------------------------------------
 
+  //
+  renderNewSectionMenu = (location) => {
+    return (
+      <div className="center_column_container">
+        <div id="new_section_menu_container"
+          style={this.props.colors.getColor3("background-color", 4)}>
 
+          <div
+            className="new_section_menu_item_container"
+            title="Add Question">
+            <p style={this.props.colors.getColor3("color", "text-bright")}>?</p>
+          </div>
+
+          <div
+            className="new_section_menu_item_container"
+            title="Add Text"
+            onClick={() => this.onClick_CreateNewItem(location)}>
+            <p style={this.props.colors.getColor3("color", "text-bright")}>Tt</p>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  // r
   renderTextItem = (item) => {
     if (item.itemType === "text") {
       return (
@@ -69,27 +99,43 @@ class FormMakerPage extends Component {
   // renders a page.section.item
   renderItem = (item, location) => {
 
-    // 1) render the item
+    //
     let itemToRender;
+    let borderStyle;
+    let newSectionMenu;
+    let itemSelected = this.checkIfLocationsSame(location, this.props.selectedSection);
 
+    // 1) render the item
     if (item["itemType"] === "text") {
       itemToRender = this.renderTextItem(item);
     }
 
 
     // 2) render border (colored if actively selected, non-colored otherwise)
-    let borderStyle = this.props.colors.getColor2("border-color", 1);
-    if (this.checkIfLocationsSame(location, this.props.selectedSection)) {
+    if (itemSelected) {
       borderStyle = this.props.colors.getColor3("border-color", 4);
+    } else {
+      borderStyle = this.props.colors.getColor2("border-color", 1);
+    }
+
+    // 3) figure out whether to render the "create new section" menu
+    //  - only render it below items that are selected
+    if (itemSelected) {
+      newSectionMenu = this.renderNewSectionMenu(location);
     }
 
     return (
-      <div
-        className="item_container"
-        style={borderStyle}
-        onClick={() => this.onClick_SelectItem(location)}>
-        {itemToRender}
+      <div className="item_row">
+        <div
+          className="item_container"
+          style={borderStyle}
+          onClick={() => this.onClick_SelectItem(location)}>
+          {itemToRender}
+        </div>
+
+        {newSectionMenu}
       </div>
+
     );
   }
 

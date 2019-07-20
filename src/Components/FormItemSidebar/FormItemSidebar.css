@@ -58,3 +58,8 @@
   border: none;
   padding: 5px;
 }
+
+
+#FormItemSidebar #input:focus {
+  width: 500px;
+}
