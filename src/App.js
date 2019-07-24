@@ -7,6 +7,7 @@ import Navbar from './Components/Navbar/Navbar.js';
 import FormOutputSidebar from './Components/FormOutputSidebar/FormOutputSidebar.js';
 import FormMakerPage from './Components/FormMakerPage/FormMakerPage.js';
 import FormItemSidebar from './Components/FormItemSidebar/FormItemSidebar.js';
+import FormSidebar from './Components/FormSidebar/FormSidebar.js';
 
 // Ustra - for app.state management
 import Ustra from './Ustra';
@@ -62,14 +63,27 @@ let fakeFormData = {
 
 // pathTags
 const PT_formData = "formData";
-
 const PT_selectedFormSection = "selectedFormSection";
+
+const PT_conjureForm = "conjureForm";
+const PT_selectedFormArea = "selectedFormArea";
 
 // what App.state will look like
 let dataSkeleton = {
   [PT_formData]: fakeFormData,
-  [PT_selectedFormSection]: false
+  [PT_selectedFormSection]: false,
+
+  [PT_conjureForm]: {},
+  [PT_selectedFormArea]: false
 }
+
+// ConjureForm vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+let conjureFormEmpty = new ConjureForm();
+
+dataSkeleton[PT_conjureForm] = conjureFormEmpty;
+
+// ConjureForm ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 // ininitialize USTRA
 var ustra = new Ustra(dataSkeleton);
@@ -83,9 +97,36 @@ class App extends Component {
 
   constructor() {
     super();
+
     this.state = {
       truth: ustra.get_truth()
     };
+
+    // ConjureForm vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+    let conjureForm = new ConjureForm();
+    conjureForm.registerOnClickSelectForm(this.onClick_selectFormSection);
+
+    // create Page 1 and page 2
+    let page1ID = conjureForm.declareNewSubform();
+    let page2ID = conjureForm.declareNewSubform();
+    conjureForm.setContainerType("page", page1ID);
+    conjureForm.setContainerType("page", page2ID);
+
+    // add Cards to page 1
+    let card1ID = conjureForm.declareNewSubform(page1ID);
+    let card2ID = conjureForm.declareNewSubform(page1ID);
+    conjureForm.setContainerType("card", card1ID);
+    conjureForm.setContainerType("card", card2ID);
+
+    // add items to card1
+    let item1ID = conjureForm.declareNewItem(card1ID);
+    let item2ID = conjureForm.declareNewItem(card1ID);
+
+
+    this.update(conjureForm, PT_conjureForm);
+
+    // ConjureForm ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   }
 
   // Update USTRA --------------------------------------------------------------
@@ -191,37 +232,10 @@ class App extends Component {
 
 
 
-  // - location: points to the location of the currently selected location
-  //             creates a new item right after this one!
-  createNewFormItem = (location) => {
+  // ConjureForm ---------------------------------------------------------------
 
-    // 1) get unique key for new item
-    let form = this.state.truth[PT_formData];
-    let formItem = this.getFormItemByLocation(form, location);
-    alert(JSON.stringify(formItem));
-    //let newKey = this.getNewKeyForItem();
-
-    //alert(JSON.stringify(location));
-  }
-
-
-
-  // gets a new random (unique) key for an item
-  getNewKeyForItem = (usedKeys) => {
-
-    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    while (true) {
-      let newID = "";
-      for (let i = 0; i < 5; i++) {
-        newID += possible.charAt(Math.floor(Math.random() * possible.length));
-      }
-
-      // make sure that the ID is new before sending it back
-      if (! (newID in usedKeys)) {
-        return newID;
-      }
-    }
+  onClick_selectFormSection = (selectedID) => {
+    this.update(selectedID, PT_selectedFormArea);
   }
 
   // render --------------------------------------------------------------------
@@ -230,6 +244,15 @@ class App extends Component {
   renderSidebar = () => {
     let truth = this.state.truth;
 
+
+    return (
+      <FormSidebar
+        selectedID={truth[PT_selectedFormArea]}
+        onClick_deselectItem={() => this.onClick_selectFormSection(false)}
+      />
+    );
+
+    //
     if (truth[PT_selectedFormSection] !== false) {
 
       let formItem = this.getFormItemByLocation(truth[PT_formData], truth[PT_selectedFormSection]);
@@ -256,29 +279,7 @@ class App extends Component {
 
   render() {
     let truth = this.state.truth;
-
-    // ConjureForm vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-
-    let conjureForm = new ConjureForm();
-
-    // create Page 1 and page 2
-    let page1ID = conjureForm.declareNewSubform();
-    let page2ID = conjureForm.declareNewSubform();
-    conjureForm.setContainerType("page", page1ID);
-    conjureForm.setContainerType("page", page2ID);
-
-    // add Cards to page 1
-    let card1ID = conjureForm.declareNewSubform(page1ID);
-    let card2ID = conjureForm.declareNewSubform(page1ID);
-    conjureForm.setContainerType("card", card1ID);
-    conjureForm.setContainerType("card", card2ID);
-
-    // add items to card1
-    let item1ID = conjureForm.declareNewItem(card1ID);
-    let item2ID = conjureForm.declareNewItem(card1ID);
-
-
-    // ConjureForm ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    let conjureForm = truth[PT_conjureForm];
 
     return (
       <div id="App">
@@ -301,7 +302,6 @@ class App extends Component {
             />
             */}
             <div style={{'display': 'flex', 'flex-direction': 'column', 'width': '100%'}}>
-              <p>{JSON.stringify(conjureForm.dumpToJSON())}</p>
               {conjureForm.render()}
             </div>
           </div>

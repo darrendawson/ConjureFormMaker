@@ -11,7 +11,7 @@ import ConjureFormComponent from './Render/ConjureFormComponent.js';
 import ConjureFormItem from './ConjureFormItem.js';
 
 
-const __containerTypes = ["page", "card"];
+const __containerTypes = ["all", "page", "card"];
 
 class ConjureForm {
 
@@ -21,6 +21,8 @@ class ConjureForm {
     this.order = [];
     this.formDetails = {"containerType": ""};
     this.formID = (formID !== null) ? formID : this.getNewUniqueID();
+
+    this.onClick_selectForm = false;
   }
 
 
@@ -156,6 +158,9 @@ class ConjureForm {
     let newID = this.getNewUniqueID();
     let newItem = new ConjureFormItem(newID);
 
+    // add the same onClick_selectFormItem to this child
+    newItem.registerOnClickSelectItem(this.onClick_selectForm);
+
     // add to this.subforms
     this.items[newID] = newItem;
 
@@ -182,7 +187,7 @@ class ConjureForm {
       }
     }
 
-    return newItem;
+    return newID;
   }
 
 
@@ -198,6 +203,9 @@ class ConjureForm {
 
     let newID = this.getNewUniqueID();
     let newForm = new ConjureForm(newID);
+
+    // add the same onClick_selectFormSection to this child
+    newForm.registerOnClickSelectForm(this.onClick_selectForm);
 
     // add to this.subforms
     this.subforms[newID] = newForm;
@@ -258,6 +266,37 @@ class ConjureForm {
   }
 
 
+  // UX ------------------------------------------------------------------------
+  /*
+    Functions for dealing with User Interactions
+     - registerOnClick():   function gets passed in from <App/> that gets run in onClick
+
+  */
+
+
+  // sets the onClick function that the user interacts with
+  // If the current ConjureForm isn't the form we are looking for, try its children
+  // -> this works with both ConjureForm and ConjureFormItem type objects
+  registerOnClickSelectForm(onClickFunction, formID = this.formID) {
+    if (formID === this.formID) {
+      this.onClick_selectForm = onClickFunction;
+    } else {
+
+      // try subforms
+      for (let key in this.subforms) {
+        this.subforms[key].registerOnClickSelectForm(onClickFunction, formID);
+      }
+
+      // try items
+      for (let key in this.items) {
+        if (formID === key) {
+          this.items[key].registerOnClickSelectItem(onClickFunction);
+        }
+      }
+    }
+  }
+
+
   // Export --------------------------------------------------------------------
   /*
     Functions for converting the class into other usable formats
@@ -286,6 +325,8 @@ class ConjureForm {
         formDetails={this.formDetails}
         containerType={this.formDetails.containerType}
         formID={this.formID}
+
+        onClick_selectForm={this.onClick_selectForm}
       />
     );
   }

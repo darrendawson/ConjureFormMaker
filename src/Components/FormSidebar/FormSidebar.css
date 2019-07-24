@@ -1,0 +1,29 @@
+#FormSidebar {
+  width: 100%;
+  height: 100%;
+  background-color: red;
+}
+
+#FormSidebar #title_bar {
+  width: calc(100% - 20px);
+  padding: 0px 10px;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: darkred;
+}
+
+#FormSidebar #title_bar .title_bar_text {
+  margin: 0px;
+  padding: 0px;
+  color: white;
+}
+
+#FormSidebar #title_bar .title_bar_text_clickable {
+  margin: 0px;
+  padding: 0px;
+  color: white;
+  cursor: pointer;
+}

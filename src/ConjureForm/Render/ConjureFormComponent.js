@@ -8,6 +8,14 @@ class ConjureFormComponent extends Component {
   }
 
 
+  // onClick -------------------------------------------------------------------
+
+  // this function acts as an intermediary to this.props.onClick_selectForm
+  // this prevents cascading onClicks when the user clicks a nested <ConjureFormComponent/>
+  onClick_selectForm = (e) => {
+    e.stopPropagation();
+    this.props.onClick_selectForm(this.props.formID);
+  }
   // render --------------------------------------------------------------------
 
 
@@ -55,7 +63,7 @@ class ConjureFormComponent extends Component {
 
 
     return (
-      <div id="ConjureFormComponent">
+      <div id="ConjureFormComponent" onClick={this.onClick_selectForm}>
         <div className={this.getContainerCSS(this.props.containerType)}>
           {childrenToRender}
           <p>{this.props.formID}</p>

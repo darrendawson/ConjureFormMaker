@@ -12,9 +12,18 @@ class ConjureFormItem {
 
   constructor(itemID) {
     this.itemID = itemID;
+    this.onClick_selectItem = function() {};
   }
 
 
+  // UX ------------------------------------------------------------------------
+  /*
+
+  */
+
+  registerOnClickSelectItem(onClickFunction) {
+    this.onClick_selectItem = onClickFunction;
+  }
   // export --------------------------------------------------------------------
   /*
     Functions for exporting this class into other usable formats like:
@@ -32,6 +41,7 @@ class ConjureFormItem {
     return (
       <ConjureFormItemComponent
         itemID={this.itemID}
+        onClick_selectItem={this.onClick_selectItem}
       />
     );
   }
