@@ -1,0 +1,34 @@
+/* <ConjureFormComponent/> ---------------------------------------------------*/
+
+#ConjureFormComponent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#ConjureFormComponent .container_type_page {
+  width: calc(100% - 40px);
+  background-color: orange;
+  border-radius: 5px;
+  margin: 20px 0px 20px 0px;
+  padding: 20px;
+}
+
+#ConjureFormComponent .container_type_card {
+  width: calc(100% - 40px);
+  background-color: green;
+  border-radius: 5px;
+  margin: 20px 0px 20px 0px;
+  padding: 20px;
+}
+
+
+/* <ConjureFormItemComponent/> -----------------------------------------------*/
+
+#ConjureFormItemComponent {
+  display: flex;
+  height: 100px;
+  width: 100%;
+  margin: 20px 0px 20px 0px;
+  background-color: blue;
+}

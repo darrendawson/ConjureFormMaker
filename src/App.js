@@ -11,6 +11,8 @@ import FormItemSidebar from './Components/FormItemSidebar/FormItemSidebar.js';
 // Ustra - for app.state management
 import Ustra from './Ustra';
 
+import ConjureForm from './ConjureForm/ConjureForm.js';
+
 // Colors
 import ColorPicker from './ColorPicker.js';
 let COLORS = new ColorPicker('green-blue', 'lightgrey', 'orange');
@@ -255,6 +257,29 @@ class App extends Component {
   render() {
     let truth = this.state.truth;
 
+    // ConjureForm vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+    let conjureForm = new ConjureForm();
+
+    // create Page 1 and page 2
+    let page1ID = conjureForm.declareNewSubform();
+    let page2ID = conjureForm.declareNewSubform();
+    conjureForm.setContainerType("page", page1ID);
+    conjureForm.setContainerType("page", page2ID);
+
+    // add Cards to page 1
+    let card1ID = conjureForm.declareNewSubform(page1ID);
+    let card2ID = conjureForm.declareNewSubform(page1ID);
+    conjureForm.setContainerType("card", card1ID);
+    conjureForm.setContainerType("card", card2ID);
+
+    // add items to card1
+    let item1ID = conjureForm.declareNewItem(card1ID);
+    let item2ID = conjureForm.declareNewItem(card1ID);
+
+
+    // ConjureForm ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
     return (
       <div id="App">
         <Navbar
@@ -264,6 +289,7 @@ class App extends Component {
         <div id='body_container'>
 
           <div id='left_body_container'>
+            {/*
             <FormMakerPage
               formData={truth[PT_formData]}
               formDataTag={PT_formData}
@@ -273,6 +299,11 @@ class App extends Component {
               colors={COLORS}
               update={this.update}
             />
+            */}
+            <div style={{'display': 'flex', 'flex-direction': 'column', 'width': '100%'}}>
+              <p>{JSON.stringify(conjureForm.dumpToJSON())}</p>
+              {conjureForm.render()}
+            </div>
           </div>
 
           <div id='right_body_container'>
