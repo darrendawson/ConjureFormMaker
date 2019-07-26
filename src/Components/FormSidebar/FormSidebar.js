@@ -67,7 +67,7 @@ class FormSidebar extends Component {
   // when the user has selected a ConjureForm, they can choose to insert into the form or adjacent to it
   // when the user has selected a ConjureFormItem, they can only insert adjacent
   renderInsertIntoButtons = () => {
-    if (this.props.selectedSection.getClassName() === "ConjureForm") {
+    if (this.props.selectedSection.getClassName() === "ConjureForm" && this.props.selectedSection.formDetails.containerType !== "all") {
 
       // determine into/adjacent CSS
       // - user can click these to determine whether to insert *into* a ConjureForm or *adjacent* to it
@@ -91,6 +91,17 @@ class FormSidebar extends Component {
         </h2>
       );
 
+    } else if (this.props.selectedSection.getClassName() === "ConjureForm" && this.props.selectedSection.formDetails.containerType === "all") {
+
+      if (!this.state.insertInto) {
+        this.setState({insertInto: true});
+      }
+
+      // if selected is the outermost ConjureForm (all), then you cant insert adjacent
+      return (
+        <h2 className="new_form_bar_text">Insert: Into</h2>
+      );
+
     } else if (this.props.selectedSection.getClassName() === "ConjureFormItem") {
 
       if (this.state.insertInto) {
@@ -104,6 +115,84 @@ class FormSidebar extends Component {
     }
   }
 
+  // called by renderCreateNewFormBar() to render button for creating a new ConjureFormItem (type = question)
+  renderCreateNewQuestionButton = () => {
+
+    // dont render if these conditions are true
+    // ex: it does not make sense for you to be able to add a question in ConjureForm (type = all)
+    let selected = this.props.selectedSection;
+    if (selected) {
+      if (selected.getClassName() === "ConjureForm" && ["all", "page"].indexOf(selected.formDetails.containerType) >= 0) {
+        return;
+      }
+
+      if (selected.getClassName() === "ConjureForm" && !this.state.insertInto) {
+        return;
+      }
+    } else {
+      return;
+    }
+
+    // otherwise, render it
+    return (
+      <h2
+        className="new_form_bar_clickable deselected_txt_color"
+        onClick={() => this.props.onClick_createNewFormQuestion(this.props.selectedID, this.state.insertPre, this.state.insertInto)}
+        >!?
+      </h2>
+    );
+  }
+
+  // called by renderCreateNewFormBar() to render button for creating a new ConjureFormItem (type = text)
+  renderCreateNewTextButton = () => {
+
+    // dont render if these conditions are true
+    // ex: it does not make sense for you to be able to add a question in ConjureForm (type = all)
+    let selected = this.props.selectedSection;
+    if (selected) {
+      if (selected.getClassName() === "ConjureForm" && ["all", "page"].indexOf(selected.formDetails.containerType) >= 0) {
+        return;
+      }
+      if (selected.getClassName() === "ConjureForm" && !this.state.insertInto) {
+        return;
+      }
+    } else {
+      return;
+    }
+
+    // otherwise, we can render it
+    return (
+      <h2
+        className="new_form_bar_clickable deselected_txt_color"
+        onClick={() => this.props.onClick_createNewFormText(this.props.selectedID, this.state.insertPre, this.state.insertInto)}
+        >Tt
+      </h2>
+    );
+  }
+
+  // called by renderCreateNewFormBar() to render button for creating a new ConjureForm
+  renderCreateNewFormButton = () => {
+
+    // filter out options where it doesnt make sense to create another subform
+    let selected = this.props.selectedSection;
+    if (selected) {
+      if (selected.getClassName() === "ConjureForm" && ["all", "page"].indexOf(selected.formDetails.containerType) < 0 && this.state.insertInto) {
+        return;
+      }
+
+      if (selected.getClassName() === "ConjureFormItem" && ["all", "page"].indexOf(this.props.parentContainerType) < 0) {
+        return;
+      }
+    }
+
+    return (
+      <h2
+        className="new_form_bar_clickable deselected_txt_color"
+        onClick={() => this.props.onClick_createNewFormSection(this.props.selectedID, this.state.insertPre, this.state.insertInto)}
+        >[]
+      </h2>
+    );
+  }
 
   // a row that appears under the title bar when the user wants to add a new ConjureForm item to the form
   // - lets user create a new ConjureForm or ConjureFormItem
@@ -127,21 +216,9 @@ class FormSidebar extends Component {
           <div className="buttons_container">
             {this.renderInsertIntoButtons()}
 
-            <h2
-              className="new_form_bar_clickable deselected_txt_color"
-              onClick={() => this.props.onClick_createNewFormQuestion(this.props.selectedID, this.state.insertPre, this.state.insertInto)}
-              >!?
-            </h2>
-            <h2
-              className="new_form_bar_clickable deselected_txt_color"
-              onClick={() => this.props.onClick_createNewFormText(this.props.selectedID, this.state.insertPre, this.state.insertInto)}
-              >Tt
-            </h2>
-            <h2
-              className="new_form_bar_clickable deselected_txt_color"
-              onClick={() => this.props.onClick_createNewFormSection(this.props.selectedID, this.state.insertPre, this.state.insertInto)}
-              >[]
-            </h2>
+            {this.renderCreateNewQuestionButton()}
+            {this.renderCreateNewTextButton()}
+            {this.renderCreateNewFormButton()}
           </div>
 
           <div className="buttons_container">

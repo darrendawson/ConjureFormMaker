@@ -321,11 +321,18 @@ class App extends Component {
     let selectedSectionID = truth[PT_selectedFormID]
     let selectedSection = conjureForm.get(selectedSectionID);
 
+    let parentID = conjureForm.getParentFormID(selectedSectionID);
+    let parentContainerType = false;
+    if (parentID) {
+      let parentContainer = conjureForm.get(parentID);
+      parentContainerType = parentContainer.formDetails.containerType;
+    }
 
     return (
       <FormSidebar
         selectedID={truth[PT_selectedFormID]}
         selectedSection={selectedSection}
+        parentContainerType={parentContainerType}
         onClick_deselectItem={() => this.onClick_selectFormSection(false)}
         onClick_createNewFormText={this.onClick_createNewFormText}
         onClick_createNewFormQuestion={this.onClick_createNewFormQuestion}
