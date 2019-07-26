@@ -299,7 +299,48 @@ class ConjureForm {
     }
   }
 
-  
+  // Delete --------------------------------------------------------------------
+  /*
+    Functions for deleting objects from the nested ConjureForm object
+  */
+
+
+  // finds the ConjureForm or ConjureFormItem with targetID and deletes it
+  // - need to delete from this.subforms / this.items AND this.order
+  delete(targetID) {
+
+    // this function removes an item with deletedID from the order
+    // works by creating a copy of old order and omitting the deletedID
+    let getNewOrder = function(deletedID, oldOrder) {
+      let newOrder = [];
+      for (let i = 0; i < oldOrder.length; i++) {
+        if (oldOrder[i]["id"] !== deletedID) {
+          newOrder.push(oldOrder[i]);
+        }
+      }
+      return newOrder;
+    }
+
+
+    for (let key in this.subforms) {
+      if (key === targetID) {
+        delete(this.subforms[key]);
+        this.order = getNewOrder(targetID, this.order)
+        return;
+      } else {
+        this.subforms[key].delete(targetID);
+      }
+    }
+
+    for (let key in this.items) {
+      if (key === targetID) {
+        delete(this.items[key]);
+        this.order = getNewOrder(targetID, this.order);
+        return;
+      }
+    }
+  }
+
   // Get -----------------------------------------------------------------------
   /*
     Functions for retrieving info from (nested) ConjureForms / ConjureFormItems

@@ -110,14 +110,10 @@ class App extends Component {
     // create Page 1 and page 2
     let page1ID = conjureForm.declareNewSubform();
     let page2ID = conjureForm.declareNewSubform();
-    conjureForm.setContainerType("page", page1ID);
-    conjureForm.setContainerType("page", page2ID);
 
     // add Cards to page 1
     let card1ID = conjureForm.declareNewSubform(page1ID);
     let card2ID = conjureForm.declareNewSubform(page1ID);
-    conjureForm.setContainerType("card", card1ID);
-    conjureForm.setContainerType("card", card2ID);
 
     // add items to card1
     let item1ID = conjureForm.declareNewItem(card1ID, "text");
@@ -311,6 +307,15 @@ class App extends Component {
     this.update(conjureForm, PT_conjureForm);
   }
 
+
+  // deletes a form section from existance
+  onClick_deleteFormSection = (itemID) => {
+    let conjureForm = this.state.truth[PT_conjureForm];
+    conjureForm.delete(itemID);
+    this.update(conjureForm, PT_conjureForm);
+    this.update(false, PT_selectedFormID);
+  }
+
   // render --------------------------------------------------------------------
 
 
@@ -337,6 +342,7 @@ class App extends Component {
         onClick_createNewFormText={this.onClick_createNewFormText}
         onClick_createNewFormQuestion={this.onClick_createNewFormQuestion}
         onClick_createNewFormSection={this.onClick_createNewFormSection}
+        onClick_deleteFormSection={this.onClick_deleteFormSection}
       />
     );
 

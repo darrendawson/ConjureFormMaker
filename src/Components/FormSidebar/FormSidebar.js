@@ -37,6 +37,25 @@ class FormSidebar extends Component {
     }
   }
 
+
+  // the Delete button gets rendered in the title bar when a deletable item is selected
+  renderDeleteFormButton = () => {
+
+    // filter out situations where the selected item can't be deleted
+    if (this.props.selectedSection.getClassName() === "ConjureForm") {
+      if (this.props.selectedSection.formDetails.containerType === "all") {
+        return;
+      }
+    }
+
+    // otherwise, we can render the button
+    return (
+      <h1 className="title_bar_text_clickable" onClick={() => this.props.onClick_deleteFormSection(this.props.selectedID)}>Delete</h1>
+    );
+  }
+
+
+
   // renders the top bar of the sidebar that shows the user what they've selected
   // - also includes buttons they can press to perform actions
   //  -> deselect currently selected item
@@ -49,6 +68,7 @@ class FormSidebar extends Component {
         <div id="title_bar">
           <h1 className="title_bar_text">Selected</h1>
           <div className="buttons_container">
+            {this.renderDeleteFormButton()}
             <h1 className="title_bar_text_clickable" onClick={() => this.setState({createNewFormBarOpen: !this.state.createNewFormBarOpen})}>{expandCreateButtonText}</h1>
             <h1 className="title_bar_text_clickable" onClick={this.props.onClick_deselectItem}>X</h1>
           </div>
