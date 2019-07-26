@@ -321,6 +321,7 @@ class App extends Component {
     let selectedSectionID = truth[PT_selectedFormID]
     let selectedSection = conjureForm.get(selectedSectionID);
 
+
     return (
       <FormSidebar
         selectedID={truth[PT_selectedFormID]}

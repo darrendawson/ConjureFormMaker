@@ -15,17 +15,19 @@ const __containerTypes = ["all", "page", "card"];
 
 class ConjureForm {
 
-  constructor(formID = null) {
+  constructor(formID = null, formType = "all") {
     this.subforms = {};
     this.items = {};
     this.order = [];
-    this.formDetails = {"containerType": ""};
     this.formID = (formID !== null) ? formID : this.getNewUniqueID();
+
+    this.formDetails = {"containerType": formType};
 
     this.onClick_selectForm = function() {};
   }
 
 
+  // returns the className of this object
   getClassName() {
     return "ConjureForm";
   }
@@ -246,7 +248,8 @@ class ConjureForm {
   __declareNewSubform(prevOrderLocationID = null, insertPre) {
 
     let newID = this.getNewUniqueID();
-    let newForm = new ConjureForm(newID);
+    let subformType = this.getSubformType();
+    let newForm = new ConjureForm(newID, subformType);
 
     // add the same onClick_selectFormSection to this child
     newForm.registerOnClickSelectForm(this.onClick_selectForm);
@@ -285,6 +288,18 @@ class ConjureForm {
   }
 
 
+  // gets the proper form type for a child of this form
+  getSubformType() {
+    if (this.formDetails.containerType === "all") {
+      return "page";
+    } else if (this.formDetails.containerType === "page") {
+      return "card";
+    } else if (this.formDetails.containerType === "card") {
+      return "";
+    }
+  }
+
+  
   // Get -----------------------------------------------------------------------
   /*
     Functions for retrieving info from (nested) ConjureForms / ConjureFormItems
@@ -294,7 +309,7 @@ class ConjureForm {
   // searches for object (either ConjureForm or ConjureFormItem) nested in this object with targetID
   get(targetID) {
     if (this.formID === targetID) {
-      return;
+      return this;
     }
 
     // check for target in subforms
