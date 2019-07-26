@@ -66,7 +66,7 @@ const PT_formData = "formData";
 const PT_selectedFormSection = "selectedFormSection";
 
 const PT_conjureForm = "conjureForm";
-const PT_selectedFormArea = "selectedFormArea";
+const PT_selectedFormID = "selectedFormArea";
 
 // what App.state will look like
 let dataSkeleton = {
@@ -74,7 +74,7 @@ let dataSkeleton = {
   [PT_selectedFormSection]: false,
 
   [PT_conjureForm]: {},
-  [PT_selectedFormArea]: false
+  [PT_selectedFormID]: false
 }
 
 // ConjureForm vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -120,7 +120,7 @@ class App extends Component {
     conjureForm.setContainerType("card", card2ID);
 
     // add items to card1
-    let item1ID = conjureForm.declareNewItem(card1ID);
+    let item1ID = conjureForm.declareNewItem(card1ID, "text");
     let item2ID = conjureForm.declareNewItem(card1ID);
 
 
@@ -235,20 +235,62 @@ class App extends Component {
   // ConjureForm ---------------------------------------------------------------
 
   onClick_selectFormSection = (selectedID) => {
-    this.update(selectedID, PT_selectedFormArea);
+    this.update(selectedID, PT_selectedFormID);
+
+    //let conjureForm = this.state.truth[PT_conjureForm];
+    //console.log(conjureForm.get(selectedID));
+  }
+
+  // creates a new ConjureFormItem (question)
+  // createPre is a boolean
+  onClick_createNewFormQuestion = (selectedID, createPre) => {
+
+  }
+
+  // creates a new ConjureFormItem (text) in ConjureForm with selectedID
+  // createPre:     a boolean (if true, insert the new text item before the current one in the order)
+  // selectedID:    ID of the ConjureForm/ConjureFormItem that is selected
+  //                -> therefore, we may need to get its parent when inserting a new item (depending on insertInto)
+  // insertInto:    boolean
+  //                -> if true, insert into the current ConjureForm
+  //                -> if false, insert into the current ConjureForm's parent
+  onClick_createNewFormText = (selectedID, createPre, insertInto) => {
+    let conjureForm = this.state.truth[PT_conjureForm];
+
+    if (insertInto) {
+      // insert into -> we don't need the parent
+      conjureForm.declareNewItem(selectedID, "text", null, createPre);
+
+    } else {
+      // insert adjacent -> we need the parent
+      let containerID = conjureForm.getParentFormID(selectedID);
+      conjureForm.declareNewItem(containerID, "text", selectedID, createPre);
+    }
+    this.update(conjureForm, PT_conjureForm);
+  }
+
+  // creates a new ConjureForm
+  // createPre is a boolean
+  onClick_createNewFormSection = (selectedID, createPre) => {
+
   }
 
   // render --------------------------------------------------------------------
 
 
   renderSidebar = () => {
-    let truth = this.state.truth;
 
+    let truth = this.state.truth;
+    let conjureForm = truth[PT_conjureForm];
+    let selectedSectionID = truth[PT_selectedFormID]
+    let selectedSection = conjureForm.get(selectedSectionID);
 
     return (
       <FormSidebar
-        selectedID={truth[PT_selectedFormArea]}
+        selectedID={truth[PT_selectedFormID]}
+        selectedSection={selectedSection}
         onClick_deselectItem={() => this.onClick_selectFormSection(false)}
+        onClick_createNewFormText={this.onClick_createNewFormText}
       />
     );
 

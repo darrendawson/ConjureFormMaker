@@ -10,11 +10,24 @@ import ConjureFormItemComponent from './Render/ConjureFormItemComponent.js';
 
 class ConjureFormItem {
 
-  constructor(itemID) {
+  constructor(itemID, itemType = "text") {
     this.itemID = itemID;
     this.onClick_selectItem = function() {};
+
+    this.itemType = itemType;
+    if (itemType === "text") {
+      this.descriptionText = "";
+      this.titleText = "";
+      this.sectionTitleText = "";
+    } else {
+      alert(itemType)
+    }
   }
 
+
+  getClassName() {
+    return "ConjureFormItem";
+  }
 
   // UX ------------------------------------------------------------------------
   /*

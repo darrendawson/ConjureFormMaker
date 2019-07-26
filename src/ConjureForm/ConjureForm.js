@@ -22,9 +22,13 @@ class ConjureForm {
     this.formDetails = {"containerType": ""};
     this.formID = (formID !== null) ? formID : this.getNewUniqueID();
 
-    this.onClick_selectForm = false;
+    this.onClick_selectForm = function() {};
   }
 
+
+  getClassName() {
+    return "ConjureForm";
+  }
 
 
   // IDs -----------------------------------------------------------------------
@@ -77,6 +81,38 @@ class ConjureForm {
     }
 
     return usedIDs;
+  }
+
+
+  // searches through nested ConjureForm to find the ID of the parent of the childID
+  // -> used to get the parent ConjureForm's ID when calling declareNewItem() or declareNewSubform()
+  getParentFormID = (childID) => {
+
+    console.log("looking: ", childID);
+
+    // check to see if this ConjureForm is the parent
+    for (let key in this.subforms) {
+      if (key === childID) {
+        return this.formID;
+      }
+    }
+
+    for (let key in this.items) {
+      if (key === childID) {
+        return this.formID;
+      }
+    }
+
+    // since this ConjureForm is not the parent, check to see if any of its children are
+    for (let key in this.subforms) {
+      let result = this.subforms[key].getParentFormID(childID);
+      if (result) {
+        return result;
+      }
+    }
+
+    // otherwise, bubble up a negative result
+    return false;
   }
 
 
@@ -133,13 +169,13 @@ class ConjureForm {
   //
   // RETURNS:
   // - the ID of the newly created/added ConjureFormItem
-  declareNewItem(formID = this.formID, prevOrderLocationID = null) {
+  declareNewItem(formID = this.formID, newItemType = "text", prevOrderLocationID = null, insertPre = false) {
     if (formID === this.formID) {
-      return this.__declareNewItem(prevOrderLocationID);
+      return this.__declareNewItem(newItemType, prevOrderLocationID, insertPre);
     }
 
     for (let key in this.subforms) {
-      let newFormID = this.subforms[key].declareNewItem(formID, prevOrderLocationID);
+      let newFormID = this.subforms[key].declareNewItem(formID, newItemType, prevOrderLocationID, insertPre);
       if (newFormID !== null) {
         return newFormID;
       }
@@ -153,10 +189,10 @@ class ConjureForm {
   //                          if this argument is null, just append the new FormItem to the end of this.order
   // Returns:
   //  - the newly created/added ConjureFormItem object
-  __declareNewItem(prevOrderLocationID) {
+  __declareNewItem(newItemType, prevOrderLocationID, insertPre) {
 
     let newID = this.getNewUniqueID();
-    let newItem = new ConjureFormItem(newID);
+    let newItem = new ConjureFormItem(newID, newItemType);
 
     // add the same onClick_selectFormItem to this child
     newItem.registerOnClickSelectItem(this.onClick_selectForm);
@@ -175,7 +211,11 @@ class ConjureForm {
       let pushIndex = -1;
       for (let i = 0; i < this.order.length; i++) {
         if (prevOrderLocationID === this.order[i]["id"]) {
-          pushIndex = i + 1;
+          if (insertPre) {
+            pushIndex = i;
+          } else {
+            pushIndex = i + 1;
+          }
         }
       }
 
@@ -237,6 +277,39 @@ class ConjureForm {
   }
 
 
+  // Get -----------------------------------------------------------------------
+  /*
+    Functions for retrieving info from (nested) ConjureForms / ConjureFormItems
+  */
+
+
+  // searches for object (either ConjureForm or ConjureFormItem) nested in this object with targetID
+  get(targetID) {
+    if (this.formID === targetID) {
+      return;
+    }
+
+    // check for target in subforms
+    for (let key in this.subforms) {
+      if (key === targetID) {
+        return this.subforms[key]; // we've found the desired ConjureForm, return it
+      } else {
+        let result = this.subforms[key].get(targetID); // otherwise, see if this ConjureForm's children has it
+        if (result !== false) {
+          return result;
+        }
+      }
+    }
+
+    // check for target in items
+    for (let key in this.items) {
+      if (key === targetID) {
+        return this.items[key]; // we found the item
+      }
+    }
+
+    return false;
+  }
 
   // Update --------------------------------------------------------------------
   /*
