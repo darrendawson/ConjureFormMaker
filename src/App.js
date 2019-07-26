@@ -241,10 +241,26 @@ class App extends Component {
     //console.log(conjureForm.get(selectedID));
   }
 
-  // creates a new ConjureFormItem (question)
-  // createPre is a boolean
-  onClick_createNewFormQuestion = (selectedID, createPre) => {
+  // creates a new ConjureFormItem (question) in ConjureForm with selectedID
+  // createPre:     a boolean (if true, insert the new text item before the current one in the order)
+  // selectedID:    ID of the ConjureForm/ConjureFormItem that is selected
+  //                -> therefore, we may need to get its parent when inserting a new item (depending on insertInto)
+  // insertInto:    boolean
+  //                -> if true, insert into the current ConjureForm
+  //                -> if false, insert into the current ConjureForm's parent
+  onClick_createNewFormQuestion = (selectedID, createPre, insertInto) => {
+    let conjureForm = this.state.truth[PT_conjureForm];
 
+    if (insertInto) {
+      // insert into -> we don't need the parent
+      conjureForm.declareNewItem(selectedID, "question", null, createPre);
+
+    } else {
+      // insert adjacent -> we need the parent
+      let containerID = conjureForm.getParentFormID(selectedID);
+      conjureForm.declareNewItem(containerID, "question", selectedID, createPre);
+    }
+    this.update(conjureForm, PT_conjureForm);
   }
 
   // creates a new ConjureFormItem (text) in ConjureForm with selectedID
@@ -255,6 +271,7 @@ class App extends Component {
   //                -> if true, insert into the current ConjureForm
   //                -> if false, insert into the current ConjureForm's parent
   onClick_createNewFormText = (selectedID, createPre, insertInto) => {
+
     let conjureForm = this.state.truth[PT_conjureForm];
 
     if (insertInto) {
@@ -269,10 +286,29 @@ class App extends Component {
     this.update(conjureForm, PT_conjureForm);
   }
 
-  // creates a new ConjureForm
-  // createPre is a boolean
-  onClick_createNewFormSection = (selectedID, createPre) => {
 
+
+  // creates a new ConjureFormItem (text) in ConjureForm with selectedID
+  // createPre:     a boolean (if true, insert the new text item before the current one in the order)
+  // selectedID:    ID of the ConjureForm/ConjureFormItem that is selected
+  //                -> therefore, we may need to get its parent when inserting a new item (depending on insertInto)
+  // insertInto:    boolean
+  //                -> if true, insert into the current ConjureForm
+  //                -> if false, insert into the current ConjureForm's parent
+  onClick_createNewFormSection = (selectedID, createPre, insertInto) => {
+
+    let conjureForm = this.state.truth[PT_conjureForm];
+
+    if (insertInto) {
+      // insert into -> we don't need the parent
+      conjureForm.declareNewSubform(selectedID, null, createPre);
+
+    } else {
+      // insert adjacent -> we need the parent
+      let containerID = conjureForm.getParentFormID(selectedID);
+      conjureForm.declareNewSubform(containerID, selectedID, createPre);
+    }
+    this.update(conjureForm, PT_conjureForm);
   }
 
   // render --------------------------------------------------------------------
@@ -291,6 +327,8 @@ class App extends Component {
         selectedSection={selectedSection}
         onClick_deselectItem={() => this.onClick_selectFormSection(false)}
         onClick_createNewFormText={this.onClick_createNewFormText}
+        onClick_createNewFormQuestion={this.onClick_createNewFormQuestion}
+        onClick_createNewFormSection={this.onClick_createNewFormSection}
       />
     );
 

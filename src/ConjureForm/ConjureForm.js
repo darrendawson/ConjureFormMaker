@@ -88,8 +88,6 @@ class ConjureForm {
   // -> used to get the parent ConjureForm's ID when calling declareNewItem() or declareNewSubform()
   getParentFormID = (childID) => {
 
-    console.log("looking: ", childID);
-
     // check to see if this ConjureForm is the parent
     for (let key in this.subforms) {
       if (key === childID) {
@@ -144,17 +142,19 @@ class ConjureForm {
   //
   // RETURNS:
   // - the ID of the newly created/added ConjureForm
-  declareNewSubform(formID = this.formID, prevOrderLocationID = null) {
+  declareNewSubform(formID = this.formID, prevOrderLocationID = null, insertPre = false) {
     if (formID === this.formID) {
-      return this.__declareNewSubform(prevOrderLocationID);
+      return this.__declareNewSubform(prevOrderLocationID, insertPre);
     }
 
     for (let key in this.subforms) {
-      let newFormID = this.subforms[key].declareNewSubform(formID, prevOrderLocationID);
-      if (newFormID !== null) {
+      let newFormID = this.subforms[key].declareNewSubform(formID, prevOrderLocationID, insertPre);
+      if (newFormID) {
         return newFormID;
       }
     }
+
+    return false;
   }
 
   // This function navigates to the desired Form in the ConjureForm object and declares a new ConjureFormItem under it by calling this.__declareNewItem()
@@ -170,16 +170,20 @@ class ConjureForm {
   // RETURNS:
   // - the ID of the newly created/added ConjureFormItem
   declareNewItem(formID = this.formID, newItemType = "text", prevOrderLocationID = null, insertPre = false) {
+
+
     if (formID === this.formID) {
       return this.__declareNewItem(newItemType, prevOrderLocationID, insertPre);
     }
 
     for (let key in this.subforms) {
       let newFormID = this.subforms[key].declareNewItem(formID, newItemType, prevOrderLocationID, insertPre);
-      if (newFormID !== null) {
+      if (newFormID) {
         return newFormID;
       }
     }
+
+    return false;
   }
 
 
@@ -239,7 +243,7 @@ class ConjureForm {
   //                          if this argument is null, just append the new subform to the end of this.order
   // Returns:
   // - the newly created/added ConjureForm object
-  __declareNewSubform(prevOrderLocationID = null) {
+  __declareNewSubform(prevOrderLocationID = null, insertPre) {
 
     let newID = this.getNewUniqueID();
     let newForm = new ConjureForm(newID);
@@ -261,7 +265,11 @@ class ConjureForm {
       let pushIndex = -1;
       for (let i = 0; i < this.order.length; i++) {
         if (prevOrderLocationID === this.order[i]["id"]) {
-          pushIndex = i + 1;
+          if (insertPre) {
+            pushIndex = i;
+          } else {
+            pushIndex = i + 1;
+          }
         }
       }
 

@@ -127,13 +127,21 @@ class FormSidebar extends Component {
           <div className="buttons_container">
             {this.renderInsertIntoButtons()}
 
-            <h2 className="new_form_bar_clickable deselected_txt_color">!?</h2>
+            <h2
+              className="new_form_bar_clickable deselected_txt_color"
+              onClick={() => this.props.onClick_createNewFormQuestion(this.props.selectedID, this.state.insertPre, this.state.insertInto)}
+              >!?
+            </h2>
             <h2
               className="new_form_bar_clickable deselected_txt_color"
               onClick={() => this.props.onClick_createNewFormText(this.props.selectedID, this.state.insertPre, this.state.insertInto)}
               >Tt
             </h2>
-            <h2 className="new_form_bar_clickable deselected_txt_color" onClick={() => alert(this.props.selectedID)}>[]</h2>
+            <h2
+              className="new_form_bar_clickable deselected_txt_color"
+              onClick={() => this.props.onClick_createNewFormSection(this.props.selectedID, this.state.insertPre, this.state.insertInto)}
+              >[]
+            </h2>
           </div>
 
           <div className="buttons_container">

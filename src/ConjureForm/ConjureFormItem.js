@@ -20,7 +20,8 @@ class ConjureFormItem {
       this.titleText = "";
       this.sectionTitleText = "";
     } else {
-      alert(itemType)
+      this.questionTitle = "";
+      this.questionDescription = "";
     }
   }
 
