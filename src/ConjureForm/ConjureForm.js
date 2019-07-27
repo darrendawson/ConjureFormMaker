@@ -452,6 +452,39 @@ class ConjureForm {
     }
   }
 
+
+  // searches ConjureForm tree for the right ConjureForm(item) and updates its details
+  // - if ConjureForm: update this.formDetails
+  // - if ConjureFormItem: call updateItemDetails()
+  // newDetails is a dict {}
+  updateSectionDetails(sectionID, newDetails) {
+
+    // if this ConjureForm is the one we are looking for, update this.formDetails
+    if (sectionID === this.formID) {
+
+      // overwrite the values specified in newDetails (and preserve untouched ones)
+      for (let key in newDetails) {
+        this.formDetails[key] = newDetails[key];
+      }
+      return;
+    }
+
+    // check to see if desired section is a ConjureFormItem child of this ConjureForm
+    for (let key in this.items) {
+      if (key === sectionID) {
+        this.items[key].updateItemDetails(newDetails);
+        return;
+      }
+    }
+
+    // otherwise, check subforms for section to update
+    for (let key in this.subforms) {
+      this.subforms[key].updateSectionDetails(sectionID, newDetails);
+    }
+
+  }
+
+
   // UX ------------------------------------------------------------------------
   /*
     Functions for dealing with User Interactions

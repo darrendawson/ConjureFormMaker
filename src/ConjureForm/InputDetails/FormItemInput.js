@@ -1,5 +1,5 @@
 /*
-  Gets used by
+  Gets used by <FormSidebar/> to modify the details of a ConjureFormItem object
 */
 
 import React, { Component } from 'react';
@@ -11,10 +11,95 @@ class FormItemInput extends Component {
     super();
   }
 
+
+  // onInput -------------------------------------------------------------------
+
+  // when a user types into an <input/> that would modify a ConjureFormItem.itemDefinition parameter,
+  // this function makes that update happen
+  onInput_updateItemDetail = (detailType, e) => {
+    let updatedItemDetails = this.props.itemDetails;
+    updatedItemDetails[detailType] = e.target.value;
+    this.props.onClick_updateFormSectionDetails(this.props.selectedID, updatedItemDetails);
+  }
+
+  // render --------------------------------------------------------------------
+
+  // renders <input/>s for a ConjureFormItem.text type
+  // - sectionTitleText
+  // - titleText
+  // - descriptionText
+  renderFormItemText = () => {
+    if (this.props.itemType === "text") {
+      return (
+        <div className="form_input_container">
+
+          <h1 className="section_title">Text Details</h1>
+
+          <div className="input_row">
+            <h3 className="input_title">Section Title</h3>
+            <input
+              className="form_input"
+              value={this.props.itemDetails.sectionTitleText}
+              onChange={this.onInput_updateItemDetail.bind(this, "sectionTitleText")}
+            />
+          </div>
+
+          <div className="input_row">
+            <h3 className="input_title">Title</h3>
+            <input
+              className="form_input"
+              value={this.props.itemDetails.titleText}
+              onChange={this.onInput_updateItemDetail.bind(this, "titleText")}
+            />
+          </div>
+
+          <div className="input_row">
+            <h3 className="input_title">Description</h3>
+            <input
+              className="form_input"
+              value={this.props.itemDetails.descriptionText}
+              onChange={this.onInput_updateItemDetail.bind(this, "descriptionText")}
+            />
+          </div>
+        </div>
+      );
+    }
+  }
+
+
+  renderFormItemQuestion = () => {
+    if (this.props.itemType === "question") {
+      return (
+        <div className="form_input_container">
+
+          <h1 className="section_title">Question Details</h1>
+          <div className="input_row">
+            <h3 className="input_title">Question Title</h3>
+            <input
+              className="form_input"
+              value={this.props.itemDetails.questionTitle}
+              onChange={this.onInput_updateItemDetail.bind(this, "questionTitle")}
+            />
+          </div>
+
+          <div className="input_row">
+            <h3 className="input_title">Description</h3>
+            <input
+              className="form_input"
+              value={this.props.itemDetails.questionDescription}
+              onChange={this.onInput_updateItemDetail.bind(this, "questionDescription")}
+            />
+          </div>
+        </div>
+      );
+    }
+  }
+
   render() {
     return (
       <div id="FormItemInput">
-        <p>test</p>
+        {this.renderFormItemText()}
+        {this.renderFormItemQuestion()}
       </div>
     );
   }

@@ -10,6 +10,7 @@ import ConjureFormItemComponent from './Render/ConjureFormItemComponent.js';
 
 const __textColorDefault = "#262626";
 const __titleColorDefault = "#262626";
+const __backgroundColorDefault = "#eaeaea";
 
 
 class ConjureFormItem {
@@ -20,18 +21,21 @@ class ConjureFormItem {
 
     this.itemType = itemType;
     if (itemType === "text") {
-      this.descriptionText = "";
-      this.titleText = "";
-      this.sectionTitleText = "";
+      this.textDetails = {};
+      this.textDetails.descriptionText = "Description";
+      this.textDetails.titleText = "Title";
+      this.textDetails.sectionTitleText = "Section Title";
     } else {
-      this.questionTitle = "";
-      this.questionDescription = "";
+      this.questionDetails = {};
+      this.questionDetails.questionTitle = "Question Title";
+      this.questionDetails.questionDescription = "Question Description";
     }
 
     // set default colors
     this.colors = {
       "text": __textColorDefault,
-      "title": __titleColorDefault
+      "title": __titleColorDefault,
+      "background": __backgroundColorDefault
     };
 
     this.runtime = {"selected": false};
@@ -41,6 +45,34 @@ class ConjureFormItem {
 
   getClassName() {
     return "ConjureFormItem";
+  }
+
+  getItemDetails = () => {
+    if (this.itemType === "text") {
+      return this.textDetails;
+    } else if (this.itemType === "question") {
+      return this.questionDetails;
+    }
+  }
+
+
+  // Update --------------------------------------------------------------------
+
+  updateItemDetails = (newDetails) => {
+
+    let updatedDetails = this.getItemDetails();
+
+    // overwrite the values that are described in newDetails
+    for (let key in newDetails) {
+      updatedDetails[key] = newDetails[key];
+    }
+
+    // save
+    if (this.itemType === "text") {
+      this.textDetails = updatedDetails;
+    } else if (this.itemType === "question") {
+      this.questionDetails = updatedDetails;
+    }
   }
 
   // UX ------------------------------------------------------------------------
@@ -55,7 +87,9 @@ class ConjureFormItem {
 
   // updates the colors of this ConjureFormItem
   updateColors(colors) {
-
+    this.colors.text = colors.text;
+    this.colors.title = colors.title;
+    this.colors.background = colors.card;
   }
 
 
@@ -82,13 +116,24 @@ class ConjureFormItem {
 
 
   render() {
+
+    let itemDetails;
+    if (this.itemType === "text") {
+      itemDetails = this.textDetails;
+    } else if (this.itemType === "question") {
+      itemDetails = this.questionDetails;
+    }
+
     return (
       <ConjureFormItemComponent
         itemID={this.itemID}
+        itemType={this.itemType}
+        itemDetails={itemDetails}
         selected={this.runtime.selected}
         onClick_selectItem={this.onClick_selectItem}
         textColor={this.colors.text}
         titleColor={this.colors.title}
+        backgroundColor={this.colors.background}
       />
     );
   }

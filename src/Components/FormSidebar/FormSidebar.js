@@ -31,18 +31,26 @@ class FormSidebar extends Component {
 
   renderFormInput = () => {
 
+
+    let selectedSection = this.props.selectedSection;
+
     // make sure there is a selectedSection to render
-    if (!this.props.selectedSection) {
+    if (!selectedSection) {
       return;
     }
 
-    if (this.props.selectedSection.getClassName() === "ConjureForm") {
+    // otherwise, render Inputs so user can modify ConjureForm / ConjureFormItem details
+    if (selectedSection.getClassName() === "ConjureForm") {
       return (
         <FormInput/>
       );
-    } else if (this.props.selectedSection.getClassName() === "ConjureFormItem") {
+    } else if (selectedSection.getClassName() === "ConjureFormItem") {
       return (
-        <FormItemInput/>
+        <FormItemInput
+          itemType={selectedSection.itemType}
+          itemDetails={selectedSection.getItemDetails()}
+          onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
+        />
       );
     }
   }
@@ -355,8 +363,6 @@ class FormSidebar extends Component {
 
           {this.renderTitleBar()}
           {this.renderCreateNewFormBar()}
-          <h1>Selected: {this.props.selectedID}</h1>
-          <p>{JSON.stringify(this.props.selectedSection)}</p>
           {this.renderFormInput()}
         </div>
       );

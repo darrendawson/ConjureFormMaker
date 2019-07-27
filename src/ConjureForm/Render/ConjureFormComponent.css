@@ -39,9 +39,26 @@
 
 #ConjureFormItemComponent {
   display: flex;
-  height: 100px;
   width: 100%;
   margin: 20px 0px 20px 0px;
   border: 1px solid transparent;
   border-radius: 3px;
+}
+
+#ConjureFormItemComponent .item_container {
+  width: calc(100% - 40px);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+#ConjureFormItemComponent .item_container .item_text_margins {
+  margin: 5px;
+}
+
+#ConjureFormItemComponent .item_container #section_title_text_container {
+  border-radius: 3px;
+  font-size: 1.3em;
 }

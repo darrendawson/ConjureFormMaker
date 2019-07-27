@@ -84,8 +84,9 @@ class App extends Component {
 
     // add items to card1
     let item1ID = conjureForm.declareNewItem(card1ID, "text");
-    let item2ID = conjureForm.declareNewItem(card1ID);
 
+    conjureForm.declareNewItem(card2ID, "text");
+    conjureForm.declareNewItem(card2ID, "question");
 
     this.saveConjureForm(conjureForm);
 
@@ -206,6 +207,14 @@ class App extends Component {
     this.saveConjureForm(this.state.truth[PT_conjureForm]);
   }
 
+  // calls ConjureForm.updateSectionDetails() to update values in ConjureForm.formDetails or ConjureFormItem.textDetails/questionDetails
+  onClick_updateFormSectionDetails = (sectionID, newDetails) => {
+    let conjureForm = this.state.truth[PT_conjureForm];
+    conjureForm.updateSectionDetails(sectionID, newDetails);
+    this.saveConjureForm(conjureForm);
+  }
+
+
   // render --------------------------------------------------------------------
 
 
@@ -235,6 +244,7 @@ class App extends Component {
         onClick_createNewFormQuestion={this.onClick_createNewFormQuestion}
         onClick_createNewFormSection={this.onClick_createNewFormSection}
         onClick_deleteFormSection={this.onClick_deleteFormSection}
+        onClick_updateFormSectionDetails={this.onClick_updateFormSectionDetails}
       />
     );
   }
