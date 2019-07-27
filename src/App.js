@@ -5,6 +5,7 @@ import './App.css';
 // Components
 import Navbar from './Components/Navbar/Navbar.js';
 import FormSidebar from './Components/FormSidebar/FormSidebar.js';
+import ModifyFormContainer from './Components/ModifyFormContainer/ModifyFormContainer.js';
 
 // Ustra - for app.state management
 import Ustra from './Ustra';
@@ -250,9 +251,10 @@ class App extends Component {
         <div id='body_container'>
 
           <div id='left_body_container'>
-            <div style={{'display': 'flex', 'flex-direction': 'column', 'width': '100%', 'border-color': this.state.truth[PT_formColors]['background']}}>
-              {conjureForm.render()}
-            </div>
+            <ModifyFormContainer
+              conjureForm={conjureForm}
+              backgroundColor={truth[PT_formColors]['background']}
+            />
           </div>
 
           <div id='right_body_container'>
