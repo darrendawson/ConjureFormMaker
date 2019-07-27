@@ -14,10 +14,6 @@ import Ustra from './Ustra';
 
 import ConjureForm from './ConjureForm/ConjureForm.js';
 
-// Colors
-import ColorPicker from './ColorPicker.js';
-let COLORS = new ColorPicker('green-blue', 'lightgrey', 'orange');
-
 
 
 // =============================================================================
@@ -384,13 +380,11 @@ class App extends Component {
           updateFormItem={this.updateFormItem}
           updateFormItemLocation={truth[PT_selectedFormSection]}
           update={this.update}
-          colors={COLORS}
         />
       );
     } else {
       return (
         <FormOutputSidebar
-          colors={COLORS}
         />
       );
     }
@@ -403,9 +397,7 @@ class App extends Component {
 
     return (
       <div id="App">
-        <Navbar
-          colors={COLORS}
-        />
+        <Navbar/>
 
         <div id='body_container'>
 

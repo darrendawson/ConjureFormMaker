@@ -11,8 +11,8 @@ class Navbar extends Component {
     let colors = this.props.colors;
 
     return (
-      <div id="Navbar" style={colors.getColor1('background-color', 3)}>
-        <h1 style={colors.getColor1('color', 'text-bright')}>Conjure</h1>
+      <div id="Navbar">
+        <h1>Conjure</h1>
       </div>
     );
   }

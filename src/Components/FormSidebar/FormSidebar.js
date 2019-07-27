@@ -85,19 +85,19 @@ class FormSidebar extends Component {
 
 
       return (
-        <div id="title_bar">
-          <h1 className="title_bar_text">{sectionType}</h1>
+        <div id="title_bar" className="background_highlight">
+          <h1 className="title_bar_text text_dark">{sectionType}</h1>
           <div className="buttons_container">
-            <h1 className="title_bar_text_clickable" onClick={() => this.setState({createNewFormBarOpen: !this.state.createNewFormBarOpen})}>{expandCreateButtonText}</h1>
+            <h1 className="title_bar_text_clickable text_dark" onClick={() => this.setState({createNewFormBarOpen: !this.state.createNewFormBarOpen})}>{expandCreateButtonText}</h1>
             {this.renderDeleteFormButton()}
-            <h1 className="title_bar_text_clickable" onClick={this.props.onClick_deselectItem}>X</h1>
+            <h1 className="title_bar_text_clickable text_dark" onClick={this.props.onClick_deselectItem}>X</h1>
           </div>
         </div>
       );
     } else {
       return (
-        <div id="title_bar">
-          <h1 className="title_bar_text">Form Details</h1>
+        <div id="title_bar" className="background_dark">
+          <h1 className="title_bar_text text_light">Form Details</h1>
         </div>
       );
     }
