@@ -31,6 +31,16 @@ class ConjureFormComponent extends Component {
     }
   }
 
+  // box-shadow and backgroundColor are dynamically inserted using html style
+  getContainerStyling = (containerType) => {
+
+    let style = {'background-color': this.props.backgroundColor};
+    if (containerType === "card") {
+      style['box-shadow'] = "5px 10px 15px " + this.props.shadowColor + "";
+    }
+    return style;
+  }
+
 
   // render <ConjureFormComponent/>
   // - because ConjureForm can have ConjureForms and ConjureFormItems as children,
@@ -63,10 +73,13 @@ class ConjureFormComponent extends Component {
 
 
     return (
-      <div id="ConjureFormComponent" onClick={this.onClick_selectForm}>
-        <div className={this.getContainerCSS(this.props.containerType)}>
+      <div
+        id="ConjureFormComponent"
+        onClick={this.onClick_selectForm}>
+        <div
+          className={this.getContainerCSS(this.props.containerType)}
+          style={this.getContainerStyling(this.props.containerType)}>
           {childrenToRender}
-          <p>{this.props.formID}</p>
         </div>
       </div>
     );

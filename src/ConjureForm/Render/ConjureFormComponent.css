@@ -8,15 +8,14 @@
 
 #ConjureFormComponent .container_type_page {
   width: calc(100% - 40px);
-  background-color: orange;
   border-radius: 5px;
-  margin: 20px 0px 20px 0px;
+  margin: 20px 0px;
   padding: 20px;
+  border-bottom: 2px dotted black;
 }
 
 #ConjureFormComponent .container_type_card {
   width: calc(100% - 40px);
-  background-color: green;
   border-radius: 5px;
   margin: 20px 0px 20px 0px;
   padding: 20px;
@@ -30,5 +29,4 @@
   height: 100px;
   width: 100%;
   margin: 20px 0px 20px 0px;
-  background-color: blue;
 }

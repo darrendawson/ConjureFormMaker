@@ -67,6 +67,16 @@ const PT_selectedFormSection = "selectedFormSection";
 
 const PT_conjureForm = "conjureForm";
 const PT_selectedFormID = "selectedFormArea";
+const PT_formColors = "formColors";
+
+const defaultColors = {
+  "background": "#eaeaea",
+  "card": "#f4f4f4",
+  "shadow": "#7c7c7c",
+  "text": "#262626",
+  "title": "#262626"
+};
+
 
 // what App.state will look like
 let dataSkeleton = {
@@ -74,8 +84,11 @@ let dataSkeleton = {
   [PT_selectedFormSection]: false,
 
   [PT_conjureForm]: {},
-  [PT_selectedFormID]: false
+  [PT_selectedFormID]: false,
+  [PT_formColors]: defaultColors
 }
+
+
 
 // ConjureForm vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
@@ -120,7 +133,7 @@ class App extends Component {
     let item2ID = conjureForm.declareNewItem(card1ID);
 
 
-    this.update(conjureForm, PT_conjureForm);
+    this.saveConjureForm(conjureForm);
 
     // ConjureForm ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   }
@@ -138,6 +151,12 @@ class App extends Component {
     });
   }
 
+  // takes an updated conjureForm and saves it to ustra
+  // -> calls conjureForm.updateAllColors() in order to keep the color scheme up to date
+  saveConjureForm = (conjureForm) => {
+    conjureForm.updateAllColors(this.state.truth[PT_formColors]);
+    this.update(conjureForm, PT_conjureForm);
+  }
 
   // Form Data -----------------------------------------------------------------
   /*
@@ -256,7 +275,7 @@ class App extends Component {
       let containerID = conjureForm.getParentFormID(selectedID);
       conjureForm.declareNewItem(containerID, "question", selectedID, createPre);
     }
-    this.update(conjureForm, PT_conjureForm);
+    this.saveConjureForm(conjureForm);
   }
 
   // creates a new ConjureFormItem (text) in ConjureForm with selectedID
@@ -279,7 +298,7 @@ class App extends Component {
       let containerID = conjureForm.getParentFormID(selectedID);
       conjureForm.declareNewItem(containerID, "text", selectedID, createPre);
     }
-    this.update(conjureForm, PT_conjureForm);
+    this.saveConjureForm(conjureForm);
   }
 
 
@@ -304,7 +323,7 @@ class App extends Component {
       let containerID = conjureForm.getParentFormID(selectedID);
       conjureForm.declareNewSubform(containerID, selectedID, createPre);
     }
-    this.update(conjureForm, PT_conjureForm);
+    this.saveConjureForm(conjureForm);
   }
 
 
@@ -312,8 +331,13 @@ class App extends Component {
   onClick_deleteFormSection = (itemID) => {
     let conjureForm = this.state.truth[PT_conjureForm];
     conjureForm.delete(itemID);
-    this.update(conjureForm, PT_conjureForm);
+    this.saveConjureForm(conjureForm);
     this.update(false, PT_selectedFormID);
+  }
+
+  updateFormColors = (newColors) => {
+    this.update(newColors, PT_formColors);
+    this.saveConjureForm(this.state.truth[PT_conjureForm]);
   }
 
   // render --------------------------------------------------------------------
@@ -338,6 +362,8 @@ class App extends Component {
         selectedID={truth[PT_selectedFormID]}
         selectedSection={selectedSection}
         parentContainerType={parentContainerType}
+        formColors={truth[PT_formColors]}
+        updateColors={this.updateFormColors}
         onClick_deselectItem={() => this.onClick_selectFormSection(false)}
         onClick_createNewFormText={this.onClick_createNewFormText}
         onClick_createNewFormQuestion={this.onClick_createNewFormQuestion}

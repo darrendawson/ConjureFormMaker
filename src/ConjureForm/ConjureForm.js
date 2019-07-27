@@ -13,6 +13,12 @@ import ConjureFormItem from './ConjureFormItem.js';
 
 const __containerTypes = ["all", "page", "card"];
 
+// default colors
+const __allColorDefault = "#eaeaea";
+const __pageColorDefault = "#eaeaea";
+const __cardColorDefault = "#f4f4f4";
+const __shadowColorDefault = '#7c7c7c';
+
 class ConjureForm {
 
   constructor(formID = null, formType = "all") {
@@ -20,8 +26,22 @@ class ConjureForm {
     this.items = {};
     this.order = [];
     this.formID = (formID !== null) ? formID : this.getNewUniqueID();
-
     this.formDetails = {"containerType": formType};
+    this.colors = {};
+
+    // determine colors
+    if (formType === "all") {
+      this.colors['backgroundColor'] = __allColorDefault;
+      this.colors['cardShadow'] = __shadowColorDefault;
+    } else if (formType === "page") {
+      this.colors['backgroundColor'] = __pageColorDefault;
+      this.colors['cardShadow'] = __shadowColorDefault;
+    } else if (formType === "card") {
+      this.colors['backgroundColor'] = __cardColorDefault;
+      this.colors['cardShadow'] = __shadowColorDefault;
+    }
+
+
 
     this.onClick_selectForm = function() {};
   }
@@ -403,6 +423,34 @@ class ConjureForm {
   }
 
 
+  // updates the colors for the the entire ConjureForm tree
+  // colors = {background: "", card: "", text: ""}
+  //  - color values are hex and get passed to components through HTML style={}
+  updateAllColors(colors) {
+
+    let containerType = this.formDetails.containerType;
+
+    // update colors of this ConjureForm
+    if (containerType === "all" || containerType === "page") {
+      this.colors.backgroundColor = colors.background;
+    } else if (containerType === "card") {
+      this.colors.backgroundColor = colors.card;
+      this.colors.shadowColor = colors.shadow;
+    }
+
+
+
+    // update the colors of items
+    for (let key in this.items) {
+      this.items[key].updateColors(colors);
+    }
+
+    // make sure all children update their colors
+    for (let key in this.subforms) {
+      this.subforms[key].updateAllColors(colors);
+    }
+  }
+
   // UX ------------------------------------------------------------------------
   /*
     Functions for dealing with User Interactions
@@ -462,7 +510,8 @@ class ConjureForm {
         formDetails={this.formDetails}
         containerType={this.formDetails.containerType}
         formID={this.formID}
-
+        backgroundColor={this.colors.backgroundColor}
+        shadowColor={this.colors.shadowColor}
         onClick_selectForm={this.onClick_selectForm}
       />
     );

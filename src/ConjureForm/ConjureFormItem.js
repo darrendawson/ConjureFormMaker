@@ -8,6 +8,10 @@ import React from 'react';
 import ConjureFormItemComponent from './Render/ConjureFormItemComponent.js';
 
 
+const __textColorDefault = "#262626";
+const __titleColorDefault = "#262626";
+
+
 class ConjureFormItem {
 
   constructor(itemID, itemType = "text") {
@@ -23,7 +27,14 @@ class ConjureFormItem {
       this.questionTitle = "";
       this.questionDescription = "";
     }
+
+    // set default colors
+    this.colors = {
+      "text": __textColorDefault,
+      "title": __titleColorDefault
+    };
   }
+
 
 
   getClassName() {
@@ -38,6 +49,14 @@ class ConjureFormItem {
   registerOnClickSelectItem(onClickFunction) {
     this.onClick_selectItem = onClickFunction;
   }
+
+
+  // updates the colors of this ConjureFormItem
+  updateColors(colors) {
+
+  }
+
+
   // export --------------------------------------------------------------------
   /*
     Functions for exporting this class into other usable formats like:
@@ -56,6 +75,8 @@ class ConjureFormItem {
       <ConjureFormItemComponent
         itemID={this.itemID}
         onClick_selectItem={this.onClick_selectItem}
+        textColor={this.colors.text}
+        titleColor={this.colors.title}
       />
     );
   }

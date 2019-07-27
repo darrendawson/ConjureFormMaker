@@ -17,6 +17,16 @@ class FormSidebar extends Component {
   }
 
 
+  // Input ---------------------------------------------------------------------
+
+  // when a user inputs a new color
+  onInput_updateColor = (colorType, e) => {
+    let colors = this.props.formColors;
+    colors[colorType] = e.target.value;
+    this.props.updateColors(colors);
+  }
+
+
   // Render --------------------------------------------------------------------
 
   renderFormInput = () => {
@@ -50,7 +60,7 @@ class FormSidebar extends Component {
 
     // otherwise, we can render the button
     return (
-      <h1 className="title_bar_text_clickable" onClick={() => this.props.onClick_deleteFormSection(this.props.selectedID)}>Delete</h1>
+      <h1 className="title_bar_text_clickable" onClick={() => this.props.onClick_deleteFormSection(this.props.selectedID)}>&#x1f5d1;</h1>
     );
   }
 
@@ -64,12 +74,22 @@ class FormSidebar extends Component {
     if (this.props.selectedID !== false) {
 
       let expandCreateButtonText = (this.state.createNewFormBarOpen) ? "-": "+"; // reversed because user wants to click + to open the row
+
+      // get the currently selected section's type
+      let sectionType = "";
+      if (this.props.selectedSection.getClassName() === "ConjureForm") {
+        sectionType = this.props.selectedSection.formDetails.containerType;
+      } else if (this.props.selectedSection.getClassName() === "ConjureFormItem") {
+        sectionType = this.props.selectedSection.itemType;
+      }
+
+
       return (
         <div id="title_bar">
-          <h1 className="title_bar_text">Selected</h1>
+          <h1 className="title_bar_text">{sectionType}</h1>
           <div className="buttons_container">
-            {this.renderDeleteFormButton()}
             <h1 className="title_bar_text_clickable" onClick={() => this.setState({createNewFormBarOpen: !this.state.createNewFormBarOpen})}>{expandCreateButtonText}</h1>
+            {this.renderDeleteFormButton()}
             <h1 className="title_bar_text_clickable" onClick={this.props.onClick_deselectItem}>X</h1>
           </div>
         </div>
@@ -77,7 +97,7 @@ class FormSidebar extends Component {
     } else {
       return (
         <div id="title_bar">
-          <h1 className="title_bar_text">Form Output</h1>
+          <h1 className="title_bar_text">Form Details</h1>
         </div>
       );
     }
@@ -252,6 +272,68 @@ class FormSidebar extends Component {
 
 
 
+  // render inputs for updating ConjureForm color schemes
+  renderSelectColors = () => {
+
+    let colors = this.props.formColors;
+
+    return (
+      <div className="sidebar_section_align_left">
+        <h1 className="section_title">Form Colors</h1>
+        <div className="colors_input_row">
+          <h3 className="colors_title">Background</h3>
+          <div id="color_square" style={{'background-color': colors.background}}></div>
+          <input
+            className="color_input"
+            value={colors.background}
+            onChange={this.onInput_updateColor.bind(this, "background")}
+          />
+        </div>
+
+        <div className="colors_input_row">
+          <h3 className="colors_title">Card</h3>
+          <div id="color_square" style={{'background-color': colors.card}}></div>
+          <input
+            className="color_input"
+            value={colors.card}
+            onChange={this.onInput_updateColor.bind(this, "card")}
+          />
+        </div>
+
+        <div className="colors_input_row">
+          <h3 className="colors_title">Card Shadow</h3>
+          <div id="color_square" style={{'background-color': colors.shadow}}></div>
+          <input
+            className="color_input"
+            value={colors.shadow}
+            onChange={this.onInput_updateColor.bind(this, "shadow")}
+          />
+        </div>
+
+        <div className="colors_input_row">
+          <h3 className="colors_title">Title Text</h3>
+          <div id="color_square" style={{'background-color': colors.title}}></div>
+          <input
+            className="color_input"
+            value={colors.title}
+            onChange={this.onInput_updateColor.bind(this, "title")}
+          />
+        </div>
+
+        <div className="colors_input_row">
+          <h3 className="colors_title">Text</h3>
+          <div id="color_square" style={{'background-color': colors.text}}></div>
+          <input
+            className="color_input"
+            value={colors.text}
+            onChange={this.onInput_updateColor.bind(this, "text")}
+          />
+        </div>
+      </div>
+    );
+  }
+
+
   // renders <FormSidebar/>
   render() {
 
@@ -261,6 +343,7 @@ class FormSidebar extends Component {
       return (
         <div id="FormSidebar">
           {this.renderTitleBar()}
+          {this.renderSelectColors()}
         </div>
       );
 

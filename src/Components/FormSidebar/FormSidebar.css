@@ -65,3 +65,36 @@
 #FormSidebar .deselected_txt_color:hover {
   color: white;
 }
+
+
+#FormSidebar .sidebar_section_align_left {
+  width: calc(100% - 20px);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+
+#FormSidebar .section_title {
+  margin: 0px;
+}
+
+#FormSidebar .colors_input_row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#FormSidebar .colors_input_row .colors_title {
+  width: 150px;
+  text-align: left;
+  margin-left: 20px;
+}
+
+#FormSidebar .colors_input_row #color_square {
+  height: 30px;
+  width: 30px;
+  margin-right: 20px;
+}
