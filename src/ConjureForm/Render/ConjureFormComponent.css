@@ -4,12 +4,22 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  border: 1px solid transparent;
+  border-radius: 5px;
+}
+
+#ConjureFormComponent .dev_mode_hover:hover {
+  border: 1px solid #f7ba02;
+  cursor: pointer;
+}
+
+#ConjureFormComponent .dev_mode_selected {
+  border: 2px solid #f7ba02;
 }
 
 #ConjureFormComponent .container_type_page {
   width: calc(100% - 40px);
   border-radius: 5px;
-  margin: 20px 0px;
   padding: 20px;
   border-bottom: 2px dotted black;
 }
@@ -17,7 +27,7 @@
 #ConjureFormComponent .container_type_card {
   width: calc(100% - 40px);
   border-radius: 5px;
-  margin: 20px 0px 20px 0px;
+  margin: 20px 0px;
   padding: 20px;
 }
 
@@ -29,4 +39,6 @@
   height: 100px;
   width: 100%;
   margin: 20px 0px 20px 0px;
+  border: 1px solid transparent;
+  border-radius: 3px;
 }

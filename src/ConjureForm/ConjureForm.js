@@ -42,6 +42,7 @@ class ConjureForm {
     }
 
 
+    this.runtime = {"selected": false};
 
     this.onClick_selectForm = function() {};
   }
@@ -482,6 +483,29 @@ class ConjureForm {
   }
 
 
+  // goes through entire ConjureForm tree and ConjureFormItem children
+  // - if id === selectedID: -> set .runtime.selected = true;
+  // - else: -> set .runtime.selected = false
+  // end result: only 1 section is selected
+  updateSelectedFormSection = (selectedID = null) => {
+    if (this.formID === selectedID) {
+      this.runtime.selected = true;
+    } else {
+      this.runtime.selected = false;
+    }
+
+    // run on subforms
+    for (let key in this.subforms) {
+      this.subforms[key].updateSelectedFormSection(selectedID);
+    }
+
+    // run on items
+    for (let key in this.items) {
+      this.items[key].updateSelectedSection(selectedID);
+    }
+  }
+
+
   // Export --------------------------------------------------------------------
   /*
     Functions for converting the class into other usable formats
@@ -511,6 +535,7 @@ class ConjureForm {
         containerType={this.formDetails.containerType}
         formID={this.formID}
         backgroundColor={this.colors.backgroundColor}
+        selected={this.runtime.selected}
         shadowColor={this.colors.shadowColor}
         onClick_selectForm={this.onClick_selectForm}
       />

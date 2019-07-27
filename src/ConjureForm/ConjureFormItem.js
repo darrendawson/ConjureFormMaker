@@ -33,6 +33,8 @@ class ConjureFormItem {
       "text": __textColorDefault,
       "title": __titleColorDefault
     };
+
+    this.runtime = {"selected": false};
   }
 
 
@@ -57,6 +59,15 @@ class ConjureFormItem {
   }
 
 
+  // called by a parent ConjureForm when a new form section is selected
+  updateSelectedSection(selectedID) {
+    if (this.itemID === selectedID) {
+      this.runtime.selected = true;
+    } else {
+      this.runtime.selected = false;
+    }
+  }
+
   // export --------------------------------------------------------------------
   /*
     Functions for exporting this class into other usable formats like:
@@ -74,6 +85,7 @@ class ConjureFormItem {
     return (
       <ConjureFormItemComponent
         itemID={this.itemID}
+        selected={this.runtime.selected}
         onClick_selectItem={this.onClick_selectItem}
         textColor={this.colors.text}
         titleColor={this.colors.title}

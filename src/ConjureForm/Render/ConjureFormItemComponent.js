@@ -18,8 +18,18 @@ class ConjureFormItemComponent extends Component {
   // render --------------------------------------------------------------------
 
   render() {
+
+    // determine border styling
+    let borderCSS = "dev_mode_hover";
+    if (this.props.selected) {
+      borderCSS = "dev_mode_selected";
+    }
+
     return (
-      <div id="ConjureFormItemComponent" onClick={this.onClick_selectItem}>
+      <div
+        id="ConjureFormItemComponent"
+        className={borderCSS}
+        onClick={this.onClick_selectItem}>
         <p>ITEM: {this.props.itemID}</p>
       </div>
     );

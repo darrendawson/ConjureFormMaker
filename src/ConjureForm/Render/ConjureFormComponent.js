@@ -71,10 +71,16 @@ class ConjureFormComponent extends Component {
     }
 
 
+    // determine border styling
+    let borderCSS = "dev_mode_hover";
+    if (this.props.selected) {
+      borderCSS = "dev_mode_selected";
+    }
 
     return (
       <div
         id="ConjureFormComponent"
+        className={borderCSS}
         onClick={this.onClick_selectForm}>
         <div
           className={this.getContainerCSS(this.props.containerType)}

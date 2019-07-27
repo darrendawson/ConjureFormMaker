@@ -116,9 +116,9 @@ class App extends Component {
 
   onClick_selectFormSection = (selectedID) => {
     this.update(selectedID, PT_selectedFormID);
-
-    //let conjureForm = this.state.truth[PT_conjureForm];
-    //console.log(conjureForm.get(selectedID));
+    let conjureForm = this.state.truth[PT_conjureForm];
+    conjureForm.updateSelectedFormSection(selectedID);
+    this.saveConjureForm(conjureForm);
   }
 
   // creates a new ConjureFormItem (question) in ConjureForm with selectedID
@@ -250,7 +250,7 @@ class App extends Component {
         <div id='body_container'>
 
           <div id='left_body_container'>
-            <div style={{'display': 'flex', 'flex-direction': 'column', 'width': '100%'}}>
+            <div style={{'display': 'flex', 'flex-direction': 'column', 'width': '100%', 'border-color': this.state.truth[PT_formColors]['background']}}>
               {conjureForm.render()}
             </div>
           </div>
