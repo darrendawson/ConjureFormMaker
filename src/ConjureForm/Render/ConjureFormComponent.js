@@ -42,6 +42,16 @@ class ConjureFormComponent extends Component {
   }
 
 
+  // if this form doesn't have any children, render an empty div instead to make the object large enough to click
+  renderEmptySpace = () => {
+    if (Object.keys(this.props.subforms).length === 0 && Object.keys(this.props.items).length === 0) {
+      return (
+        <div id="empty_space"></div>
+      );
+    }
+  }
+
+
   // render <ConjureFormComponent/>
   // - because ConjureForm can have ConjureForms and ConjureFormItems as children,
   //      we need to call their render functions as well:
@@ -86,6 +96,7 @@ class ConjureFormComponent extends Component {
           className={this.getContainerCSS(this.props.containerType)}
           style={this.getContainerStyling(this.props.containerType)}>
           {childrenToRender}
+          {this.renderEmptySpace()}
         </div>
       </div>
     );

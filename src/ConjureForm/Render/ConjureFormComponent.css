@@ -31,6 +31,9 @@
   padding: 20px;
 }
 
+#ConjureFormComponent #empty_space {
+  height: 120px;
+}
 
 /* <ConjureFormItemComponent/> -----------------------------------------------*/
 
