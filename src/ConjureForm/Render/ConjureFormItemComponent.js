@@ -45,11 +45,48 @@ class ConjureFormItemComponent extends Component {
         <div className="item_container">
           <h1 className="item_text_margins" style={{'color': this.props.titleColor}}>{itemDetails.questionTitle}</h1>
           <p className="item_text_margins" style={{'color': this.props.textColor}}>{itemDetails.questionDescription}</p>
+          {this.renderQuestion()}
         </div>
       );
     }
   }
 
+
+  renderQuestion = () => {
+
+    let itemDetails = this.props.itemDetails;
+
+    // make sure that we only render the question when appropriate
+    if (this.props.itemType !== "question") {
+      return;
+    }
+
+    // if devMode is on, then we only need to render the bare minimum inputs (without actual onClick / onChange events)
+    if (this.props.devModeOn) {
+      if (itemDetails.questionType === "input") {
+        return (
+          <div>
+            <input/>
+          </div>
+        );
+      } else if (itemDetails.questionType === "multipleChoice") {
+        return (
+          <div>
+
+          </div>
+        );
+      }
+    } else if (itemDetails.questionType === "code") {
+      return (
+        <div>
+
+        </div>
+      );
+    }
+
+    // ADD if (this.props.devModeOn === false) {} for rendering the actual form
+
+  }
 
   render() {
 

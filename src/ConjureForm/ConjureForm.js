@@ -42,7 +42,7 @@ class ConjureForm {
     }
 
 
-    this.runtime = {"selected": false};
+    this.runtime = {"selected": false, "devModeOn": true};
 
     this.onClick_selectForm = function() {};
   }
@@ -482,6 +482,18 @@ class ConjureForm {
       this.subforms[key].updateSectionDetails(sectionID, newDetails);
     }
 
+  }
+
+
+  //
+  updateDevMode(newDevMode = true) {
+    this.runtime.devModeOn = newDevMode;
+    for (let key in this.subforms) {
+      this.subforms[key].updateDevMode(newDevMode);
+    }
+    for (let key in this.items) {
+      this.items[key].updateDevMode(newDevMode);
+    }
   }
 
 

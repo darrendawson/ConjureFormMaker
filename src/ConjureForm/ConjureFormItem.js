@@ -7,6 +7,7 @@
 import React from 'react';
 import ConjureFormItemComponent from './Render/ConjureFormItemComponent.js';
 
+const __questionTypes = ["input", "multipleChoice", "code"];
 
 const __textColorDefault = "#262626";
 const __titleColorDefault = "#262626";
@@ -29,6 +30,7 @@ class ConjureFormItem {
       this.questionDetails = {};
       this.questionDetails.questionTitle = "Question Title";
       this.questionDetails.questionDescription = "Question Description";
+      this.questionDetails.questionType = "input";
     }
 
     // set default colors
@@ -38,7 +40,7 @@ class ConjureFormItem {
       "background": __backgroundColorDefault
     };
 
-    this.runtime = {"selected": false};
+    this.runtime = {"selected": false, "devModeOn": true};
   }
 
 
@@ -102,6 +104,10 @@ class ConjureFormItem {
     }
   }
 
+  updateDevMode(newDevMode) {
+    this.runtime.devModeOn = newDevMode;
+  }
+
   // export --------------------------------------------------------------------
   /*
     Functions for exporting this class into other usable formats like:
@@ -130,6 +136,7 @@ class ConjureFormItem {
         itemType={this.itemType}
         itemDetails={itemDetails}
         selected={this.runtime.selected}
+        devModeOn={this.runtime.devModeOn}
         onClick_selectItem={this.onClick_selectItem}
         textColor={this.colors.text}
         titleColor={this.colors.title}
