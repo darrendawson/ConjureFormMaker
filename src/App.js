@@ -135,12 +135,16 @@ class App extends Component {
 
     if (insertInto) {
       // insert into -> we don't need the parent
-      conjureForm.declareNewItem(selectedID, "question", null, createPre);
+      let newID = conjureForm.declareNewItem(selectedID, "question", null, createPre);
+      conjureForm.updateSelectedFormSection(newID);
+      this.update(newID, PT_selectedFormID);
 
     } else {
       // insert adjacent -> we need the parent
       let containerID = conjureForm.getParentFormID(selectedID);
-      conjureForm.declareNewItem(containerID, "question", selectedID, createPre);
+      let newID = conjureForm.declareNewItem(containerID, "question", selectedID, createPre);
+      conjureForm.updateSelectedFormSection(newID);
+      this.update(newID, PT_selectedFormID);
     }
     this.saveConjureForm(conjureForm);
   }
@@ -158,12 +162,16 @@ class App extends Component {
 
     if (insertInto) {
       // insert into -> we don't need the parent
-      conjureForm.declareNewItem(selectedID, "text", null, createPre);
+      let newID = conjureForm.declareNewItem(selectedID, "text", null, createPre);
+      conjureForm.updateSelectedFormSection(newID);
+      this.update(newID, PT_selectedFormID);
 
     } else {
       // insert adjacent -> we need the parent
       let containerID = conjureForm.getParentFormID(selectedID);
-      conjureForm.declareNewItem(containerID, "text", selectedID, createPre);
+      let newID = conjureForm.declareNewItem(containerID, "text", selectedID, createPre);
+      conjureForm.updateSelectedFormSection(newID);
+      this.update(newID, PT_selectedFormID);
     }
     this.saveConjureForm(conjureForm);
   }
@@ -183,12 +191,16 @@ class App extends Component {
 
     if (insertInto) {
       // insert into -> we don't need the parent
-      conjureForm.declareNewSubform(selectedID, null, createPre);
+      let newID = conjureForm.declareNewSubform(selectedID, null, createPre);
+      conjureForm.updateSelectedFormSection(newID);
+      this.update(newID, PT_selectedFormID);
 
     } else {
       // insert adjacent -> we need the parent
       let containerID = conjureForm.getParentFormID(selectedID);
-      conjureForm.declareNewSubform(containerID, selectedID, createPre);
+      let newID = conjureForm.declareNewSubform(containerID, selectedID, createPre);
+      conjureForm.updateSelectedFormSection(newID);
+      this.update(newID, PT_selectedFormID);
     }
     this.saveConjureForm(conjureForm);
   }
