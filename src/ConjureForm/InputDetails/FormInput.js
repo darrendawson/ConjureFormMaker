@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import './FormInput.css';
 
+
+import RenderFormOutputObject from './RenderFormOutputObject/RenderFormOutputObject.js';
+
+
 class FormInput extends Component {
 
   constructor() {
@@ -21,6 +25,7 @@ class FormInput extends Component {
 
 
   renderFormDetails = () => {
+
     return (
       <div className="form_input_container">
         <h1 className="section_title">Form Output</h1>
@@ -32,6 +37,16 @@ class FormInput extends Component {
             onChange={this.onInput_updateFormDetail.bind(this, "outputID")}
           />
         </div>
+
+        <div className="input_row">
+          <RenderFormOutputObject
+            selectedID={this.props.selectedID}
+            formOutputObject={this.props.formOutputObject}
+            formDetailsLookup={this.props.formDetailsLookup}
+            onClick_selectFormSection={this.props.onClick_selectFormSection}
+          />
+        </div>
+
       </div>
     );
   }

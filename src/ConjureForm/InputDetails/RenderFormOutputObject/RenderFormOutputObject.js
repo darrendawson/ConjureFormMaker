@@ -23,6 +23,18 @@ class RenderFormOutputObject extends Component {
   }
 
 
+  renderParameterName = (formID, outputName) => {
+    if (this.props.selectedID === formID) {
+      return (
+        <span className="text_clickable_selected">{outputName}</span>
+      );
+    } else {
+      return (
+        <span className="text_clickable">{outputName}</span>
+      );
+    }
+  }
+
 
   renderObject = (obj, depth = 1, result = []) => {
 
@@ -32,7 +44,8 @@ class RenderFormOutputObject extends Component {
       i += 1;
       let paddingLeft = this.getSpacePaddingLeft(depth);
       let outputName = this.props.formDetailsLookup[formID]['outputID'];
-      result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}<span className="text_clickable">{outputName}</span>: {__leftBracketChar}</pre>)
+      let parameterName = this.renderParameterName(formID, outputName);
+      result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {__leftBracketChar}</pre>)
 
       result.push(this.renderObject(obj[formID], depth + 1));
 

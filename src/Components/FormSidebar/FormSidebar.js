@@ -3,7 +3,7 @@ import './FormSidebar.css';
 
 import FormItemInput from '../../ConjureForm/InputDetails/FormItemInput.js';
 import FormInput from '../../ConjureForm/InputDetails/FormInput.js';
-import RenderFormOutputObject from './RenderFormOutputObject/RenderFormOutputObject.js';
+import RenderFormOutputObject from '../../ConjureForm/InputDetails/RenderFormOutputObject/RenderFormOutputObject.js';
 
 
 class FormSidebar extends Component {
@@ -62,7 +62,11 @@ class FormSidebar extends Component {
       return (
         <FormInput
           formDetails={selectedSection.formDetails}
+          selectedID={selectedSection.formID}
+          formOutputObject={this.props.formOutputObject}
+          formDetailsLookup={this.props.formDetailsLookup}
           onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
+          onClick_selectFormSection={this.props.onClick_selectFormSection}
         />
       );
     } else if (selectedSection.getClassName() === "ConjureFormItem") {
@@ -368,6 +372,7 @@ class FormSidebar extends Component {
       <div className="sidebar_section_align_left">
         <h1 className="section_title">Output Object</h1>
         <RenderFormOutputObject
+          selectedID={this.props.selectedID}
           formOutputObject={this.props.formOutputObject}
           formDetailsLookup={this.props.formDetailsLookup}
           onClick_selectFormSection={this.props.onClick_selectFormSection}

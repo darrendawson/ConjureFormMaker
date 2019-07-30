@@ -15,3 +15,8 @@
   color: #f7ba02;
   cursor: pointer;
 }
+
+#RenderFormOutputObject .text_clickable_selected {
+  background-color: #f7ba02;
+  color: #282828;
+}
