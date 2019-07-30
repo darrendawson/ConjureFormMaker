@@ -26,10 +26,16 @@ class ConjureForm {
     this.items = {};
     this.order = [];
     this.formID = (formID !== null) ? formID : this.getNewUniqueID();
-    this.formDetails = {"containerType": formType};
-    this.colors = {};
+
+
+    // when a user fills out the questions in this ConjureForm, they will all be entered into a dictionary
+    // - result[outputID] = {user answers}
+    // therefore, nested ConjureForm's will have result[outputID_1]...[outputID_N]
+    // defaults to formID because that is unique. User will modify the value from there
+    this.formDetails = {"containerType": formType, "outputID": this.formID};
 
     // determine colors
+    this.colors = {};
     if (formType === "all") {
       this.colors['backgroundColor'] = __allColorDefault;
       this.colors['cardShadow'] = __shadowColorDefault;
@@ -43,7 +49,6 @@ class ConjureForm {
 
 
     this.runtime = {"selected": false, "devModeOn": true};
-
     this.onClick_selectForm = function() {};
   }
 
@@ -485,7 +490,7 @@ class ConjureForm {
   }
 
 
-  //
+  // called to either turn on devMode (to edit the form) or off (to actually use the form in production)
   updateDevMode(newDevMode = true) {
     this.runtime.devModeOn = newDevMode;
     for (let key in this.subforms) {

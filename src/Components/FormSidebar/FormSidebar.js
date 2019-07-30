@@ -42,7 +42,10 @@ class FormSidebar extends Component {
     // otherwise, render Inputs so user can modify ConjureForm / ConjureFormItem details
     if (selectedSection.getClassName() === "ConjureForm") {
       return (
-        <FormInput/>
+        <FormInput
+          formDetails={selectedSection.formDetails}
+          onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
+        />
       );
     } else if (selectedSection.getClassName() === "ConjureFormItem") {
       return (
