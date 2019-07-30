@@ -283,6 +283,7 @@ class App extends Component {
             <ModifyFormContainer
               conjureForm={conjureForm}
               backgroundColor={truth[PT_formColors]['background']}
+              onClick_deselectItem={() => this.onClick_selectFormSection(false)}
             />
           </div>
 

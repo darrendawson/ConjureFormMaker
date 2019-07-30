@@ -7,12 +7,17 @@ class ModifyFormContainer extends Component {
     super();
   }
 
+  // onClick -------------------------------------------------------------------
+
+  onClick_runProductionForm = (e) => {
+    e.stopPropagation();
+  }
 
   // render --------------------------------------------------------------------
 
   renderActionsMenu = () => {
     return (
-      <div id="actions_menu">
+      <div id="actions_menu" onClick={this.onClick_runProductionForm}>
         <h3 className="actions_menu_clickable">&#9654;</h3>
       </div>
     );
@@ -21,7 +26,7 @@ class ModifyFormContainer extends Component {
 
   render() {
     return (
-      <div id="ModifyFormContainer" style={{'background-color': this.props.backgroundColor}}>
+      <div id="ModifyFormContainer" onClick={this.props.onClick_deselectItem} style={{'background-color': this.props.backgroundColor}}>
 
         <div id="actions_menu_row">
           {this.renderActionsMenu()}

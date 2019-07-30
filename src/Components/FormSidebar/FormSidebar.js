@@ -28,6 +28,22 @@ class FormSidebar extends Component {
     this.props.updateColors(colors);
   }
 
+  onClick_deselectItem = () => {
+    this.props.onClick_deselectItem();
+    this.setState({createNewFormBarOpen: false});
+  }
+
+  onClick_insertNewSection = (sectionType) => {
+    if (sectionType === "question") {
+      this.props.onClick_createNewFormQuestion(this.props.selectedID, this.state.insertPre, this.state.insertInto)
+    } else if (sectionType === "text") {
+      this.props.onClick_createNewFormText(this.props.selectedID, this.state.insertPre, this.state.insertInto)
+    } else if (sectionType === "ConjureForm") {
+      this.props.onClick_createNewFormSection(this.props.selectedID, this.state.insertPre, this.state.insertInto)
+    }
+
+    this.setState({createNewFormBarOpen: false});
+  }
 
   // Render --------------------------------------------------------------------
 
@@ -103,7 +119,7 @@ class FormSidebar extends Component {
           <div className="buttons_container">
             <h1 className="title_bar_text_clickable text_dark" onClick={() => this.setState({createNewFormBarOpen: !this.state.createNewFormBarOpen})}>{expandCreateButtonText}</h1>
             {this.renderDeleteFormButton()}
-            <h1 className="title_bar_text_clickable text_dark" onClick={this.props.onClick_deselectItem}>X</h1>
+            <h1 className="title_bar_text_clickable text_dark" onClick={() => this.onClick_deselectItem()}>X</h1>
           </div>
         </div>
       );
@@ -190,7 +206,7 @@ class FormSidebar extends Component {
     return (
       <h2
         className="new_form_bar_clickable deselected_txt_color"
-        onClick={() => this.props.onClick_createNewFormQuestion(this.props.selectedID, this.state.insertPre, this.state.insertInto)}
+        onClick={() => this.onClick_insertNewSection("question")}
         >!?
       </h2>
     );
@@ -217,7 +233,7 @@ class FormSidebar extends Component {
     return (
       <h2
         className="new_form_bar_clickable deselected_txt_color"
-        onClick={() => this.props.onClick_createNewFormText(this.props.selectedID, this.state.insertPre, this.state.insertInto)}
+        onClick={() => this.onClick_insertNewSection("text")}
         >Tt
       </h2>
     );
@@ -241,7 +257,7 @@ class FormSidebar extends Component {
     return (
       <h2
         className="new_form_bar_clickable deselected_txt_color"
-        onClick={() => this.props.onClick_createNewFormSection(this.props.selectedID, this.state.insertPre, this.state.insertInto)}
+        onClick={() => this.onClick_insertNewSection("ConjureForm")}
         >[]
       </h2>
     );
