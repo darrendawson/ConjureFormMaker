@@ -1,0 +1,17 @@
+#RenderFormOutputObject {
+  width: 100%;
+  background-color: #282828;
+  text-align: left;
+  margin-top: 20px;
+}
+
+#RenderFormOutputObject .text {
+  margin: 2px;
+  color: white;
+  font-size: 1.2em;
+}
+
+#RenderFormOutputObject .text_clickable:hover {
+  color: #f7ba02;
+  cursor: pointer;
+}

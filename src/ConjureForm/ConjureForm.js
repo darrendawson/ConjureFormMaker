@@ -32,7 +32,7 @@ class ConjureForm {
     // - result[outputID] = {user answers}
     // therefore, nested ConjureForm's will have result[outputID_1]...[outputID_N]
     // defaults to formID because that is unique. User will modify the value from there
-    this.formDetails = {"containerType": formType, "outputID": this.formID};
+    this.formDetails = {"containerType": formType, "outputID": this.formID, "outputType": "dict"};
 
     // determine colors
     this.colors = {};
@@ -501,6 +501,42 @@ class ConjureForm {
     }
   }
 
+
+  // Form Output ---------------------------------------------------------------
+  /*
+    Functions for converting a ConjureForm tree into a JS object with the end output of a form
+  */
+
+  //
+  createDefaultFormOutputObject(outputObject = {}) {
+    if (this.formDetails.outputType === "dict") {
+      for (let key in this.subforms) {
+        let subformOutputID = this.subforms[key].formDetails.outputID;
+        outputObject[subformOutputID] = this.subforms[key].createDefaultFormOutputObject();
+      }
+
+      /* ADD THIS LATER
+      for (let key in this.items) {
+        outputObject[key] = this.subforms[key].createDefaultFormOutputObject();
+      }
+      */
+    }
+
+
+    return outputObject;
+  }
+
+
+  createIDAwareOutputObject(outputObject = {}) {
+    for (let key in this.subforms) {
+      let subformOutputName = this.subforms[key].formDetails.outputID;
+      outputObject[subformOutputName] = {
+        "formID": key,
+        "->": this.subforms[key].createIDAwareOutputObject()
+      };
+    }
+    return outputObject;
+  }
 
   // UX ------------------------------------------------------------------------
   /*

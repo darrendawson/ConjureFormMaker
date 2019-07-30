@@ -7,6 +7,9 @@ class [NAME] extends Component {
     super();
   }
 
+  // render --------------------------------------------------------------------
+
+  // Renders <[NAME]/>
   render() {
     return (
       <div id="[NAME]">

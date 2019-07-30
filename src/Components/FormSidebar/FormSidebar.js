@@ -3,6 +3,8 @@ import './FormSidebar.css';
 
 import FormItemInput from '../../ConjureForm/InputDetails/FormItemInput.js';
 import FormInput from '../../ConjureForm/InputDetails/FormInput.js';
+import RenderFormOutputObject from './RenderFormOutputObject/RenderFormOutputObject.js';
+
 
 class FormSidebar extends Component {
 
@@ -345,6 +347,19 @@ class FormSidebar extends Component {
   }
 
 
+  renderFormOutputObject = () => {
+    return (
+      <div className="sidebar_section_align_left">
+        <h1 className="section_title">Form Output</h1>
+        <RenderFormOutputObject
+          outputObject={this.props.formOutputObject}
+          renderOnly={false}
+          onClick_selectFormSection={this.props.onClick_selectFormSection}
+        />
+      </div>
+    );
+  }
+
   // renders <FormSidebar/>
   render() {
 
@@ -354,6 +369,7 @@ class FormSidebar extends Component {
       return (
         <div id="FormSidebar">
           {this.renderTitleBar()}
+          {this.renderFormOutputObject()}
           {this.renderSelectColors()}
         </div>
       );
