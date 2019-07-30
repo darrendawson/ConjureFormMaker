@@ -350,10 +350,10 @@ class FormSidebar extends Component {
   renderFormOutputObject = () => {
     return (
       <div className="sidebar_section_align_left">
-        <h1 className="section_title">Form Output</h1>
+        <h1 className="section_title">Output Object</h1>
         <RenderFormOutputObject
-          outputObject={this.props.formOutputObject}
-          renderOnly={false}
+          formOutputObject={this.props.formOutputObject}
+          formDetailsLookup={this.props.formDetailsLookup}
           onClick_selectFormSection={this.props.onClick_selectFormSection}
         />
       </div>

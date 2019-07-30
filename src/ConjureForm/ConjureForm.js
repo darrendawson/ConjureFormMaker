@@ -507,35 +507,27 @@ class ConjureForm {
     Functions for converting a ConjureForm tree into a JS object with the end output of a form
   */
 
-  //
-  createDefaultFormOutputObject(outputObject = {}) {
-    if (this.formDetails.outputType === "dict") {
-      for (let key in this.subforms) {
-        let subformOutputID = this.subforms[key].formDetails.outputID;
-        outputObject[subformOutputID] = this.subforms[key].createDefaultFormOutputObject();
-      }
 
-      /* ADD THIS LATER
-      for (let key in this.items) {
-        outputObject[key] = this.subforms[key].createDefaultFormOutputObject();
-      }
-      */
+  // creates an output object (what the result of a user filling out a ConjureForm looks like)
+  // but uses formIDs rather than outputIDs
+  getOutputObjectWithFormIDs(outputObject = {}) {
+    for (let key in this.subforms) {
+      outputObject[key] = this.subforms[key].getOutputObjectWithFormIDs();
     }
-
-
     return outputObject;
   }
 
 
-  createIDAwareOutputObject(outputObject = {}) {
+  // creates a lookup table {formID/itemID: form/itemDetails}
+  getFormDetailsLookupTable(conversions = {}) {
+    conversions[this.formID] = this.formDetails;
     for (let key in this.subforms) {
-      let subformOutputName = this.subforms[key].formDetails.outputID;
-      outputObject[subformOutputName] = {
-        "formID": key,
-        "->": this.subforms[key].createIDAwareOutputObject()
-      };
+      conversions = this.subforms[key].getFormDetailsLookupTable(conversions);
     }
-    return outputObject;
+    for (let key in this.items) {
+      conversions[key] = this.items[key].getItemDetails();
+    }
+    return conversions;
   }
 
   // UX ------------------------------------------------------------------------

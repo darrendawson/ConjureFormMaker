@@ -244,7 +244,9 @@ class App extends Component {
       parentContainerType = parentContainer.formDetails.containerType;
     }
 
-    let formOutputObject = conjureForm.createIDAwareOutputObject();
+
+    let formOutputObject = conjureForm.getOutputObjectWithFormIDs();
+    let formDetailsLookup = conjureForm.getFormDetailsLookupTable();
 
     return (
       <FormSidebar
@@ -254,6 +256,7 @@ class App extends Component {
         formColors={truth[PT_formColors]}
         updateColors={this.updateFormColors}
         formOutputObject={formOutputObject}
+        formDetailsLookup={formDetailsLookup}
         onClick_deselectItem={() => this.onClick_selectFormSection(false)}
         onClick_selectFormSection={this.onClick_selectFormSection}
         onClick_createNewFormText={this.onClick_createNewFormText}

@@ -23,21 +23,18 @@ class RenderFormOutputObject extends Component {
   }
 
 
+
   renderObject = (obj, depth = 1, result = []) => {
 
     let numSubforms = Object.keys(obj).length;
     let i = 0;
-    for (let key in obj) {
+    for (let formID in obj) {
       i += 1;
-      let formID = obj[key]["formID"];
       let paddingLeft = this.getSpacePaddingLeft(depth);
+      let outputName = this.props.formDetailsLookup[formID]['outputID'];
+      result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}<span className="text_clickable">{outputName}</span>: {__leftBracketChar}</pre>)
 
-      if (this.props.renderOnly === false) {
-        result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}<span className="text_clickable">{key}</span>: {__leftBracketChar}</pre>)
-      } else {
-        result.push(<pre className="text">{paddingLeft}{key}: {__leftBracketChar}</pre>)
-      }
-      result.push(this.renderObject(obj[key]["->"], depth + 1))
+      result.push(this.renderObject(obj[formID], depth + 1));
 
       // render } to end current subform object. logic used to render with or without comma
       if (i < numSubforms) {
@@ -55,7 +52,7 @@ class RenderFormOutputObject extends Component {
     return (
       <div id="RenderFormOutputObject">
         <pre className="text">{__leftBracketChar}</pre>
-        {this.renderObject(this.props.outputObject)}
+        {this.renderObject(this.props.formOutputObject)}
         <pre className="text">{__rightBracketChar}</pre>
       </div>
     );
