@@ -62,7 +62,13 @@ class ConjureFormItem {
 
 
   getDefaultOutputObject() {
-    return "";
+    if (this.itemType === "question") {
+      if (this.questionDetails.questionType === "input") {
+        return "";
+      }
+    } else {
+      return false;
+    }
   }
 
 

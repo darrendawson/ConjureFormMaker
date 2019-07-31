@@ -511,13 +511,31 @@ class ConjureForm {
   // creates an output object (what the result of a user filling out a ConjureForm looks like)
   // but uses formIDs rather than outputIDs
   getOutputObjectWithFormIDs(outputObject = {}) {
-    for (let key in this.subforms) {
-      outputObject[key] = this.subforms[key].getOutputObjectWithFormIDs();
-    }
+
+    // only return branches of ConjureForm tree that actually have output objects
+    let validOutputObjectFound = false;
+
     for (let key in this.items) {
-      outputObject[key] = this.items[key].getDefaultOutputObject();
+      let defaultOutput = this.items[key].getDefaultOutputObject();
+      if (defaultOutput !== false) {
+        validOutputObjectFound = true;
+        outputObject[key] = this.items[key].getDefaultOutputObject();
+      }
     }
-    return outputObject;
+
+    for (let key in this.subforms) {
+      let subformOutput = this.subforms[key].getOutputObjectWithFormIDs();
+      if (subformOutput !== false) {
+        validOutputObjectFound = true;
+        outputObject[key] = subformOutput;
+      }
+    }
+
+    if (validOutputObjectFound) {
+      return outputObject;
+    } else {
+      return false;
+    }
   }
 
 
@@ -531,7 +549,7 @@ class ConjureForm {
     for (let key in this.subforms) {
       conversions = this.subforms[key].getFormDetailsLookupTable(conversions);
     }
-    
+
     for (let key in this.items) {
       let itemDetails = this.items[key].getItemDetails();
       itemDetails['type'] = "ConjureFormItem";

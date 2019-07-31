@@ -99,7 +99,30 @@ class FormItemInput extends Component {
   }
 
 
+
+  // function that determines whether a given formID is in the form output object
+  checkIfFormIDInOutput = (formID = this.props.selectedID, formOutputObject = this.props.formOutputObject) => {
+    for (let key in formOutputObject) {
+      if (key === formID) {
+        return true;
+      } else {
+        let childResult = this.checkIfFormIDInOutput(formID, formOutputObject[key]);
+        if (childResult === true) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   renderFormOutputDetails = () => {
+
+    // don't render Output details if the currently selected form isn't in output
+    // ex: a selected ConjureFormItem with type text is not in output
+    if (this.checkIfFormIDInOutput(this.props.selectedID, this.props.formOutputObject) === false) {
+      return;
+    }
+
     return (
       <div className="form_input_container">
         <h1 className="section_title">Output Object</h1>

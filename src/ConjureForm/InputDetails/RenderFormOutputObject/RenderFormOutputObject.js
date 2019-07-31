@@ -59,7 +59,8 @@ class RenderFormOutputObject extends Component {
         }
 
       } else if (this.props.formDetailsLookup[formID]['type'] === "ConjureFormItem") {
-        let itemDefaultValue = JSON.stringify(this.props.formDetailsLookup[formID]['defaultOutput']);
+
+        let itemDefaultValue = JSON.stringify(obj[formID]);
 
         // render } to end current subform object. logic used to render with or without comma
         if (i < numSubforms) {
