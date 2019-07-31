@@ -58,6 +58,9 @@ class ConjureForm {
     return "ConjureForm";
   }
 
+  getConjureID() {
+    return this.formID;
+  }
 
   // IDs -----------------------------------------------------------------------
   /*
@@ -608,6 +611,25 @@ class ConjureForm {
     // run on items
     for (let key in this.items) {
       this.items[key].updateSelectedSection(selectedID);
+    }
+  }
+
+
+  // pass in a ConjureFormItem or ConjureForm object, and this function will replace the existing version of it in the ConjureTree
+  updateWholeSection = (updatedSectionID, updatedSection) => {
+
+    for (let key in this.subforms) {
+      if (updatedSectionID === key) {
+        this.subforms[key] = updatedSection;
+      } else {
+        this.subforms[key].updateWholeSection(updatedSectionID, updatedSection);
+      }
+    }
+
+    for (let key in this.items) {
+      if (updatedSectionID === key) {
+        this.items[key] = updatedSection;
+      }
     }
   }
 

@@ -75,10 +75,12 @@ class FormSidebar extends Component {
           itemType={selectedSection.itemType}
           itemDetails={selectedSection.getItemDetails()}
           selectedID={selectedSection.itemID}
+          selectedSection={selectedSection}
           formOutputObject={this.props.formOutputObject}
           formDetailsLookup={this.props.formDetailsLookup}
           onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
           onClick_selectFormSection={this.props.onClick_selectFormSection}
+          onClick_updateWholeSection={this.props.onClick_updateWholeSection}
         />
       );
     }

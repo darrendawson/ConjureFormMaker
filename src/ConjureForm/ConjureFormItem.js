@@ -14,6 +14,26 @@ const __titleColorDefault = "#262626";
 const __backgroundColorDefault = "#eaeaea";
 
 
+const __defaultQuestionInputDetails = {
+  "questionTitle": "Question Title",
+  "questionDescription": "Description",
+  "questionType": "input",
+  "inputType": "string",
+  "inputPrompt": "prompt...",
+  "defaultValue": ""
+};
+
+const __defaultQuestionMultipleChoiceDetails = {
+  "questionTitle": "Question Title",
+  "questionDescription": "Description",
+  "questionType": "multipleChoice",
+  "multipleChoiceType": "standard",
+  "minSelected": 0,
+  "maxSelected": 1,
+  "choices": []
+};
+
+
 class ConjureFormItem {
 
   constructor(itemID, itemType = "text") {
@@ -28,12 +48,8 @@ class ConjureFormItem {
       this.textDetails.sectionTitleText = "Section Title";
       this.textDetails.outputID = itemID;
     } else {
-      this.questionDetails = {};
-      this.questionDetails.questionTitle = "Question Title";
-      this.questionDetails.questionDescription = "Question Description";
-      this.questionDetails.questionType = "input";
-      this.questionDetails.defaultOutput = "";
-      this.questionDetails.outputID = itemID;
+      this.questionDetails = __defaultQuestionInputDetails;
+      this.questionDetails["outputID"] = itemID;
     }
 
     // set default colors
@@ -47,6 +63,9 @@ class ConjureFormItem {
   }
 
 
+  getConjureID() {
+    return this.itemID;
+  }
 
   getClassName() {
     return "ConjureFormItem";
@@ -64,7 +83,7 @@ class ConjureFormItem {
   getDefaultOutputObject() {
     if (this.itemType === "question") {
       if (this.questionDetails.questionType === "input") {
-        return "";
+        return this.questionDetails.defaultValue;
       }
     } else {
       return false;
@@ -122,6 +141,43 @@ class ConjureFormItem {
     this.runtime.devModeOn = newDevMode;
   }
 
+
+
+  // Convert -------------------------------------------------------------------
+
+  convertQuestionType(newQuestionType) {
+
+    // if no action needs to be taken, return
+    if (this.itemType !== "question") { return; }
+    if (this.questionDetails.questionType === newQuestionType) { return; }
+
+    // mark the new questionType
+    this.questionDetails.questionType = newQuestionType;
+
+    // make changes to remove any leftover values from previous questionType
+    // and initialize the new question type
+    if (newQuestionType === "input") {
+      delete this.questionDetails.multipleChoiceType;
+      delete this.questionDetails.minSelected;
+      delete this.questionDetails.maxSelected;
+      delete this.questionDetails.choices;
+
+      this.questionDetails["inputType"] = "string";
+      this.questionDetails["inputPrompt"] = "prompt...";
+      this.questionDetails["defaultValue"] = "";
+
+    } else if (newQuestionType === "multipleChoice") {
+
+      delete this.questionDetails.inputType;
+      delete this.questionDetails.inputPrompt;
+      delete this.questionDetails.defaultValue;
+
+      this.questionDetails["multipleChoiceType"] = "standard";
+      this.questionDetails["minSelected"] = 0;
+      this.questionDetails["maxSelected"] = 1;
+      this.questionDetails["choices"] = [];
+    }
+  }
   // export --------------------------------------------------------------------
   /*
     Functions for exporting this class into other usable formats like:
