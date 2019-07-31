@@ -1,0 +1,26 @@
+#MultipleChoice {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  margin-bottom: 5px;
+}
+
+#MultipleChoice .choice_row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 6px;
+}
+
+#MultipleChoice .select_button {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  border: 1px solid;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+#MultipleChoice .choice_text {
+  margin: 0px;
+}

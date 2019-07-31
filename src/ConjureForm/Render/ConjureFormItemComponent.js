@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './ConjureFormComponent.css';
 
+import MultipleChoice from './QuestionTypes/MultipleChoice/MultipleChoice.js';
+
 class ConjureFormItemComponent extends Component {
 
   constructor() {
@@ -72,7 +74,12 @@ class ConjureFormItemComponent extends Component {
       } else if (itemDetails.questionType === "multipleChoice") {
         return (
           <div>
-
+            <MultipleChoice
+              choices={itemDetails.choices}
+              borderColor={this.props.titleColor}
+              textColor={this.props.textColor}
+              renderOnly={true}
+            />
           </div>
         );
       }
