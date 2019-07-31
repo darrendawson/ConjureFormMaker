@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import './FormInput.css';
 
 import RenderFormOutputObject from './RenderFormOutputObject/RenderFormOutputObject.js';
+import MultipleChoiceMaker from './MultipleChoiceMaker/MultipleChoiceMaker';
 
 import ConjureFormConstants from '../ConjureFormConstants.js';
 const __conjureConstants = new ConjureFormConstants();
@@ -209,6 +210,13 @@ class FormItemInput extends Component {
             onChange={this.onInput_updateItemDetail.bind(this, "maxSelected")}
           />
         </div>
+
+        <div className="input_row">
+          <MultipleChoiceMaker
+            choices={this.props.itemDetails.choices}
+            onClick_updateItemDetail={this.onClick_updateItemDetail}
+          />
+        </div>
       </div>
 
     );
@@ -218,7 +226,7 @@ class FormItemInput extends Component {
   // render form output --------------------------------------------------------
 
   // function that determines whether a given formID is in the form output object
-  checkIfFormIDInOutput = (formID = this.props.selectedID, formOutputObject = this.props.formOutputObject) => {
+  checkIfFormIDInOutput = (formID = this.props.selectedID, formOutputObject) => {
     for (let key in formOutputObject) {
       if (key === formID) {
         return true;

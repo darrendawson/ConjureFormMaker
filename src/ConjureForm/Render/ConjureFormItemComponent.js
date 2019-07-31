@@ -66,7 +66,7 @@ class ConjureFormItemComponent extends Component {
       if (itemDetails.questionType === "input") {
         return (
           <div>
-            <input/>
+            <input placeholder={itemDetails.defaultValue}/>
           </div>
         );
       } else if (itemDetails.questionType === "multipleChoice") {
