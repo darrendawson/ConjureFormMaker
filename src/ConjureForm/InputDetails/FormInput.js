@@ -28,7 +28,7 @@ class FormInput extends Component {
 
     return (
       <div className="form_input_container">
-        <h1 className="section_title">Form Output</h1>
+        <h1 className="section_title">Output Object</h1>
         <div className="input_row">
           <h3 className="input_title">Key</h3>
           <input

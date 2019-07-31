@@ -514,17 +514,27 @@ class ConjureForm {
     for (let key in this.subforms) {
       outputObject[key] = this.subforms[key].getOutputObjectWithFormIDs();
     }
+    for (let key in this.items) {
+      outputObject[key] = this.items[key].getDefaultOutputObject();
+    }
     return outputObject;
   }
 
 
   // creates a lookup table {formID/itemID: form/itemDetails}
   getFormDetailsLookupTable(conversions = {}) {
-    conversions[this.formID] = this.formDetails;
+
+    let formDetails = this.formDetails;
+    formDetails['type'] = "ConjureForm";
+    conversions[this.formID] = formDetails;
+
     for (let key in this.subforms) {
       conversions = this.subforms[key].getFormDetailsLookupTable(conversions);
     }
+    
     for (let key in this.items) {
+      let itemDetails = this.items[key].getItemDetails();
+      itemDetails['type'] = "ConjureFormItem";
       conversions[key] = this.items[key].getItemDetails();
     }
     return conversions;

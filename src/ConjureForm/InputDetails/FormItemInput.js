@@ -5,6 +5,8 @@
 import React, { Component } from 'react';
 import './FormInput.css';
 
+import RenderFormOutputObject from './RenderFormOutputObject/RenderFormOutputObject.js';
+
 class FormItemInput extends Component {
 
   constructor() {
@@ -21,6 +23,7 @@ class FormItemInput extends Component {
     updatedItemDetails[detailType] = e.target.value;
     this.props.onClick_updateFormSectionDetails(this.props.selectedID, updatedItemDetails);
   }
+
 
   // render --------------------------------------------------------------------
 
@@ -95,9 +98,40 @@ class FormItemInput extends Component {
     }
   }
 
+
+  renderFormOutputDetails = () => {
+    return (
+      <div className="form_input_container">
+        <h1 className="section_title">Output Object</h1>
+
+
+        <div className="input_row">
+          <h3 className="input_title">Key</h3>
+          <input
+            className="form_input"
+            value={this.props.itemDetails.outputID}
+            onChange={this.onInput_updateItemDetail.bind(this, "outputID")}
+          />
+        </div>
+
+
+        <div className="input_row">
+          <RenderFormOutputObject
+            selectedID={this.props.selectedID}
+            formOutputObject={this.props.formOutputObject}
+            formDetailsLookup={this.props.formDetailsLookup}
+            onClick_selectFormSection={this.props.onClick_selectFormSection}
+          />
+        </div>
+
+      </div>
+    );
+  }
+
   render() {
     return (
       <div id="FormItemInput">
+        {this.renderFormOutputDetails()}
         {this.renderFormItemText()}
         {this.renderFormItemQuestion()}
       </div>

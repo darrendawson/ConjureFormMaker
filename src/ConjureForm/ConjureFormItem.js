@@ -26,11 +26,14 @@ class ConjureFormItem {
       this.textDetails.descriptionText = "Description";
       this.textDetails.titleText = "Title";
       this.textDetails.sectionTitleText = "Section Title";
+      this.textDetails.outputID = itemID;
     } else {
       this.questionDetails = {};
       this.questionDetails.questionTitle = "Question Title";
       this.questionDetails.questionDescription = "Question Description";
       this.questionDetails.questionType = "input";
+      this.questionDetails.defaultOutput = "";
+      this.questionDetails.outputID = itemID;
     }
 
     // set default colors
@@ -49,12 +52,17 @@ class ConjureFormItem {
     return "ConjureFormItem";
   }
 
-  getItemDetails = () => {
+  getItemDetails() {
     if (this.itemType === "text") {
       return this.textDetails;
     } else if (this.itemType === "question") {
       return this.questionDetails;
     }
+  }
+
+
+  getDefaultOutputObject() {
+    return "";
   }
 
 
