@@ -121,10 +121,12 @@ class App extends Component {
   // ConjureForm ---------------------------------------------------------------
 
   onClick_selectFormSection = (selectedID) => {
-    this.update(selectedID, PT_selectedFormID);
-    let conjureForm = this.state.truth[PT_conjureForm];
-    conjureForm.updateSelectedFormSection(selectedID);
-    this.saveConjureForm(conjureForm);
+    if (this.state.truth[PT_devModeActive]) {
+      this.update(selectedID, PT_selectedFormID);
+      let conjureForm = this.state.truth[PT_conjureForm];
+      conjureForm.updateSelectedFormSection(selectedID);
+      this.saveConjureForm(conjureForm);
+    }
   }
 
   // creates a new ConjureFormItem (question) in ConjureForm with selectedID
@@ -247,6 +249,8 @@ class App extends Component {
       this.update(newDevMode, PT_devModeActive);
       let conjureForm = this.state.truth[PT_conjureForm];
       conjureForm.updateDevMode(newDevMode);
+      conjureForm.updateSelectedFormSection(false);
+      this.update(false, PT_selectedFormID);
       this.saveConjureForm(conjureForm);
     }
   }

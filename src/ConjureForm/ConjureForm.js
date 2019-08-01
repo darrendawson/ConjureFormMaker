@@ -664,6 +664,7 @@ class ConjureForm {
         containerType={this.formDetails.containerType}
         formID={this.formID}
         backgroundColor={this.colors.backgroundColor}
+        devModeOn={this.runtime.devModeOn}
         selected={this.runtime.selected}
         shadowColor={this.colors.shadowColor}
         onClick_selectForm={this.onClick_selectForm}

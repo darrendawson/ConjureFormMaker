@@ -102,10 +102,17 @@ class ConjureFormItemComponent extends Component {
   render() {
 
     // determine border styling
-    let borderCSS = "dev_mode_hover";
-    if (this.props.selected) {
-      borderCSS = "dev_mode_selected";
+    let borderCSS;
+    if (this.props.devModeOn) {
+      if (this.props.selected) {
+        borderCSS = "dev_mode_selected";
+      } else {
+        borderCSS = "dev_mode_hover";
+      }
+    } else {
+      borderCSS = "dev_mode_off_border";
     }
+
 
     return (
       <div
