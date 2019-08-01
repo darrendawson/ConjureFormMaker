@@ -6,6 +6,7 @@ import './App.css';
 import Navbar from './Components/Navbar/Navbar.js';
 import FormSidebar from './Components/FormSidebar/FormSidebar.js';
 import ModifyFormContainer from './Components/ModifyFormContainer/ModifyFormContainer.js';
+import ProductionFormContainer from './Components/ProductionFormContainer/ProductionFormContainer.js';
 
 // Ustra - for app.state management
 import Ustra from './Ustra';
@@ -26,6 +27,8 @@ const PT_conjureForm = "conjureForm";
 const PT_selectedFormID = "selectedFormArea";
 const PT_formColors = "formColors";
 
+const PT_devModeActive = "devModeActive";
+
 const defaultColors = {
   "background": "#eaeaea",
   "card": "#f4f4f4",
@@ -39,7 +42,8 @@ const defaultColors = {
 let dataSkeleton = {
   [PT_conjureForm]: {},
   [PT_selectedFormID]: false,
-  [PT_formColors]: defaultColors
+  [PT_formColors]: defaultColors,
+  [PT_devModeActive]: true
 }
 
 
@@ -234,6 +238,20 @@ class App extends Component {
   }
 
 
+
+  // sets dev mode and toggles devMode flag on ConjureForm tree
+  //  - true:  renders <ProductionFormContainer/>
+  //  - false: renders <ModifyFormContainer/>
+  onClick_setDevModeActive = (newDevMode) => {
+    if (this.state.truth[PT_devModeActive] !== newDevMode) {
+      this.update(newDevMode, PT_devModeActive);
+      let conjureForm = this.state.truth[PT_conjureForm];
+      conjureForm.updateDevMode(newDevMode);
+      this.saveConjureForm(conjureForm);
+    }
+  }
+
+
   // render --------------------------------------------------------------------
 
 
@@ -277,6 +295,31 @@ class App extends Component {
   }
 
 
+  renderFormContainer = () => {
+    let truth = this.state.truth;
+    let conjureForm = truth[PT_conjureForm];
+
+    if (truth[PT_devModeActive]) {
+      return (
+        <ModifyFormContainer
+          conjureForm={conjureForm}
+          backgroundColor={truth[PT_formColors]['background']}
+          onClick_deselectItem={() => this.onClick_selectFormSection(false)}
+          onClick_setDevModeActive={this.onClick_setDevModeActive}
+        />
+      );
+    } else {
+      return (
+        <ProductionFormContainer
+          conjureForm={conjureForm}
+          backgroundColor={truth[PT_formColors]['background']}
+          onClick_deselectItem={() => this.onClick_selectFormSection(false)}
+        />
+      );
+    }
+
+  }
+
   render() {
     let truth = this.state.truth;
     let conjureForm = truth[PT_conjureForm];
@@ -286,19 +329,13 @@ class App extends Component {
         <Navbar/>
 
         <div id='body_container'>
-
           <div id='left_body_container'>
-            <ModifyFormContainer
-              conjureForm={conjureForm}
-              backgroundColor={truth[PT_formColors]['background']}
-              onClick_deselectItem={() => this.onClick_selectFormSection(false)}
-            />
+            {this.renderFormContainer()}
           </div>
 
           <div id='right_body_container'>
             {this.renderSidebar()}
           </div>
-
         </div>
       </div>
     );

@@ -11,6 +11,7 @@ class ModifyFormContainer extends Component {
 
   onClick_runProductionForm = (e) => {
     e.stopPropagation();
+    this.props.onClick_setDevModeActive(false);
   }
 
   // render --------------------------------------------------------------------
