@@ -76,9 +76,13 @@ class ConjureFormItemComponent extends Component {
           <div>
             <MultipleChoice
               choices={itemDetails.choices}
+              backgroundColor={this.props.backgroundColor}
               borderColor={this.props.titleColor}
               textColor={this.props.textColor}
-              renderOnly={true}
+              minSelected={itemDetails.minSelected}
+              maxSelected={itemDetails.maxSelected}
+              multipleChoiceType={itemDetails.multipleChoiceType}
+              devModeOn={true}
             />
           </div>
         );

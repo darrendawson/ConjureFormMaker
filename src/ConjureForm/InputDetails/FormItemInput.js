@@ -178,9 +178,9 @@ class FormItemInput extends Component {
 
     let mcStandard_CSS = "button";
     let mcDrop_CSS = "button";
-    if (this.props.itemDetails.inputType === "string") {
+    if (this.props.itemDetails.multipleChoiceType === "standard") {
       mcStandard_CSS = "button_selected";
-    } else if (this.props.itemDetails.inputType === "number") {
+    } else if (this.props.itemDetails.multipleChoiceType === "dropdown") {
       mcDrop_CSS = "button_selected";
     }
 
