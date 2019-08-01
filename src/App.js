@@ -4,9 +4,10 @@ import './App.css';
 
 // Components
 import Navbar from './Components/Navbar/Navbar.js';
-import FormSidebar from './Components/FormSidebar/FormSidebar.js';
+import ModifyFormSidebar from './Components/ModifyFormSidebar/ModifyFormSidebar.js';
 import ModifyFormContainer from './Components/ModifyFormContainer/ModifyFormContainer.js';
 import ProductionFormContainer from './Components/ProductionFormContainer/ProductionFormContainer.js';
+import ProductionFormSidebar from './Components/ProductionFormSidebar/ProductionFormSidebar.js';
 
 // Ustra - for app.state management
 import Ustra from './Ustra';
@@ -28,6 +29,7 @@ const PT_selectedFormID = "selectedFormArea";
 const PT_formColors = "formColors";
 
 const PT_devModeActive = "devModeActive";
+const PT_productionSidebarExpanded = "productionSidebarExpanded";
 
 const defaultColors = {
   "background": "#eaeaea",
@@ -43,7 +45,8 @@ let dataSkeleton = {
   [PT_conjureForm]: {},
   [PT_selectedFormID]: false,
   [PT_formColors]: defaultColors,
-  [PT_devModeActive]: true
+  [PT_devModeActive]: true,
+  [PT_productionSidebarExpanded]: false
 }
 
 
@@ -251,6 +254,7 @@ class App extends Component {
       conjureForm.updateDevMode(newDevMode);
       conjureForm.updateSelectedFormSection(false);
       this.update(false, PT_selectedFormID);
+      this.update(false, PT_productionSidebarExpanded)
       this.saveConjureForm(conjureForm);
     }
   }
@@ -277,25 +281,49 @@ class App extends Component {
     let formOutputObject = conjureForm.getOutputObjectWithFormIDs();
     let formDetailsLookup = conjureForm.getFormDetailsLookupTable();
 
-    return (
-      <FormSidebar
-        selectedID={truth[PT_selectedFormID]}
-        selectedSection={selectedSection}
-        parentContainerType={parentContainerType}
-        formColors={truth[PT_formColors]}
-        updateColors={this.updateFormColors}
-        formOutputObject={formOutputObject}
-        formDetailsLookup={formDetailsLookup}
-        onClick_deselectItem={() => this.onClick_selectFormSection(false)}
-        onClick_selectFormSection={this.onClick_selectFormSection}
-        onClick_createNewFormText={this.onClick_createNewFormText}
-        onClick_createNewFormQuestion={this.onClick_createNewFormQuestion}
-        onClick_createNewFormSection={this.onClick_createNewFormSection}
-        onClick_deleteFormSection={this.onClick_deleteFormSection}
-        onClick_updateFormSectionDetails={this.onClick_updateFormSectionDetails}
-        onClick_updateWholeSection={this.onClick_updateWholeSection}
-      />
-    );
+    if (truth[PT_devModeActive]) {
+      return (
+        <div id='right_body_container_expanded'>
+          <ModifyFormSidebar
+            selectedID={truth[PT_selectedFormID]}
+            selectedSection={selectedSection}
+            parentContainerType={parentContainerType}
+            formColors={truth[PT_formColors]}
+            updateColors={this.updateFormColors}
+            formOutputObject={formOutputObject}
+            formDetailsLookup={formDetailsLookup}
+            onClick_deselectItem={() => this.onClick_selectFormSection(false)}
+            onClick_selectFormSection={this.onClick_selectFormSection}
+            onClick_createNewFormText={this.onClick_createNewFormText}
+            onClick_createNewFormQuestion={this.onClick_createNewFormQuestion}
+            onClick_createNewFormSection={this.onClick_createNewFormSection}
+            onClick_deleteFormSection={this.onClick_deleteFormSection}
+            onClick_updateFormSectionDetails={this.onClick_updateFormSectionDetails}
+            onClick_updateWholeSection={this.onClick_updateWholeSection}
+          />
+        </div>
+      );
+    } else {
+
+      let rightBodyCSS = "right_body_container_retracted";
+      if (truth[PT_productionSidebarExpanded]) {
+        rightBodyCSS = "right_body_container_expanded";
+      }
+
+      return (
+        <div id={rightBodyCSS}>
+          <ProductionFormSidebar
+            sidebarExpanded={truth[PT_productionSidebarExpanded]}
+            update={this.update}
+            sidebarExpandedTag={PT_productionSidebarExpanded}
+            formTitleColor={truth[PT_formColors]['title']}
+            formBackgroundColor={truth[PT_formColors]['background']}
+            onClick_setDevModeActive={this.onClick_setDevModeActive}
+          />
+        </div>
+      );
+    }
+
   }
 
 
@@ -305,24 +333,37 @@ class App extends Component {
 
     if (truth[PT_devModeActive]) {
       return (
-        <ModifyFormContainer
-          conjureForm={conjureForm}
-          backgroundColor={truth[PT_formColors]['background']}
-          onClick_deselectItem={() => this.onClick_selectFormSection(false)}
-          onClick_setDevModeActive={this.onClick_setDevModeActive}
-        />
+        <div id='left_body_container_retracted'>
+          <ModifyFormContainer
+            conjureForm={conjureForm}
+            backgroundColor={truth[PT_formColors]['background']}
+            onClick_deselectItem={() => this.onClick_selectFormSection(false)}
+            onClick_setDevModeActive={this.onClick_setDevModeActive}
+          />
+        </div>
       );
     } else {
+
+      let leftBodyCSS = "left_body_container_expanded";
+      if (truth[PT_productionSidebarExpanded]) {
+        leftBodyCSS = "left_body_container_retracted";
+      }
+
       return (
-        <ProductionFormContainer
-          conjureForm={conjureForm}
-          backgroundColor={truth[PT_formColors]['background']}
-          onClick_deselectItem={() => this.onClick_selectFormSection(false)}
-        />
+        <div id={leftBodyCSS}>
+          <ProductionFormContainer
+            conjureForm={conjureForm}
+            backgroundColor={truth[PT_formColors]['background']}
+            onClick_deselectItem={() => this.onClick_selectFormSection(false)}
+          />
+        </div>
       );
     }
 
   }
+
+
+  // renders <App/> ------------------------------------------------------------
 
   render() {
     let truth = this.state.truth;
@@ -333,13 +374,8 @@ class App extends Component {
         <Navbar/>
 
         <div id='body_container'>
-          <div id='left_body_container'>
-            {this.renderFormContainer()}
-          </div>
-
-          <div id='right_body_container'>
-            {this.renderSidebar()}
-          </div>
+          {this.renderFormContainer()}
+          {this.renderSidebar()}
         </div>
       </div>
     );

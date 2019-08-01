@@ -16,14 +16,26 @@
   justify-content: space-between;
 }
 
-#App #body_container #left_body_container {
+#App #body_container #left_body_container_retracted {
   width: 65%;
   height: 100%;
   display: flex;
 }
 
-#App #body_container #right_body_container {
+#App #body_container #left_body_container_expanded {
+  width: 97%;
+  height: 100%;
+  display: flex;
+}
+
+#App #body_container #right_body_container_expanded {
   width: 35%;
+  height: 100%;
+  display: flex;
+}
+
+#App #body_container #right_body_container_retracted {
+  width: 3%;
   height: 100%;
   display: flex;
 }

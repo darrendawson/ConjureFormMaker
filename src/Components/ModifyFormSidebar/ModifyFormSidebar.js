@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './FormSidebar.css';
+import './ModifyFormSidebar.css';
 
 import FormItemInput from '../../ConjureForm/InputDetails/FormItemInput.js';
 import FormInput from '../../ConjureForm/InputDetails/FormInput.js';
