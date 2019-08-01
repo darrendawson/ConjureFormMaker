@@ -227,14 +227,20 @@ class FormItemInput extends Component {
 
   // function that determines whether a given formID is in the form output object
   checkIfFormIDInOutput = (formID = this.props.selectedID, formOutputObject) => {
+
     for (let key in formOutputObject) {
+
       if (key === formID) {
         return true;
       } else {
-        let childResult = this.checkIfFormIDInOutput(formID, formOutputObject[key]);
-        if (childResult === true) {
-          return true;
+
+        if (typeof formOutputObject === "object") {
+          let childResult = this.checkIfFormIDInOutput(formID, formOutputObject[key]);
+          if (childResult === true) {
+            return true;
+          }
         }
+
       }
     }
     return false;
