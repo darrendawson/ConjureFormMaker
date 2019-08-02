@@ -38,7 +38,6 @@ class ConjureFormItem {
 
   constructor(itemID, itemType = "text") {
     this.itemID = itemID;
-    this.onClick_selectItem = function() {};
 
     this.itemType = itemType;
     if (itemType === "text") {
@@ -59,7 +58,12 @@ class ConjureFormItem {
       "background": __backgroundColorDefault
     };
 
-    this.runtime = {"selected": false, "devModeOn": true};
+    this.runtime = {
+      "selected": false,
+      "devModeOn": true,
+      "onClick_selectItem": function() {},
+      "onInput_answerForm": function() {}
+    };
   }
 
 
@@ -116,7 +120,11 @@ class ConjureFormItem {
   */
 
   registerOnClickSelectItem(onClickFunction) {
-    this.onClick_selectItem = onClickFunction;
+    this.runtime.onClick_selectItem = onClickFunction;
+  }
+
+  registerOnInputAnswerForm(onInputFunction) {
+    this.runtime.onInput_answerForm = onInputFunction;
   }
 
 
@@ -207,7 +215,7 @@ class ConjureFormItem {
         itemDetails={itemDetails}
         selected={this.runtime.selected}
         devModeOn={this.runtime.devModeOn}
-        onClick_selectItem={this.onClick_selectItem}
+        onClick_selectItem={this.runtime.onClick_selectItem}
         textColor={this.colors.text}
         titleColor={this.colors.title}
         backgroundColor={this.colors.background}

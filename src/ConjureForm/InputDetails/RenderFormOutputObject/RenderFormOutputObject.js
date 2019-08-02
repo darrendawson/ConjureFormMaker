@@ -24,14 +24,20 @@ class RenderFormOutputObject extends Component {
 
 
   renderParameterName = (formID, outputName) => {
-    if (this.props.selectedID === formID) {
+    if (this.props.renderTextClickable === false) {
       return (
-        <span className="text_clickable_selected">{outputName}</span>
+        <span className="text">{outputName}</span>
       );
     } else {
-      return (
-        <span className="text_clickable">{outputName}</span>
-      );
+      if (this.props.selectedID === formID) {
+        return (
+          <span className="text_clickable_selected">{outputName}</span>
+        );
+      } else {
+        return (
+          <span className="text_clickable">{outputName}</span>
+        );
+      }
     }
   }
 

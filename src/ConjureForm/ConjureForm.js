@@ -48,8 +48,13 @@ class ConjureForm {
     }
 
 
-    this.runtime = {"selected": false, "devModeOn": true};
-    this.onClick_selectForm = function() {};
+    this.runtime = {
+      "selected": false,
+      "devModeOn": true,
+      "onClick_selectForm": function() {},
+      "onInput_answerForm": function() {}
+    };
+
   }
 
 
@@ -231,7 +236,7 @@ class ConjureForm {
     let newItem = new ConjureFormItem(newID, newItemType);
 
     // add the same onClick_selectFormItem to this child
-    newItem.registerOnClickSelectItem(this.onClick_selectForm);
+    newItem.registerOnClickSelectItem(this.runtime.onClick_selectForm);
 
     // add to this.subforms
     this.items[newID] = newItem;
@@ -282,7 +287,7 @@ class ConjureForm {
     let newForm = new ConjureForm(newID, subformType);
 
     // add the same onClick_selectFormSection to this child
-    newForm.registerOnClickSelectForm(this.onClick_selectForm);
+    newForm.registerOnClickSelectForm(this.runtime.onClick_selectForm);
 
     // add to this.subforms
     this.subforms[newID] = newForm;
@@ -575,7 +580,7 @@ class ConjureForm {
   // -> this works with both ConjureForm and ConjureFormItem type objects
   registerOnClickSelectForm(onClickFunction, formID = this.formID) {
     if (formID === this.formID) {
-      this.onClick_selectForm = onClickFunction;
+      this.runtime.onClick_selectForm = onClickFunction;
     } else {
 
       // try subforms
@@ -591,6 +596,29 @@ class ConjureForm {
       }
     }
   }
+
+
+  // While a ConjureForm cannot invoke an onInput_answerForm function, it stores it in this.runtime
+  // so that it can automatically pass it on to its children items in the future
+  registerOnInputAnswerForm(onInputFunction, formID = this.formID) {
+    if (formID === this.formID) {
+      this.runtime.onInput_answerForm = onInputFunction;
+    } else {
+
+      // try subforms
+      for (let key in this.subforms) {
+        this.subforms[key].registerOnInputAnswerForm(onInputFunction, formID);
+      }
+
+      // try items
+      for (let key in this.items) {
+        if (formID === key) {
+          this.items[key].registerOnInputAnswerForm(onInputFunction);
+        }
+      }
+    }
+  }
+
 
 
   // goes through entire ConjureForm tree and ConjureFormItem children
@@ -667,7 +695,7 @@ class ConjureForm {
         devModeOn={this.runtime.devModeOn}
         selected={this.runtime.selected}
         shadowColor={this.colors.shadowColor}
-        onClick_selectForm={this.onClick_selectForm}
+        onClick_selectForm={this.runtime.onClick_selectForm}
       />
     );
   }

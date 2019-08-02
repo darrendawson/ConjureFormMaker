@@ -381,6 +381,7 @@ class FormSidebar extends Component {
           selectedID={this.props.selectedID}
           formOutputObject={this.props.formOutputObject}
           formDetailsLookup={this.props.formDetailsLookup}
+          renderTextClickable={true}
           onClick_selectFormSection={this.props.onClick_selectFormSection}
         />
       </div>

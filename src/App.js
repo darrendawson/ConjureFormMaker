@@ -31,6 +31,10 @@ const PT_formColors = "formColors";
 const PT_devModeActive = "devModeActive";
 const PT_productionSidebarExpanded = "productionSidebarExpanded";
 
+const PT_formOutput = "formOutput";
+const PT_formOutputResultObject = "formOutputResultObject";
+const PT_formDetailsLookup = "formDetailsLookup";
+
 const defaultColors = {
   "background": "#eaeaea",
   "card": "#f4f4f4",
@@ -46,7 +50,11 @@ let dataSkeleton = {
   [PT_selectedFormID]: false,
   [PT_formColors]: defaultColors,
   [PT_devModeActive]: true,
-  [PT_productionSidebarExpanded]: false
+  [PT_productionSidebarExpanded]: false,
+  [PT_formOutput]: {
+    [PT_formOutputResultObject]: {},
+    [PT_formDetailsLookup]: {}
+  }
 }
 
 
@@ -80,6 +88,7 @@ class App extends Component {
 
     let conjureForm = new ConjureForm();
     conjureForm.registerOnClickSelectForm(this.onClick_selectFormSection);
+    conjureForm.registerOnInputAnswerForm(this.onInput_answerForm);
 
     // create Page 1 and page 2
     let page1ID = conjureForm.declareNewSubform();
@@ -249,16 +258,38 @@ class App extends Component {
   //  - false: renders <ModifyFormContainer/>
   onClick_setDevModeActive = (newDevMode) => {
     if (this.state.truth[PT_devModeActive] !== newDevMode) {
-      this.update(newDevMode, PT_devModeActive);
+
       let conjureForm = this.state.truth[PT_conjureForm];
+
+      // update devMode and close the <ProductionFormSidebar/> if open
+      this.update(newDevMode, PT_devModeActive);
       conjureForm.updateDevMode(newDevMode);
+      this.update(false, PT_productionSidebarExpanded);
+
+      // deselect the selected section (if any)
       conjureForm.updateSelectedFormSection(false);
       this.update(false, PT_selectedFormID);
-      this.update(false, PT_productionSidebarExpanded)
+
+      // wipe the current "outputObject" and reinitialize values
+      let outputObject = conjureForm.getOutputObjectWithFormIDs();
+      let idLookup = conjureForm.getFormDetailsLookupTable();
+      this.update(outputObject, PT_formOutputResultObject);
+      this.update(idLookup, PT_formDetailsLookup);
+
+      // save changes to ConjureForm
       this.saveConjureForm(conjureForm);
     }
   }
 
+
+  // ConjureForm in Production -------------------------------------------------
+  /*
+    Functions that get passed to ConjureForms so that they can fill out the result object properly when a user answers the form
+  */
+
+  onInput_answerForm = (itemID, e) => {
+
+  }
 
   // render --------------------------------------------------------------------
 
@@ -310,15 +341,18 @@ class App extends Component {
         rightBodyCSS = "right_body_container_expanded";
       }
 
+
       return (
         <div id={rightBodyCSS}>
           <ProductionFormSidebar
+            formOutputObject={truth[PT_formOutput][PT_formOutputResultObject]}
+            formDetailsLookup={truth[PT_formOutput][PT_formDetailsLookup]}
             sidebarExpanded={truth[PT_productionSidebarExpanded]}
-            update={this.update}
             sidebarExpandedTag={PT_productionSidebarExpanded}
             formTitleColor={truth[PT_formColors]['title']}
             formBackgroundColor={truth[PT_formColors]['background']}
             onClick_setDevModeActive={this.onClick_setDevModeActive}
+            update={this.update}
           />
         </div>
       );
@@ -353,6 +387,8 @@ class App extends Component {
         <div id={leftBodyCSS}>
           <ProductionFormContainer
             conjureForm={conjureForm}
+            formOutputObject={truth[PT_formOutput][PT_formOutputResultObject]}
+            formDetailsLookup={truth[PT_formOutput][PT_formDetailsLookup]}
             backgroundColor={truth[PT_formColors]['background']}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
           />

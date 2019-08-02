@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './ProductionFormSidebar.css';
 
+import RenderFormOutputObject from '../../ConjureForm/InputDetails/RenderFormOutputObject/RenderFormOutputObject.js';
+
 const expandButtonText = "<<";
 const retractButtonText = ">>";
 
@@ -36,7 +38,17 @@ class ProductionFormSidebar extends Component {
               </h1>
             </div>
           </div>
-          <p></p>
+
+          <div id="render_form_output_container">
+            {/* pass in an empty function to onClick_selectFormSection so clicking doesn't do anything */}
+            <RenderFormOutputObject
+              selectedID={false}
+              formOutputObject={this.props.formOutputObject}
+              formDetailsLookup={this.props.formDetailsLookup}
+              renderTextClickable={false}
+              onClick_selectFormSection={() => {}}
+            />
+          </div>
         </div>
       );
     } else {
