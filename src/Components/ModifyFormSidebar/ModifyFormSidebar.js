@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './ModifyFormSidebar.css';
 
-import FormItemInput from '../../ConjureForm/InputDetails/FormItemInput.js';
-import FormInput from '../../ConjureForm/InputDetails/FormInput.js';
-import RenderFormOutputObject from '../../ConjureForm/InputDetails/RenderFormOutputObject/RenderFormOutputObject.js';
+import DevFormItemInput from '../../ConjureForm/DevInputDetails/DevFormItemInput.js';
+import DevFormInput from '../../ConjureForm/DevInputDetails/DevFormInput.js';
+import RenderFormOutputObject from '../../ConjureForm/DevInputDetails/RenderFormOutputObject/RenderFormOutputObject.js';
 
 
 class FormSidebar extends Component {
@@ -47,7 +47,7 @@ class FormSidebar extends Component {
 
   // Render --------------------------------------------------------------------
 
-  renderFormInput = () => {
+  renderDevFormInput = () => {
 
 
     let selectedSection = this.props.selectedSection;
@@ -60,7 +60,7 @@ class FormSidebar extends Component {
     // otherwise, render Inputs so user can modify ConjureForm / ConjureFormItem details
     if (selectedSection.getClassName() === "ConjureForm") {
       return (
-        <FormInput
+        <DevFormInput
           formDetails={selectedSection.formDetails}
           selectedID={selectedSection.formID}
           formOutputObject={this.props.formOutputObject}
@@ -71,7 +71,7 @@ class FormSidebar extends Component {
       );
     } else if (selectedSection.getClassName() === "ConjureFormItem") {
       return (
-        <FormItemInput
+        <DevFormItemInput
           itemType={selectedSection.itemType}
           itemDetails={selectedSection.getItemDetails()}
           selectedID={selectedSection.itemID}
@@ -404,13 +404,13 @@ class FormSidebar extends Component {
 
     } else {
 
-      // render <FormItemInput/> or <FormInput/> so user can modify details of the selected form
+      // render <DevFormItemInput/> or <DevFormInput/> so user can modify details of the selected form
       return (
         <div id="FormSidebar">
 
           {this.renderTitleBar()}
           {this.renderCreateNewFormBar()}
-          {this.renderFormInput()}
+          {this.renderDevFormInput()}
         </div>
       );
 

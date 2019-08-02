@@ -3,7 +3,7 @@
 */
 
 import React, { Component } from 'react';
-import './FormInput.css';
+import './DevFormInput.css';
 
 import RenderFormOutputObject from './RenderFormOutputObject/RenderFormOutputObject.js';
 import MultipleChoiceMaker from './MultipleChoiceMaker/MultipleChoiceMaker';
@@ -11,7 +11,7 @@ import MultipleChoiceMaker from './MultipleChoiceMaker/MultipleChoiceMaker';
 import ConjureFormConstants from '../ConjureFormConstants.js';
 const __conjureConstants = new ConjureFormConstants();
 
-class FormItemInput extends Component {
+class DevFormItemInput extends Component {
 
   constructor() {
     super();
@@ -288,7 +288,7 @@ class FormItemInput extends Component {
 
   render() {
     return (
-      <div id="FormItemInput">
+      <div id="DevFormItemInput">
         {this.renderFormOutputDetails()}
         {this.renderFormItemText()}
         {this.renderFormItemQuestion()}
@@ -297,4 +297,4 @@ class FormItemInput extends Component {
   }
 }
 
-export default FormItemInput;
+export default DevFormItemInput;

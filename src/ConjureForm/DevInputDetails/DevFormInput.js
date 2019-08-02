@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import './FormInput.css';
+import './DevFormInput.css';
 
 
 import RenderFormOutputObject from './RenderFormOutputObject/RenderFormOutputObject.js';
 
 
-class FormInput extends Component {
+class DevFormInput extends Component {
 
   constructor() {
     super();
@@ -76,11 +76,11 @@ class FormInput extends Component {
 
   render() {
     return (
-      <div id="FormInput">
+      <div id="DevFormInput">
         {this.renderFormDetails()}
       </div>
     );
   }
 }
 
-export default FormInput;
+export default DevFormInput;

@@ -215,10 +215,11 @@ class ConjureFormItem {
         itemDetails={itemDetails}
         selected={this.runtime.selected}
         devModeOn={this.runtime.devModeOn}
-        onClick_selectItem={this.runtime.onClick_selectItem}
         textColor={this.colors.text}
         titleColor={this.colors.title}
         backgroundColor={this.colors.background}
+        onClick_selectItem={this.runtime.onClick_selectItem}
+        onInput_answerForm={this.runtime.onInput_answerForm}
       />
     );
   }
