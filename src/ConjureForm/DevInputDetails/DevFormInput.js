@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './DevFormInput.css';
 
 
-import RenderFormOutputObject from './RenderFormOutputObject/RenderFormOutputObject.js';
-
 
 class DevFormInput extends Component {
 
@@ -24,27 +22,14 @@ class DevFormInput extends Component {
   // render --------------------------------------------------------------------
 
 
-  // function that determines whether a given formID is in the form output object
-  checkIfFormIDInOutput = (formID, formOutputObject) => {
-    for (let key in formOutputObject) {
-      if (key === formID) {
-        return true;
-      } else {
-        let childResult = this.checkIfFormIDInOutput(formID, formOutputObject[key]);
-        if (childResult === true) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
 
   renderFormDetails = () => {
 
+    let formOutput = this.props.formOutput;
+
     // don't render Output details if the currently selected form isn't in output
     // ex: a selected ConjureFormItem with type text is not in output
-    if (this.checkIfFormIDInOutput(this.props.selectedID, this.props.formOutputObject) === false) {
+    if (formOutput.checkIfIDInOutput(this.props.selectedID) === false) {
       return;
     }
 
@@ -61,12 +46,7 @@ class DevFormInput extends Component {
         </div>
 
         <div className="input_row">
-          <RenderFormOutputObject
-            selectedID={this.props.selectedID}
-            formOutputObject={this.props.formOutputObject}
-            formDetailsLookup={this.props.formDetailsLookup}
-            onClick_selectFormSection={this.props.onClick_selectFormSection}
-          />
+          {formOutput.render(this.props.selectedID, true, this.props.onClick_selectFormSection)}
         </div>
 
       </div>

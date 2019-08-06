@@ -32,8 +32,6 @@ const PT_devModeActive = "devModeActive";
 const PT_productionSidebarExpanded = "productionSidebarExpanded";
 
 const PT_formOutput = "formOutput";
-const PT_formOutputResultObject = "formOutputResultObject";
-const PT_formDetailsLookup = "formDetailsLookup";
 
 const defaultColors = {
   "background": "#eaeaea",
@@ -51,10 +49,7 @@ let dataSkeleton = {
   [PT_formColors]: defaultColors,
   [PT_devModeActive]: true,
   [PT_productionSidebarExpanded]: false,
-  [PT_formOutput]: {
-    [PT_formOutputResultObject]: {},
-    [PT_formDetailsLookup]: {}
-  }
+  [PT_formOutput]: {}
 }
 
 
@@ -88,7 +83,7 @@ class App extends Component {
 
     let conjureForm = new ConjureForm();
     conjureForm.registerOnClickSelectForm(this.onClick_selectFormSection);
-    conjureForm.registerOnInputAnswerForm(this.onInput_answerForm);
+    conjureForm.registerOnInputAnswerForm(this.onInput_answerFormQuestion);
 
     // create Page 1 and page 2
     let page1ID = conjureForm.declareNewSubform();
@@ -105,6 +100,8 @@ class App extends Component {
     conjureForm.declareNewItem(card2ID, "question");
 
     this.saveConjureForm(conjureForm);
+
+    conjureForm.getFormOutputObject();
 
     // ConjureForm ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   }
@@ -271,10 +268,8 @@ class App extends Component {
       this.update(false, PT_selectedFormID);
 
       // wipe the current "outputObject" and reinitialize values
-      let outputObject = conjureForm.getOutputObjectWithFormIDs();
-      let idLookup = conjureForm.getFormDetailsLookupTable();
-      this.update(outputObject, PT_formOutputResultObject);
-      this.update(idLookup, PT_formDetailsLookup);
+      let outputObject = conjureForm.getFormOutputObject();
+      this.update(outputObject, PT_formOutput);
 
       // save changes to ConjureForm
       this.saveConjureForm(conjureForm);
@@ -287,8 +282,8 @@ class App extends Component {
     Functions that get passed to ConjureForms so that they can fill out the result object properly when a user answers the form
   */
 
-  onInput_answerForm = (itemID, e) => {
-
+  onInput_answerFormQuestion = (itemID, e) => {
+    alert(itemID);
   }
 
   // render --------------------------------------------------------------------
@@ -298,6 +293,7 @@ class App extends Component {
 
     let truth = this.state.truth;
     let conjureForm = truth[PT_conjureForm];
+    let conjureFormOutput = conjureForm.getFormOutputObject();
     let selectedSectionID = truth[PT_selectedFormID]
     let selectedSection = conjureForm.get(selectedSectionID);
 
@@ -309,9 +305,6 @@ class App extends Component {
     }
 
 
-    let formOutputObject = conjureForm.getOutputObjectWithFormIDs();
-    let formDetailsLookup = conjureForm.getFormDetailsLookupTable();
-
     if (truth[PT_devModeActive]) {
       return (
         <div id='right_body_container_expanded'>
@@ -321,8 +314,7 @@ class App extends Component {
             parentContainerType={parentContainerType}
             formColors={truth[PT_formColors]}
             updateColors={this.updateFormColors}
-            formOutputObject={formOutputObject}
-            formDetailsLookup={formDetailsLookup}
+            formOutput={conjureFormOutput}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
             onClick_selectFormSection={this.onClick_selectFormSection}
             onClick_createNewFormText={this.onClick_createNewFormText}
@@ -345,8 +337,7 @@ class App extends Component {
       return (
         <div id={rightBodyCSS}>
           <ProductionFormSidebar
-            formOutputObject={truth[PT_formOutput][PT_formOutputResultObject]}
-            formDetailsLookup={truth[PT_formOutput][PT_formDetailsLookup]}
+            formOutput={truth[PT_formOutput]}
             sidebarExpanded={truth[PT_productionSidebarExpanded]}
             sidebarExpandedTag={PT_productionSidebarExpanded}
             formTitleColor={truth[PT_formColors]['title']}
@@ -387,8 +378,8 @@ class App extends Component {
         <div id={leftBodyCSS}>
           <ProductionFormContainer
             conjureForm={conjureForm}
-            formOutputObject={truth[PT_formOutput][PT_formOutputResultObject]}
-            formDetailsLookup={truth[PT_formOutput][PT_formDetailsLookup]}
+            formOutputObject={truth[PT_formOutput].getOutputObject()}
+            formDetailsLookup={truth[PT_formOutput].getDetailsLookup()}
             backgroundColor={truth[PT_formColors]['background']}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
           />

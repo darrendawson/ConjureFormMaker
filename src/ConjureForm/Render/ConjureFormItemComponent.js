@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './ConjureFormComponent.css';
 
+import FormQuestionInput from './QuestionTypes/FormQuestionInput/FormQuestionInput.js';
 import MultipleChoice from './QuestionTypes/MultipleChoice/MultipleChoice.js';
 
 class ConjureFormItemComponent extends Component {
@@ -63,15 +64,24 @@ class ConjureFormItemComponent extends Component {
       return;
     }
 
+    // render <FormQuestionInput/>
+    if (itemDetails.questionType === "input") {
+      return (
+        <div>
+          <FormQuestionInput
+            itemID={this.props.itemID}
+            onInput_answerFormQuestion={this.props.onInput_answerFormQuestion}
+            devModeOn={this.props.devModeOn}
+          />
+        </div>
+      );
+    }
+
+
     // if devMode is on, then we only need to render the bare minimum inputs (without actual onClick / onChange events)
     if (this.props.devModeOn) {
-      if (itemDetails.questionType === "input") {
-        return (
-          <div>
-            <input placeholder={itemDetails.defaultValue}/>
-          </div>
-        );
-      } else if (itemDetails.questionType === "multipleChoice") {
+
+      if (itemDetails.questionType === "multipleChoice") {
         return (
           <div>
             <MultipleChoice

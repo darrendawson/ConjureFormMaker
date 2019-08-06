@@ -3,7 +3,6 @@ import './ModifyFormSidebar.css';
 
 import DevFormItemInput from '../../ConjureForm/DevInputDetails/DevFormItemInput.js';
 import DevFormInput from '../../ConjureForm/DevInputDetails/DevFormInput.js';
-import RenderFormOutputObject from '../../ConjureForm/DevInputDetails/RenderFormOutputObject/RenderFormOutputObject.js';
 
 
 class FormSidebar extends Component {
@@ -63,8 +62,7 @@ class FormSidebar extends Component {
         <DevFormInput
           formDetails={selectedSection.formDetails}
           selectedID={selectedSection.formID}
-          formOutputObject={this.props.formOutputObject}
-          formDetailsLookup={this.props.formDetailsLookup}
+          formOutput={this.props.formOutput}
           onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
           onClick_selectFormSection={this.props.onClick_selectFormSection}
         />
@@ -76,8 +74,7 @@ class FormSidebar extends Component {
           itemDetails={selectedSection.getItemDetails()}
           selectedID={selectedSection.itemID}
           selectedSection={selectedSection}
-          formOutputObject={this.props.formOutputObject}
-          formDetailsLookup={this.props.formDetailsLookup}
+          formOutput={this.props.formOutput}
           onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
           onClick_selectFormSection={this.props.onClick_selectFormSection}
           onClick_updateWholeSection={this.props.onClick_updateWholeSection}
@@ -377,13 +374,7 @@ class FormSidebar extends Component {
     return (
       <div className="sidebar_section_align_left">
         <h1 className="section_title">Output Object</h1>
-        <RenderFormOutputObject
-          selectedID={this.props.selectedID}
-          formOutputObject={this.props.formOutputObject}
-          formDetailsLookup={this.props.formDetailsLookup}
-          renderTextClickable={true}
-          onClick_selectFormSection={this.props.onClick_selectFormSection}
-        />
+        {this.props.formOutput.render(this.props.selectedID, true, this.props.onClick_selectFormSection)}
       </div>
     );
   }

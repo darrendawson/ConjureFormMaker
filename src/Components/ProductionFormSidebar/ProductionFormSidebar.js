@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './ProductionFormSidebar.css';
 
-import RenderFormOutputObject from '../../ConjureForm/InputDetails/RenderFormOutputObject/RenderFormOutputObject.js';
+import RenderFormOutputObject from '../../ConjureForm/DevInputDetails/RenderFormOutputObject/RenderFormOutputObject.js';
 
 const expandButtonText = "<<";
 const retractButtonText = ">>";
@@ -25,6 +25,7 @@ class ProductionFormSidebar extends Component {
   render() {
 
     if (this.props.sidebarExpanded) {
+
       return (
         <div id="ProductionFormSidebar" className="expanded_background">
           <div id="title_bar_container">
@@ -40,14 +41,9 @@ class ProductionFormSidebar extends Component {
           </div>
 
           <div id="render_form_output_container">
+            {this.props.formOutput.render()}
             {/* pass in an empty function to onClick_selectFormSection so clicking doesn't do anything */}
-            <RenderFormOutputObject
-              selectedID={false}
-              formOutputObject={this.props.formOutputObject}
-              formDetailsLookup={this.props.formDetailsLookup}
-              renderTextClickable={false}
-              onClick_selectFormSection={() => {}}
-            />
+
           </div>
         </div>
       );

@@ -62,7 +62,7 @@ class ConjureFormItem {
       "selected": false,
       "devModeOn": true,
       "onClick_selectItem": function() {},
-      "onInput_answerForm": function() {}
+      "onInput_answerFormQuestion": function() {alert('fuck')}
     };
   }
 
@@ -124,7 +124,7 @@ class ConjureFormItem {
   }
 
   registerOnInputAnswerForm(onInputFunction) {
-    this.runtime.onInput_answerForm = onInputFunction;
+    this.runtime.onInput_answerFormQuestion = onInputFunction;
   }
 
 
@@ -219,7 +219,7 @@ class ConjureFormItem {
         titleColor={this.colors.title}
         backgroundColor={this.colors.background}
         onClick_selectItem={this.runtime.onClick_selectItem}
-        onInput_answerForm={this.runtime.onInput_answerForm}
+        onInput_answerFormQuestion={this.runtime.onInput_answerFormQuestion}
       />
     );
   }

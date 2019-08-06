@@ -9,7 +9,7 @@ import React from 'react';
 
 import ConjureFormComponent from './Render/ConjureFormComponent.js';
 import ConjureFormItem from './ConjureFormItem.js';
-
+import ConjureFormOutput from './ConjureFormOutput.js';
 
 const __containerTypes = ["all", "page", "card"];
 
@@ -52,7 +52,7 @@ class ConjureForm {
       "selected": false,
       "devModeOn": true,
       "onClick_selectForm": function() {},
-      "onInput_answerForm": function() {}
+      "onInput_answerFormQuestion": function() {}
     };
 
   }
@@ -237,6 +237,7 @@ class ConjureForm {
 
     // add the same onClick_selectFormItem to this child
     newItem.registerOnClickSelectItem(this.runtime.onClick_selectForm);
+    newItem.registerOnInputAnswerForm(this.runtime.onInput_answerFormQuestion);
 
     // add to this.subforms
     this.items[newID] = newItem;
@@ -288,6 +289,7 @@ class ConjureForm {
 
     // add the same onClick_selectFormSection to this child
     newForm.registerOnClickSelectForm(this.runtime.onClick_selectForm);
+    newForm.registerOnInputAnswerForm(this.runtime.onInput_answerFormQuestion);
 
     // add to this.subforms
     this.subforms[newID] = newForm;
@@ -519,7 +521,7 @@ class ConjureForm {
 
   // creates an output object (what the result of a user filling out a ConjureForm looks like)
   // but uses formIDs rather than outputIDs
-  getOutputObjectWithFormIDs(outputObject = {}) {
+  __getOutputObjectWithFormIDs(outputObject = {}) {
 
     // only return branches of ConjureForm tree that actually have output objects
     let validOutputObjectFound = false;
@@ -533,7 +535,7 @@ class ConjureForm {
     }
 
     for (let key in this.subforms) {
-      let subformOutput = this.subforms[key].getOutputObjectWithFormIDs();
+      let subformOutput = this.subforms[key].__getOutputObjectWithFormIDs();
       if (subformOutput !== false) {
         validOutputObjectFound = true;
         outputObject[key] = subformOutput;
@@ -549,14 +551,14 @@ class ConjureForm {
 
 
   // creates a lookup table {formID/itemID: form/itemDetails}
-  getFormDetailsLookupTable(conversions = {}) {
+  __getFormDetailsLookupTable(conversions = {}) {
 
     let formDetails = this.formDetails;
     formDetails['type'] = "ConjureForm";
     conversions[this.formID] = formDetails;
 
     for (let key in this.subforms) {
-      conversions = this.subforms[key].getFormDetailsLookupTable(conversions);
+      conversions = this.subforms[key].__getFormDetailsLookupTable(conversions);
     }
 
     for (let key in this.items) {
@@ -566,6 +568,15 @@ class ConjureForm {
     }
     return conversions;
   }
+
+
+  getFormOutputObject() {
+    let outputObject = this.__getOutputObjectWithFormIDs();
+    let lookupTable = this.__getFormDetailsLookupTable();
+    return new ConjureFormOutput(outputObject, lookupTable);
+  }
+
+
 
   // UX ------------------------------------------------------------------------
   /*
@@ -598,11 +609,12 @@ class ConjureForm {
   }
 
 
-  // While a ConjureForm cannot invoke an onInput_answerForm function, it stores it in this.runtime
+  // While a ConjureForm cannot invoke an onInput_answerFormQuestion function, it stores it in this.runtime
   // so that it can automatically pass it on to its children items in the future
   registerOnInputAnswerForm(onInputFunction, formID = this.formID) {
+
     if (formID === this.formID) {
-      this.runtime.onInput_answerForm = onInputFunction;
+      this.runtime.onInput_answerFormQuestion = onInputFunction;
     } else {
 
       // try subforms
