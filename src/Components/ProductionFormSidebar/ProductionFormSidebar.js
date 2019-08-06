@@ -42,8 +42,6 @@ class ProductionFormSidebar extends Component {
 
           <div id="render_form_output_container">
             {this.props.formOutput.render()}
-            {/* pass in an empty function to onClick_selectFormSection so clicking doesn't do anything */}
-
           </div>
         </div>
       );

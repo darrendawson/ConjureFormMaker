@@ -57,13 +57,6 @@ class ConjureFormItem {
       "title": __titleColorDefault,
       "background": __backgroundColorDefault
     };
-
-    this.runtime = {
-      "selected": false,
-      "devModeOn": true,
-      "onClick_selectItem": function() {},
-      "onInput_answerFormQuestion": function() {alert('fuck')}
-    };
   }
 
 
@@ -119,36 +112,12 @@ class ConjureFormItem {
 
   */
 
-  registerOnClickSelectItem(onClickFunction) {
-    this.runtime.onClick_selectItem = onClickFunction;
-  }
-
-  registerOnInputAnswerForm(onInputFunction) {
-    this.runtime.onInput_answerFormQuestion = onInputFunction;
-  }
-
-
   // updates the colors of this ConjureFormItem
   updateColors(colors) {
     this.colors.text = colors.text;
     this.colors.title = colors.title;
     this.colors.background = colors.card;
   }
-
-
-  // called by a parent ConjureForm when a new form section is selected
-  updateSelectedSection(selectedID) {
-    if (this.itemID === selectedID) {
-      this.runtime.selected = true;
-    } else {
-      this.runtime.selected = false;
-    }
-  }
-
-  updateDevMode(newDevMode) {
-    this.runtime.devModeOn = newDevMode;
-  }
-
 
 
   // Convert -------------------------------------------------------------------
@@ -199,7 +168,12 @@ class ConjureFormItem {
   }
 
 
-  render() {
+  render(
+    onClick_selectForm = () => {},
+    devModeOn = false,
+    selectedID,
+    onInput_answerFormQuestion = () => {}
+  ) {
 
     let itemDetails;
     if (this.itemType === "text") {
@@ -213,13 +187,13 @@ class ConjureFormItem {
         itemID={this.itemID}
         itemType={this.itemType}
         itemDetails={itemDetails}
-        selected={this.runtime.selected}
-        devModeOn={this.runtime.devModeOn}
+        selectedID={selectedID}
+        devModeOn={devModeOn}
         textColor={this.colors.text}
         titleColor={this.colors.title}
         backgroundColor={this.colors.background}
-        onClick_selectItem={this.runtime.onClick_selectItem}
-        onInput_answerFormQuestion={this.runtime.onInput_answerFormQuestion}
+        onClick_selectItem={onClick_selectForm}
+        onInput_answerFormQuestion={onInput_answerFormQuestion}
       />
     );
   }

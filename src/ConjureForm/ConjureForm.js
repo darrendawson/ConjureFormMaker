@@ -46,15 +46,6 @@ class ConjureForm {
       this.colors['backgroundColor'] = __cardColorDefault;
       this.colors['cardShadow'] = __shadowColorDefault;
     }
-
-
-    this.runtime = {
-      "selected": false,
-      "devModeOn": true,
-      "onClick_selectForm": function() {},
-      "onInput_answerFormQuestion": function() {}
-    };
-
   }
 
 
@@ -235,10 +226,6 @@ class ConjureForm {
     let newID = this.getNewUniqueID();
     let newItem = new ConjureFormItem(newID, newItemType);
 
-    // add the same onClick_selectFormItem to this child
-    newItem.registerOnClickSelectItem(this.runtime.onClick_selectForm);
-    newItem.registerOnInputAnswerForm(this.runtime.onInput_answerFormQuestion);
-
     // add to this.subforms
     this.items[newID] = newItem;
 
@@ -286,10 +273,6 @@ class ConjureForm {
     let newID = this.getNewUniqueID();
     let subformType = this.getSubformType();
     let newForm = new ConjureForm(newID, subformType);
-
-    // add the same onClick_selectFormSection to this child
-    newForm.registerOnClickSelectForm(this.runtime.onClick_selectForm);
-    newForm.registerOnInputAnswerForm(this.runtime.onInput_answerFormQuestion);
 
     // add to this.subforms
     this.subforms[newID] = newForm;
@@ -501,16 +484,24 @@ class ConjureForm {
   }
 
 
-  // called to either turn on devMode (to edit the form) or off (to actually use the form in production)
-  updateDevMode(newDevMode = true) {
-    this.runtime.devModeOn = newDevMode;
+  // pass in a ConjureFormItem or ConjureForm object, and this function will replace the existing version of it in the ConjureTree
+  updateWholeSection = (updatedSectionID, updatedSection) => {
+
     for (let key in this.subforms) {
-      this.subforms[key].updateDevMode(newDevMode);
+      if (updatedSectionID === key) {
+        this.subforms[key] = updatedSection;
+      } else {
+        this.subforms[key].updateWholeSection(updatedSectionID, updatedSection);
+      }
     }
+
     for (let key in this.items) {
-      this.items[key].updateDevMode(newDevMode);
+      if (updatedSectionID === key) {
+        this.items[key] = updatedSection;
+      }
     }
   }
+
 
 
   // Form Output ---------------------------------------------------------------
@@ -578,103 +569,6 @@ class ConjureForm {
 
 
 
-  // UX ------------------------------------------------------------------------
-  /*
-    Functions for dealing with User Interactions
-     - registerOnClick():   function gets passed in from <App/> that gets run in onClick
-
-  */
-
-
-  // sets the onClick function that the user interacts with
-  // If the current ConjureForm isn't the form we are looking for, try its children
-  // -> this works with both ConjureForm and ConjureFormItem type objects
-  registerOnClickSelectForm(onClickFunction, formID = this.formID) {
-    if (formID === this.formID) {
-      this.runtime.onClick_selectForm = onClickFunction;
-    } else {
-
-      // try subforms
-      for (let key in this.subforms) {
-        this.subforms[key].registerOnClickSelectForm(onClickFunction, formID);
-      }
-
-      // try items
-      for (let key in this.items) {
-        if (formID === key) {
-          this.items[key].registerOnClickSelectItem(onClickFunction);
-        }
-      }
-    }
-  }
-
-
-  // While a ConjureForm cannot invoke an onInput_answerFormQuestion function, it stores it in this.runtime
-  // so that it can automatically pass it on to its children items in the future
-  registerOnInputAnswerForm(onInputFunction, formID = this.formID) {
-
-    if (formID === this.formID) {
-      this.runtime.onInput_answerFormQuestion = onInputFunction;
-    } else {
-
-      // try subforms
-      for (let key in this.subforms) {
-        this.subforms[key].registerOnInputAnswerForm(onInputFunction, formID);
-      }
-
-      // try items
-      for (let key in this.items) {
-        if (formID === key) {
-          this.items[key].registerOnInputAnswerForm(onInputFunction);
-        }
-      }
-    }
-  }
-
-
-
-  // goes through entire ConjureForm tree and ConjureFormItem children
-  // - if id === selectedID: -> set .runtime.selected = true;
-  // - else: -> set .runtime.selected = false
-  // end result: only 1 section is selected
-  updateSelectedFormSection = (selectedID = null) => {
-    if (this.formID === selectedID) {
-      this.runtime.selected = true;
-    } else {
-      this.runtime.selected = false;
-    }
-
-    // run on subforms
-    for (let key in this.subforms) {
-      this.subforms[key].updateSelectedFormSection(selectedID);
-    }
-
-    // run on items
-    for (let key in this.items) {
-      this.items[key].updateSelectedSection(selectedID);
-    }
-  }
-
-
-  // pass in a ConjureFormItem or ConjureForm object, and this function will replace the existing version of it in the ConjureTree
-  updateWholeSection = (updatedSectionID, updatedSection) => {
-
-    for (let key in this.subforms) {
-      if (updatedSectionID === key) {
-        this.subforms[key] = updatedSection;
-      } else {
-        this.subforms[key].updateWholeSection(updatedSectionID, updatedSection);
-      }
-    }
-
-    for (let key in this.items) {
-      if (updatedSectionID === key) {
-        this.items[key] = updatedSection;
-      }
-    }
-  }
-
-
   // Export --------------------------------------------------------------------
   /*
     Functions for converting the class into other usable formats
@@ -694,7 +588,12 @@ class ConjureForm {
   }
 
 
-  render() {
+  render(
+    onClick_selectForm = () => {},
+    devModeOn = false, selectedID,
+    onInput_answerFormQuestion = () => {}
+  ) {
+
     return (
       <ConjureFormComponent
         subforms={this.subforms}
@@ -704,10 +603,11 @@ class ConjureForm {
         containerType={this.formDetails.containerType}
         formID={this.formID}
         backgroundColor={this.colors.backgroundColor}
-        devModeOn={this.runtime.devModeOn}
-        selected={this.runtime.selected}
+        devModeOn={devModeOn}
+        selectedID={selectedID}
         shadowColor={this.colors.shadowColor}
-        onClick_selectForm={this.runtime.onClick_selectForm}
+        onClick_selectForm={onClick_selectForm}
+        onInput_answerFormQuestion={onInput_answerFormQuestion}
       />
     );
   }

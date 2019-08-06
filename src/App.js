@@ -82,8 +82,6 @@ class App extends Component {
     // ConjureForm vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
     let conjureForm = new ConjureForm();
-    conjureForm.registerOnClickSelectForm(this.onClick_selectFormSection);
-    conjureForm.registerOnInputAnswerForm(this.onInput_answerFormQuestion);
 
     // create Page 1 and page 2
     let page1ID = conjureForm.declareNewSubform();
@@ -132,9 +130,6 @@ class App extends Component {
   onClick_selectFormSection = (selectedID) => {
     if (this.state.truth[PT_devModeActive]) {
       this.update(selectedID, PT_selectedFormID);
-      let conjureForm = this.state.truth[PT_conjureForm];
-      conjureForm.updateSelectedFormSection(selectedID);
-      this.saveConjureForm(conjureForm);
     }
   }
 
@@ -151,14 +146,12 @@ class App extends Component {
     if (insertInto) {
       // insert into -> we don't need the parent
       let newID = conjureForm.declareNewItem(selectedID, "question", null, createPre);
-      conjureForm.updateSelectedFormSection(newID);
       this.update(newID, PT_selectedFormID);
 
     } else {
       // insert adjacent -> we need the parent
       let containerID = conjureForm.getParentFormID(selectedID);
       let newID = conjureForm.declareNewItem(containerID, "question", selectedID, createPre);
-      conjureForm.updateSelectedFormSection(newID);
       this.update(newID, PT_selectedFormID);
     }
     this.saveConjureForm(conjureForm);
@@ -178,14 +171,12 @@ class App extends Component {
     if (insertInto) {
       // insert into -> we don't need the parent
       let newID = conjureForm.declareNewItem(selectedID, "text", null, createPre);
-      conjureForm.updateSelectedFormSection(newID);
       this.update(newID, PT_selectedFormID);
 
     } else {
       // insert adjacent -> we need the parent
       let containerID = conjureForm.getParentFormID(selectedID);
       let newID = conjureForm.declareNewItem(containerID, "text", selectedID, createPre);
-      conjureForm.updateSelectedFormSection(newID);
       this.update(newID, PT_selectedFormID);
     }
     this.saveConjureForm(conjureForm);
@@ -207,14 +198,12 @@ class App extends Component {
     if (insertInto) {
       // insert into -> we don't need the parent
       let newID = conjureForm.declareNewSubform(selectedID, null, createPre);
-      conjureForm.updateSelectedFormSection(newID);
       this.update(newID, PT_selectedFormID);
 
     } else {
       // insert adjacent -> we need the parent
       let containerID = conjureForm.getParentFormID(selectedID);
       let newID = conjureForm.declareNewSubform(containerID, selectedID, createPre);
-      conjureForm.updateSelectedFormSection(newID);
       this.update(newID, PT_selectedFormID);
     }
     this.saveConjureForm(conjureForm);
@@ -258,14 +247,9 @@ class App extends Component {
 
       let conjureForm = this.state.truth[PT_conjureForm];
 
-      // update devMode and close the <ProductionFormSidebar/> if open
-      this.update(newDevMode, PT_devModeActive);
-      conjureForm.updateDevMode(newDevMode);
-      this.update(false, PT_productionSidebarExpanded);
-
-      // deselect the selected section (if any)
-      conjureForm.updateSelectedFormSection(false);
-      this.update(false, PT_selectedFormID);
+      this.update(newDevMode, PT_devModeActive);          // assign new devmode
+      this.update(false, PT_productionSidebarExpanded);   // reset the sidebar if it was open
+      this.update(false, PT_selectedFormID);              // deselect selected section (if any)
 
       // wipe the current "outputObject" and reinitialize values
       let outputObject = conjureForm.getFormOutputObject();
@@ -362,6 +346,9 @@ class App extends Component {
           <ModifyFormContainer
             conjureForm={conjureForm}
             backgroundColor={truth[PT_formColors]['background']}
+            devModeOn={truth[PT_devModeActive]}
+            selectedID={truth[PT_selectedFormID]}
+            onClick_selectFormSection={this.onClick_selectFormSection}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
             onClick_setDevModeActive={this.onClick_setDevModeActive}
           />
@@ -378,10 +365,9 @@ class App extends Component {
         <div id={leftBodyCSS}>
           <ProductionFormContainer
             conjureForm={conjureForm}
-            formOutputObject={truth[PT_formOutput].getOutputObject()}
-            formDetailsLookup={truth[PT_formOutput].getDetailsLookup()}
             backgroundColor={truth[PT_formColors]['background']}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
+            onInput_answerFormQuestion={this.onInput_answerFormQuestion}
           />
         </div>
       );
@@ -393,9 +379,6 @@ class App extends Component {
   // renders <App/> ------------------------------------------------------------
 
   render() {
-    let truth = this.state.truth;
-    let conjureForm = truth[PT_conjureForm];
-
     return (
       <div id="App">
         <Navbar/>

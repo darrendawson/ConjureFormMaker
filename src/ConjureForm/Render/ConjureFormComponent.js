@@ -77,14 +77,18 @@ class ConjureFormComponent extends Component {
         child = this.props.items[id];
       }
 
-      childrenToRender.push(child.render());
+      let selectForm = this.props.onClick_selectForm;
+      let devModeOn = this.props.devModeOn;
+      let onInput_answerFormQuestion = this.props.onInput_answerFormQuestion;
+      let rendered = child.render(selectForm, devModeOn, this.props.selectedID, onInput_answerFormQuestion);
+      childrenToRender.push(rendered);
     }
 
 
     // determine border styling
     let borderCSS;
     if (this.props.devModeOn) {
-      if (this.props.selected) {
+      if (this.props.selectedID === this.props.formID) {
         borderCSS = "dev_mode_selected";
       } else {
         borderCSS = "dev_mode_hover";
