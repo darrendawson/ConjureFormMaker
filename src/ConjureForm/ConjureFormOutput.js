@@ -60,9 +60,12 @@ class ConjureFormOutput {
 
   // for when a user clicks on a multiple choice option
   // this function has to determine what to do with the selected click based off of what the question settings are
-  // - if this option is already selected                  -> deselect it
-  // - if user hasn't maxed out number of selected options -> select it (add it to the list)
-  // - if user has maxed out number of selectable options  -> do not select it
+  // 0) if option is false                                  -> deselect all choices
+  // 1) if question is a dropdown                           -> select the current one and deselect any others
+  // 2) if this option is already selected                  -> deselect it
+  // 3) if user hasn't maxed out number of selected options -> select it (add it to the list)
+  // 4) if user has maxed out selected options,             -> deselect the oldest selected item (first in array) and select this one
+  //       and value isnt already selected
   answerMultipleChoiceQuestion(value, questionID) {
 
     // get details about this question, such as minSelected and maxSelected
@@ -71,7 +74,19 @@ class ConjureFormOutput {
     // get current answer
     let currentAnswer = this.outputObject.get(questionID);
 
-    // if user is clicking on an already selected option, unselect it
+    // 0) deselect all choices
+    if (value === false) {
+      this.outputObject.update([], questionID);
+      return;
+    }
+
+    // 1) if dropdown, only select the current one (deselect all others)
+    if (questionDetails.multipleChoiceType === "dropdown") {
+      this.outputObject.update([value], questionID);
+      return;
+    }
+
+    // 2) if user is clicking on an already selected option, unselect it
     if (currentAnswer.indexOf(value) >= 0) {
       let newAnswer = [];                                 // rebuild array without selected option
       for (let i = 0; i < currentAnswer.length; i++) {
@@ -84,10 +99,20 @@ class ConjureFormOutput {
       return;
     }
 
-    // if the user can select the option, do so
+    // 3) if the user can select the option, do so
     if (currentAnswer.length < questionDetails.maxSelected) {
       currentAnswer.push(value);
       this.outputObject.update(currentAnswer, questionID);
+      return;
+    }
+
+    // 4) if already selected max number, deselect the oldest selected option and select the new one
+    // USE == instead of === so JS compares number<->number instead of number<->string
+    if (currentAnswer.length == questionDetails.maxSelected) {
+      currentAnswer.splice(0, 1); // remove oldest selected item
+      currentAnswer.push(value);
+      this.outputObject.update(currentAnswer, questionID);
+      return;
     }
   }
 

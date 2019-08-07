@@ -12,6 +12,13 @@ class MultipleChoice extends Component {
   }
 
 
+  // onClick -------------------------------------------------------------------
+
+  onClick_selectFromDropDown = (choice) => {
+    this.props.onClick_answerMultipleChoiceQuestion(choice, this.props.questionID);
+    this.setState({dropDownOpen: false});
+  }
+
   // render dropdown -----------------------------------------------------------
 
 
@@ -31,7 +38,8 @@ class MultipleChoice extends Component {
         choicesToRender.push(
           <div
             className="dropdown_item_container"
-            style={{'border': '1px solid ' + this.props.borderColor}}>
+            style={{'border': '1px solid ' + this.props.borderColor}}
+            onClick={() => this.onClick_selectFromDropDown(false)}>
             <pre> </pre>
           </div>
         );
@@ -40,11 +48,13 @@ class MultipleChoice extends Component {
 
       // add choices
       for (let i = 0; i < choices.length; i++) {
+
         if (this.props.selectedChoices.indexOf(choices[i]) >= 0) {
           choicesToRender.push(
             <div
               className="dropdown_item_container"
-              style={{'background-color': this.props.borderColor}}>
+              style={{'background-color': this.props.borderColor, 'border': '1px solid ' + this.props.borderColor}}
+              onClick={() => this.onClick_selectFromDropDown(choices[i])}>
               <p style={{'color': this.props.backgroundColor}}>{choices[i]}</p>
             </div>
           );
@@ -52,7 +62,8 @@ class MultipleChoice extends Component {
           choicesToRender.push(
             <div
               className="dropdown_item_container"
-              style={{'border': '1px solid ' + this.props.borderColor}}>
+              style={{'border': '1px solid ' + this.props.borderColor}}
+              onClick={() => this.onClick_selectFromDropDown(choices[i])}>
               <p style={{'color': this.props.borderColor}}>{choices[i]}</p>
             </div>
           );
@@ -61,6 +72,11 @@ class MultipleChoice extends Component {
 
 
       // render the title bar and all choices
+      let selectedChoice = "";
+      if (this.props.selectedChoices.length > 0) {
+        selectedChoice = this.props.selectedChoices[0];
+      }
+
       return (
         <div id="dropdown_full_container">
           {/* top bar */}
@@ -68,7 +84,7 @@ class MultipleChoice extends Component {
             className="dropdown_title_container"
             style={{'border': '1px solid ' + this.props.borderColor}}
             onClick={() => this.setState({'dropDownOpen': false})}>
-            <p style={{'color': this.props.borderColor}}>{this.props.selectedChoice}</p>
+            <p style={{'color': this.props.borderColor}}>{selectedChoice}</p>
             <p style={{'color': this.props.borderColor}}>^</p>
           </div>
 
@@ -82,13 +98,18 @@ class MultipleChoice extends Component {
     } else {
 
       // only render the title bar
+      let selectedChoice = "";
+      if (this.props.selectedChoices.length > 0) {
+        selectedChoice = this.props.selectedChoices[0];
+      }
+
       return (
         <div id="dropdown_full_container">
           <div
             className="dropdown_title_container"
             style={{'border': '1px solid ' + this.props.borderColor}}
             onClick={() => this.setState({'dropDownOpen': true})}>
-            <p style={{'color': this.props.borderColor}}>{this.props.selectedChoice}</p>
+            <p style={{'color': this.props.borderColor}}>{selectedChoice}</p>
             <p style={{'color': this.props.borderColor}}>V</p>
           </div>
         </div>
