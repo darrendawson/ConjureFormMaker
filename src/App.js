@@ -269,7 +269,13 @@ class App extends Component {
 
   onInput_answerFormQuestion = (itemID, e) => {
     let formOutput = this.state.truth[PT_formOutput];
-    formOutput.answerQuestion(e.target.value, itemID);
+    formOutput.answerInputQuestion(e.target.value, itemID);
+    this.update(formOutput, PT_formOutput);
+  }
+
+  onClick_answerMultipleChoiceQuestion = (value, itemID) => {
+    let formOutput = this.state.truth[PT_formOutput];
+    formOutput.answerMultipleChoiceQuestion(value, itemID);
     this.update(formOutput, PT_formOutput);
   }
 
@@ -370,6 +376,7 @@ class App extends Component {
             backgroundColor={truth[PT_formColors]['background']}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
             onInput_answerFormQuestion={this.onInput_answerFormQuestion}
+            onClick_answerMultipleChoiceQuestion={this.onClick_answerMultipleChoiceQuestion}
           />
         </div>
       );

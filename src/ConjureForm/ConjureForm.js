@@ -573,7 +573,7 @@ class ConjureForm {
 
   // debug ---------------------------------------------------------------------
   /*
-    Functions used for debugging 
+    Functions used for debugging
   */
 
   // prints out all questions in the ConjureForm
@@ -610,11 +610,16 @@ class ConjureForm {
   }
 
 
+  // renders <ConjureFormComponent/>
+  // arguments are runtime values / functions that make it work in production
   render(
     onClick_selectForm = () => {},
-    devModeOn = false, selectedID,
-    onInput_answerFormQuestion = () => {}
-  ) {
+    devModeOn = false,
+    selectedID,
+    onInput_answerFormQuestion = () => {},
+    onClick_answerMultipleChoiceQuestion = () => {}
+  )
+  {
 
     return (
       <ConjureFormComponent
@@ -630,6 +635,7 @@ class ConjureForm {
         shadowColor={this.colors.shadowColor}
         onClick_selectForm={onClick_selectForm}
         onInput_answerFormQuestion={onInput_answerFormQuestion}
+        onClick_answerMultipleChoiceQuestion={onClick_answerMultipleChoiceQuestion}
       />
     );
   }

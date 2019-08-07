@@ -17,7 +17,7 @@ const __backgroundColorDefault = "#eaeaea";
 /*
 DO NOT UNCOMMENT OR USE THESE:
   - these are the default attributes you want to use, but defining them at the top here creates
-    problematic JS object referencing. If you do, all ConjureFormItems will accidentally reference the same object in memory 
+    problematic JS object referencing. If you do, all ConjureFormItems will accidentally reference the same object in memory
 
 const __defaultQuestionInputDetails = {
   "questionTitle": "Question Title",
@@ -94,6 +94,8 @@ class ConjureFormItem {
     if (this.itemType === "question") {
       if (this.questionDetails.questionType === "input") {
         return this.questionDetails.defaultValue;
+      } else if (this.questionDetails.questionType === "multipleChoice") {
+        return [];
       }
     } else {
       return false;
@@ -180,13 +182,16 @@ class ConjureFormItem {
 
   }
 
-
+  // renders <ConjureFormItemomponent/>
+  // arguments are runtime values / functions that make it work in production
   render(
     onClick_selectForm = () => {},
     devModeOn = false,
     selectedID,
-    onInput_answerFormQuestion = () => {}
-  ) {
+    onInput_answerFormQuestion = () => {},
+    onClick_answerMultipleChoiceQuestion = () => {}
+  )
+  {
 
     let itemDetails;
     if (this.itemType === "text") {
@@ -207,6 +212,7 @@ class ConjureFormItem {
         backgroundColor={this.colors.background}
         onClick_selectItem={onClick_selectForm}
         onInput_answerFormQuestion={onInput_answerFormQuestion}
+        onClick_answerMultipleChoiceQuestion={onClick_answerMultipleChoiceQuestion}
       />
     );
   }

@@ -53,8 +53,42 @@ class ConjureFormOutput {
 
   // answer form questions -----------------------------------------------------
 
-  answerQuestion(value, questionID) {
+  // for when a user types into an input
+  answerInputQuestion(value, questionID) {
     this.outputObject.update(value, questionID);
+  }
+
+  // for when a user clicks on a multiple choice option
+  // this function has to determine what to do with the selected click based off of what the question settings are
+  // - if this option is already selected                  -> deselect it
+  // - if user hasn't maxed out number of selected options -> select it (add it to the list)
+  // - if user has maxed out number of selectable options  -> do not select it
+  answerMultipleChoiceQuestion(value, questionID) {
+
+    // get details about this question, such as minSelected and maxSelected
+    let questionDetails = this.detailsLookup[questionID];
+
+    // get current answer
+    let currentAnswer = this.outputObject.get(questionID);
+
+    // if user is clicking on an already selected option, unselect it
+    if (currentAnswer.indexOf(value) >= 0) {
+      let newAnswer = [];                                 // rebuild array without selected option
+      for (let i = 0; i < currentAnswer.length; i++) {
+        if (currentAnswer[i] !== value) {
+          newAnswer.push(currentAnswer[i]);
+        }
+      }
+
+      this.outputObject.update(newAnswer, questionID);
+      return;
+    }
+
+    // if the user can select the option, do so
+    if (currentAnswer.length < questionDetails.maxSelected) {
+      currentAnswer.push(value);
+      this.outputObject.update(currentAnswer, questionID);
+    }
   }
 
 

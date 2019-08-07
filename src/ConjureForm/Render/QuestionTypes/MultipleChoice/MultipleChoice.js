@@ -100,15 +100,13 @@ class MultipleChoice extends Component {
   // render standard -----------------------------------------------------------
 
   renderSelectButton = (choice) => {
-    if (this.props.devModeOn) {
-      return (
-        <button className="select_button" style={{'border': '1px solid ' + this.props.borderColor}}></button>
-      );
-    } else {
-      return (
-        <button>test</button>
-      );
-    }
+    return (
+      <button
+        className="select_button"
+        style={{'border': '1px solid ' + this.props.borderColor}}
+        onClick={() => this.props.onClick_answerMultipleChoiceQuestion(choice, this.props.questionID)}>
+      </button>
+    );
   }
 
 
@@ -119,7 +117,7 @@ class MultipleChoice extends Component {
     for (let i = 0; i < choices.length; i++) {
       choicesToRender.push(
         <div className="choice_row">
-          {this.renderSelectButton()}
+          {this.renderSelectButton(choices[i])}
           <p className="choice_text" style={{'color': this.props.textColor}}>{choices[i]}</p>
         </div>
       );

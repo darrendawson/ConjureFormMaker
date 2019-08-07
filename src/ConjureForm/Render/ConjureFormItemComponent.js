@@ -77,36 +77,24 @@ class ConjureFormItemComponent extends Component {
       );
     }
 
-
-    // if devMode is on, then we only need to render the bare minimum inputs (without actual onClick / onChange events)
-    if (this.props.devModeOn) {
-
-      if (itemDetails.questionType === "multipleChoice") {
-        return (
-          <div>
-            <MultipleChoice
-              choices={itemDetails.choices}
-              backgroundColor={this.props.backgroundColor}
-              borderColor={this.props.titleColor}
-              textColor={this.props.textColor}
-              minSelected={itemDetails.minSelected}
-              maxSelected={itemDetails.maxSelected}
-              multipleChoiceType={itemDetails.multipleChoiceType}
-              devModeOn={true}
-            />
-          </div>
-        );
-      }
-    } else if (itemDetails.questionType === "code") {
+    if (itemDetails.questionType === "multipleChoice") {
       return (
         <div>
-
+          <MultipleChoice
+            questionID={this.props.itemID}
+            choices={itemDetails.choices}
+            backgroundColor={this.props.backgroundColor}
+            borderColor={this.props.titleColor}
+            textColor={this.props.textColor}
+            minSelected={itemDetails.minSelected}
+            maxSelected={itemDetails.maxSelected}
+            multipleChoiceType={itemDetails.multipleChoiceType}
+            devModeOn={this.props.devModeOn}
+            onClick_answerMultipleChoiceQuestion={this.props.onClick_answerMultipleChoiceQuestion}
+          />
         </div>
       );
     }
-
-    // ADD if (this.props.devModeOn === false) {} for rendering the actual form
-
   }
 
   render() {

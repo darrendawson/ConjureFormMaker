@@ -91,6 +91,32 @@ class Ustra {
   get_truth() {
     return this.truth;
   }
+
+  // gets the value of a parameter with a specific path tag
+  // if no path tag is given, return entire truth
+  get(path_tag = false) {
+    if (path_tag === false) {
+      return this.truth;
+    } else {
+
+      // get full path to desired object
+      let full_path = this.path_lookup[path_tag].slice(); // slice makes a copy
+      let temp = this.truth;
+
+      // iterate through truth object until we reach the value we are looking for
+      for (let i = 0; i < full_path.length; i++) {
+        let next_path = full_path[i];
+        temp = temp[next_path];
+
+        if (i === full_path.length - 1) {
+          return temp;
+        }
+      }
+    }
+
+    // if we found nothing, return false
+    return false;
+  }
 }
 
 export default Ustra;
