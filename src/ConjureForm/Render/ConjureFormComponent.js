@@ -73,7 +73,7 @@ class ConjureFormComponent extends Component {
       let child;
       if (this.props.order[i]["type"] === "ConjureForm") {
         child = this.props.subforms[id];
-      } else {
+      } else if (this.props.order[i]["type"] === "ConjureFormItem"){
         child = this.props.items[id];
       }
 

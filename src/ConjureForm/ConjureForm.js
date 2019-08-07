@@ -465,20 +465,22 @@ class ConjureForm {
       for (let key in newDetails) {
         this.formDetails[key] = newDetails[key];
       }
-      return;
+      return true;
     }
 
     // check to see if desired section is a ConjureFormItem child of this ConjureForm
     for (let key in this.items) {
       if (key === sectionID) {
         this.items[key].updateItemDetails(newDetails);
-        return;
+        return true;
       }
     }
 
     // otherwise, check subforms for section to update
     for (let key in this.subforms) {
-      this.subforms[key].updateSectionDetails(sectionID, newDetails);
+      if (this.subforms[key].updateSectionDetails(sectionID, newDetails)) {
+        return true;
+      }
     }
 
   }
@@ -564,7 +566,27 @@ class ConjureForm {
   getFormOutputObject() {
     let outputObject = this.__getOutputObjectWithFormIDs();
     let lookupTable = this.__getFormDetailsLookupTable();
-    return new ConjureFormOutput(outputObject, lookupTable);
+    let output =  new ConjureFormOutput(outputObject, lookupTable);
+    return output;
+  }
+
+
+  // debug ---------------------------------------------------------------------
+  /*
+    Functions used for debugging 
+  */
+
+  // prints out all questions in the ConjureForm
+  __printQuestions() {
+    for (let key in this.subforms) {
+      this.subforms[key].printQuestions();
+    }
+
+    for (let key in this.items) {
+      if (this.items[key].itemType === "question") {
+        console.log(this.items[key]);
+      }
+    }
   }
 
 

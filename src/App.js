@@ -92,7 +92,8 @@ class App extends Component {
     let card2ID = conjureForm.declareNewSubform(page1ID);
 
     // add items to card1
-    let item1ID = conjureForm.declareNewItem(card1ID, "text");
+    conjureForm.declareNewItem(card1ID, "text");
+    conjureForm.declareNewItem(card1ID, "question");
 
     conjureForm.declareNewItem(card2ID, "text");
     conjureForm.declareNewItem(card2ID, "question");
@@ -141,6 +142,7 @@ class App extends Component {
   //                -> if true, insert into the current ConjureForm
   //                -> if false, insert into the current ConjureForm's parent
   onClick_createNewFormQuestion = (selectedID, createPre, insertInto) => {
+
     let conjureForm = this.state.truth[PT_conjureForm];
 
     if (insertInto) {

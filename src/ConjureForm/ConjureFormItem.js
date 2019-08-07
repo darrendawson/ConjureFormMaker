@@ -14,6 +14,11 @@ const __titleColorDefault = "#262626";
 const __backgroundColorDefault = "#eaeaea";
 
 
+/*
+DO NOT UNCOMMENT OR USE THESE:
+  - these are the default attributes you want to use, but defining them at the top here creates
+    problematic JS object referencing. If you do, all ConjureFormItems will accidentally reference the same object in memory 
+
 const __defaultQuestionInputDetails = {
   "questionTitle": "Question Title",
   "questionDescription": "Description",
@@ -32,6 +37,7 @@ const __defaultQuestionMultipleChoiceDetails = {
   "maxSelected": 1,
   "choices": []
 };
+*/
 
 
 class ConjureFormItem {
@@ -46,9 +52,16 @@ class ConjureFormItem {
       this.textDetails.titleText = "Title";
       this.textDetails.sectionTitleText = "Section Title";
       this.textDetails.outputID = itemID;
-    } else {
-      this.questionDetails = __defaultQuestionInputDetails;
-      this.questionDetails["outputID"] = itemID;
+    } else if (itemType === "question"){
+      this.questionDetails = {
+        "questionTitle": "Question Title",
+        "questionDescription": "Description",
+        "questionType": "input",
+        "inputType": "string",
+        "inputPrompt": "prompt...",
+        "defaultValue": "",
+        "outputID": itemID
+      };
     }
 
     // set default colors
