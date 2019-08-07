@@ -205,7 +205,7 @@ class DevFormItemInput extends Component {
           <h3 className="input_title">Max Selected</h3>
           <input
             className="form_input"
-            value={this.props.itemDetails.maxSelected}
+            value={(this.props.itemDetails.multipleChoiceType === "dropdown") ? 1 : this.props.itemDetails.maxSelected}
             onChange={this.onInput_updateItemDetail.bind(this, "maxSelected")}
           />
         </div>
