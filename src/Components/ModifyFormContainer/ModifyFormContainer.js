@@ -28,10 +28,11 @@ class ModifyFormContainer extends Component {
   render() {
 
     let conjureForm = this.props.conjureForm;
+    let formOutput = this.props.formOutput;
     let selectForm = this.props.onClick_selectFormSection;
     let devModeOn = this.props.devModeOn;
     let selectedID = this.props.selectedID;
-    let onInput_answerFormQuestion = () => {}; // because <ModifyFormContainer/> is for developing the form, it isn't hooked up to a live function for answering the questions 
+    let onInput_answerFormQuestion = () => {}; // because <ModifyFormContainer/> is for developing the form, it isn't hooked up to a live function for answering the questions
 
     return (
       <div id="ModifyFormContainer" onClick={this.props.onClick_deselectItem} style={{'background-color': this.props.backgroundColor}}>
@@ -41,7 +42,7 @@ class ModifyFormContainer extends Component {
         </div>
 
         <div id="form_container">
-          {conjureForm.render(selectForm, devModeOn, selectedID, onInput_answerFormQuestion)}
+          {conjureForm.render(formOutput, selectForm, devModeOn, selectedID, onInput_answerFormQuestion)}
         </div>
       </div>
     );

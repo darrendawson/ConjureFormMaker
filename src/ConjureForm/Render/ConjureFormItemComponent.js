@@ -78,6 +78,10 @@ class ConjureFormItemComponent extends Component {
     }
 
     if (itemDetails.questionType === "multipleChoice") {
+
+      let formOutput = this.props.formOutput;
+      let selectedChoices = formOutput.get(this.props.itemID);
+
       return (
         <div>
           <MultipleChoice
@@ -90,6 +94,7 @@ class ConjureFormItemComponent extends Component {
             maxSelected={itemDetails.maxSelected}
             multipleChoiceType={itemDetails.multipleChoiceType}
             devModeOn={this.props.devModeOn}
+            selectedChoices={selectedChoices}
             onClick_answerMultipleChoiceQuestion={this.props.onClick_answerMultipleChoiceQuestion}
           />
         </div>

@@ -613,6 +613,7 @@ class ConjureForm {
   // renders <ConjureFormComponent/>
   // arguments are runtime values / functions that make it work in production
   render(
+    formOutput = {},
     onClick_selectForm = () => {},
     devModeOn = false,
     selectedID,
@@ -632,6 +633,7 @@ class ConjureForm {
         backgroundColor={this.colors.backgroundColor}
         devModeOn={devModeOn}
         selectedID={selectedID}
+        formOutput={formOutput}
         shadowColor={this.colors.shadowColor}
         onClick_selectForm={onClick_selectForm}
         onInput_answerFormQuestion={onInput_answerFormQuestion}

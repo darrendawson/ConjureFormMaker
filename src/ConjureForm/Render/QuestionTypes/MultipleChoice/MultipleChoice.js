@@ -40,7 +40,7 @@ class MultipleChoice extends Component {
 
       // add choices
       for (let i = 0; i < choices.length; i++) {
-        if (this.props.selectedChoice === choices[i]) {
+        if (this.props.selectedChoices.indexOf(choices[i]) >= 0) {
           choicesToRender.push(
             <div
               className="dropdown_item_container"
@@ -100,10 +100,16 @@ class MultipleChoice extends Component {
   // render standard -----------------------------------------------------------
 
   renderSelectButton = (choice) => {
+
+    let buttonStyle = {'border': '1px solid ' + this.props.borderColor}
+    if (this.props.selectedChoices.indexOf(choice) >= 0) {
+      buttonStyle['background-color'] = this.props.borderColor;
+    }
+
     return (
       <button
         className="select_button"
-        style={{'border': '1px solid ' + this.props.borderColor}}
+        style={buttonStyle}
         onClick={() => this.props.onClick_answerMultipleChoiceQuestion(choice, this.props.questionID)}>
       </button>
     );

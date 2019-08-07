@@ -19,6 +19,7 @@ class ProductionFormContainer extends Component {
 
 
     let conjureForm = this.props.conjureForm;
+    let formOutput = this.props.formOutput;
     let selectForm = () => {};                 // because <ProductionFormContainer/> is used for answering forms, you can't "select" a form section
     let devModeOn = false;                     // devModeOn is false for <ProductionFormContainer/>
     let selectedID = false;                    // there is no such thing as a selected form in production
@@ -27,7 +28,7 @@ class ProductionFormContainer extends Component {
     return (
       <div id="ProductionFormContainer" style={{'background-color': this.props.backgroundColor}}>
         <div id="form_container">
-          {conjureForm.render(selectForm, devModeOn, selectedID, onInput_answerFormQuestion, answerMC)}
+          {conjureForm.render(formOutput, selectForm, devModeOn, selectedID, onInput_answerFormQuestion, answerMC)}
         </div>
       </div>
     );

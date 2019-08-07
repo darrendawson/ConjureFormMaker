@@ -77,11 +77,12 @@ class ConjureFormComponent extends Component {
         child = this.props.items[id];
       }
 
+      let formOutput = this.props.formOutput;
       let selectForm = this.props.onClick_selectForm;
       let devModeOn = this.props.devModeOn;
       let answerInput = this.props.onInput_answerFormQuestion;
       let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
-      let rendered = child.render(selectForm, devModeOn, this.props.selectedID, answerInput, answerMC);
+      let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC);
       childrenToRender.push(rendered);
     }
 

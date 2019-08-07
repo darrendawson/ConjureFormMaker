@@ -185,6 +185,7 @@ class ConjureFormItem {
   // renders <ConjureFormItemomponent/>
   // arguments are runtime values / functions that make it work in production
   render(
+    formOutput = {},
     onClick_selectForm = () => {},
     devModeOn = false,
     selectedID,
@@ -210,6 +211,7 @@ class ConjureFormItem {
         textColor={this.colors.text}
         titleColor={this.colors.title}
         backgroundColor={this.colors.background}
+        formOutput={formOutput}
         onClick_selectItem={onClick_selectForm}
         onInput_answerFormQuestion={onInput_answerFormQuestion}
         onClick_answerMultipleChoiceQuestion={onClick_answerMultipleChoiceQuestion}

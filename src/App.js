@@ -347,12 +347,14 @@ class App extends Component {
   renderFormContainer = () => {
     let truth = this.state.truth;
     let conjureForm = truth[PT_conjureForm];
+    let formOutput = truth[PT_formOutput];
 
     if (truth[PT_devModeActive]) {
       return (
         <div id='left_body_container_retracted'>
           <ModifyFormContainer
             conjureForm={conjureForm}
+            formOutput={formOutput}
             backgroundColor={truth[PT_formColors]['background']}
             devModeOn={truth[PT_devModeActive]}
             selectedID={truth[PT_selectedFormID]}
@@ -373,6 +375,7 @@ class App extends Component {
         <div id={leftBodyCSS}>
           <ProductionFormContainer
             conjureForm={conjureForm}
+            formOutput={formOutput}
             backgroundColor={truth[PT_formColors]['background']}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
             onInput_answerFormQuestion={this.onInput_answerFormQuestion}
