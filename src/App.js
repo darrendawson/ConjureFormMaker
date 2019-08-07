@@ -99,9 +99,6 @@ class App extends Component {
     conjureForm.declareNewItem(card2ID, "question");
 
     this.saveConjureForm(conjureForm);
-
-    conjureForm.getFormOutputObject();
-
     // ConjureForm ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   }
 
@@ -122,7 +119,9 @@ class App extends Component {
   // -> calls conjureForm.updateAllColors() in order to keep the color scheme up to date
   saveConjureForm = (conjureForm) => {
     conjureForm.updateAllColors(this.state.truth[PT_formColors]);
+    let conjureFormOutput = conjureForm.getFormOutputObject();
     this.update(conjureForm, PT_conjureForm);
+    this.update(conjureFormOutput, PT_formOutput);
   }
 
 
@@ -269,7 +268,9 @@ class App extends Component {
   */
 
   onInput_answerFormQuestion = (itemID, e) => {
-    alert(itemID);
+    let formOutput = this.state.truth[PT_formOutput];
+    formOutput.answerQuestion(e.target.value, itemID);
+    this.update(formOutput, PT_formOutput);
   }
 
   // render --------------------------------------------------------------------
@@ -279,7 +280,6 @@ class App extends Component {
 
     let truth = this.state.truth;
     let conjureForm = truth[PT_conjureForm];
-    let conjureFormOutput = conjureForm.getFormOutputObject();
     let selectedSectionID = truth[PT_selectedFormID]
     let selectedSection = conjureForm.get(selectedSectionID);
 
@@ -300,7 +300,7 @@ class App extends Component {
             parentContainerType={parentContainerType}
             formColors={truth[PT_formColors]}
             updateColors={this.updateFormColors}
-            formOutput={conjureFormOutput}
+            formOutput={truth[PT_formOutput]}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
             onClick_selectFormSection={this.onClick_selectFormSection}
             onClick_createNewFormText={this.onClick_createNewFormText}

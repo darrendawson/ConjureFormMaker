@@ -1,22 +1,26 @@
 /*
   ConjureFormOutput is a class for representing the output of a ConjureForm after a user has filled it out in production
+
+  Uses Ustra to maintain values in an efficient manner
+    - Because IDs are unique across the entire ConjureForm, Ustra is able to uniquely identify locations properly
 */
 
 import React from 'react';
 
 import RenderFormOutputObject from './DevInputDetails/RenderFormOutputObject/RenderFormOutputObject.js';
 
+import Ustra from '../Ustra.js';
 
 class ConjureFormOutput {
 
   constructor(outputObject, detailsLookup) {
-    this.outputObject = outputObject;
+    this.outputObject = new Ustra(outputObject);
     this.detailsLookup = detailsLookup;
   }
 
 
   getOutputObject() {
-    return this.outputObject;
+    return this.outputObject.get_truth();
   }
 
   getDetailsLookup() {
@@ -45,6 +49,14 @@ class ConjureFormOutput {
     }
     return false;
   }
+
+
+  // answer form questions -----------------------------------------------------
+
+  answerQuestion(value, questionID) {
+    this.outputObject.update(value, questionID);
+  }
+
 
   // render --------------------------------------------------------------------
 
