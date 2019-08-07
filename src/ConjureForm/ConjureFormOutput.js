@@ -75,7 +75,7 @@ class ConjureFormOutput {
     let currentAnswer = this.outputObject.get(questionID);
 
     // 0) deselect all choices
-    if (value === false) {
+    if (value === false && questionDetails.minSelected == 0) {
       this.outputObject.update([], questionID);
       return;
     }
@@ -87,7 +87,8 @@ class ConjureFormOutput {
     }
 
     // 2) if user is clicking on an already selected option, unselect it
-    if (currentAnswer.indexOf(value) >= 0) {
+    //     UNLESS unselecting it would put you under the minSelected threshold
+    if (currentAnswer.indexOf(value) >= 0 && currentAnswer.length - 1 >= questionDetails.minSelected) {
       let newAnswer = [];                                 // rebuild array without selected option
       for (let i = 0; i < currentAnswer.length; i++) {
         if (currentAnswer[i] !== value) {

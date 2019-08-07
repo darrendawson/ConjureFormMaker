@@ -125,6 +125,8 @@ class MultipleChoice extends Component {
     let buttonStyle = {'border': '1px solid ' + this.props.borderColor}
     if (this.props.selectedChoices.indexOf(choice) >= 0) {
       buttonStyle['background-color'] = this.props.borderColor;
+    } else if (choice === false && this.props.selectedChoices.length === 0) {
+      buttonStyle['background-color'] = this.props.borderColor;
     }
 
     return (
@@ -140,6 +142,15 @@ class MultipleChoice extends Component {
   renderChoicesStandard = (choices = this.props.choices) => {
 
     let choicesToRender = [];
+
+    if (this.props.minSelected == 0) {
+      choicesToRender.push(
+        <div className="choice_row">
+          {this.renderSelectButton(false)}
+          <p className="choice_text" style={{'color': this.props.textColor}}></p>
+        </div>
+      );
+    }
 
     for (let i = 0; i < choices.length; i++) {
       choicesToRender.push(

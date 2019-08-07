@@ -95,7 +95,11 @@ class ConjureFormItem {
       if (this.questionDetails.questionType === "input") {
         return this.questionDetails.defaultValue;
       } else if (this.questionDetails.questionType === "multipleChoice") {
-        return [];
+        if (this.questionDetails.minSelected == 1 && this.questionDetails.choices.length > 0) {
+          return [this.questionDetails.choices[0]];
+        } else {
+          return [];
+        }
       }
     } else {
       return false;
