@@ -19,11 +19,43 @@ class DevFormInput extends Component {
     this.props.onClick_updateFormSectionDetails(this.props.selectedID, updatedItemDetails);
   }
 
-  // render --------------------------------------------------------------------
-
-
+  // render Form Details -------------------------------------------------------
 
   renderFormDetails = () => {
+
+    let containerType = this.props.formDetails.containerType;
+    if (containerType !== "card") {
+      return;
+    }
+
+    //  capitalize the first letter
+    containerType = containerType.charAt(0).toUpperCase() + containerType.slice(1);
+
+    return (
+      <div className="form_input_container">
+
+        <h1 className="section_title">{containerType} Details</h1>
+
+        <div className="input_row">
+          <h3 className="input_title">Min to Render</h3>
+          <h3 className="input_title">1</h3>
+        </div>
+
+        <div className="input_row">
+          <h3 className="input_title">Max to Render</h3>
+          <input
+            className="form_input"
+            value={this.props.formDetails.maxForms}
+            onChange={this.onInput_updateFormDetail.bind(this, "maxForms")}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // render form output --------------------------------------------------------
+
+  renderFormOutputObject = () => {
 
     let formOutput = this.props.formOutput;
 
@@ -54,9 +86,12 @@ class DevFormInput extends Component {
   }
 
 
+  // render <DevFormInput/> ----------------------------------------------------
+
   render() {
     return (
       <div id="DevFormInput">
+        {this.renderFormOutputObject()}
         {this.renderFormDetails()}
       </div>
     );

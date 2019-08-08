@@ -32,7 +32,11 @@ class ConjureForm {
     // - result[outputID] = {user answers}
     // therefore, nested ConjureForm's will have result[outputID_1]...[outputID_N]
     // defaults to formID because that is unique. User will modify the value from there
-    this.formDetails = {"containerType": formType, "outputID": this.formID, "outputType": "dict"};
+    this.formDetails = {
+      "containerType": formType,
+      "outputID": this.formID,
+      "maxForms": 1
+    };
 
     // determine colors
     this.colors = {};
