@@ -516,35 +516,22 @@ class ConjureForm {
   */
 
 
-  // creates an output object (what the result of a user filling out a ConjureForm looks like)
-  // but uses formIDs rather than outputIDs
-  __getOutputObjectWithFormIDs(outputObject = {}) {
+  getFormOutputObject() {
+    /*
+    let outputObject = this.__getOutputObjectWithFormIDs();
+    let lookupTable = this.__getFormDetailsLookupTable();
+    let output =  new ConjureFormOutput(outputObject, lookupTable);
+    */
 
-    // only return branches of ConjureForm tree that actually have output objects
-    let validOutputObjectFound = false;
+    let output = this.__getOutput();
+    let formOutputObject = output['outputObject'];
+    let formArrayTable = output['formArrayTable'];
+    let formDetailsLookupTable = this.__getFormDetailsLookupTable();
+    let formOutput =  new ConjureFormOutput(formOutputObject, formArrayTable, formDetailsLookupTable);
 
-    for (let key in this.items) {
-      let defaultOutput = this.items[key].getDefaultOutputObject();
-      if (defaultOutput !== false) {
-        validOutputObjectFound = true;
-        outputObject[key] = this.items[key].getDefaultOutputObject();
-      }
-    }
-
-    for (let key in this.subforms) {
-      let subformOutput = this.subforms[key].__getOutputObjectWithFormIDs();
-      if (subformOutput !== false) {
-        validOutputObjectFound = true;
-        outputObject[key] = subformOutput;
-      }
-    }
-
-    if (validOutputObjectFound) {
-      return outputObject;
-    } else {
-      return false;
-    }
+    return formOutput;
   }
+
 
 
   // creates a lookup table {formID/itemID: form/itemDetails}
@@ -567,11 +554,58 @@ class ConjureForm {
   }
 
 
-  getFormOutputObject() {
-    let outputObject = this.__getOutputObjectWithFormIDs();
-    let lookupTable = this.__getFormDetailsLookupTable();
-    let output =  new ConjureFormOutput(outputObject, lookupTable);
-    return output;
+
+  // builds up variables
+  // - outputObject:    the default output object of a ConjureForm, nested from ConjureForm -> ConjureFormItem
+  //                    This object stops nesting when it reaches a ConjureForm that is meant to be stored as an array
+  // - formArrayTable:  lookup table of 
+  __getOutput(outputObject = {}, formArrayTable = {}) {
+
+    // only return branches of ConjureForm tree that actually have output objects
+    let validOutputObjectFound = false;
+
+    // add items to output
+    for (let key in this.items) {
+      let defaultOutput = this.items[key].getDefaultOutputObject();
+      if (defaultOutput !== false) {
+        validOutputObjectFound = true;
+        outputObject[key] = this.items[key].getDefaultOutputObject();
+      }
+    }
+
+    // recurse over subforms
+    for (let key in this.subforms) {
+
+      // if a subform has maxForms > 1, then it is represented in output as an array instead of a dict
+      // -> outputObject[key] is an array, and the recursive outputObject that would normally go here is placed into formArrayTable[key]
+      if (this.subforms[key].formDetails.maxForms > 1) {
+
+        outputObject[key] = [];
+        let childResult = this.subforms[key].__getOutput({}, formArrayTable);
+        if (childResult !== false) {
+          formArrayTable = childResult['formArrayTable'];
+          formArrayTable[key] = childResult['outputObject'];
+          validOutputObjectFound = true;
+        }
+
+      } else if (this.subforms[key].formDetails.maxForms == 1) {
+
+        // if a subform has maxForms = 1, then it is represented in output as a dict
+        // therefore, we can just add the recursive outputObject to outputObject
+        let childResult = this.subforms[key].__getOutput({}, formArrayTable);
+        if (childResult !== false) {
+          validOutputObjectFound = true;
+          outputObject[key] = childResult['outputObject'];
+          formArrayTable = childResult['formArrayTable'];
+        }
+      }
+    }
+
+    if (validOutputObjectFound) {
+      return {'outputObject': outputObject, 'formArrayTable': formArrayTable};
+    } else {
+      return false;
+    }
   }
 
 

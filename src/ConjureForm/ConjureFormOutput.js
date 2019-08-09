@@ -13,14 +13,28 @@ import Ustra from '../Ustra.js';
 
 class ConjureFormOutput {
 
-  constructor(outputObject, detailsLookup) {
-    this.outputObject = new Ustra(outputObject);
-    this.detailsLookup = detailsLookup;
+  constructor(outputObject, arrayTable, detailsLookup) {
+    this.outputObject = new Ustra(outputObject);    // the output object for the whole ConjureForm, does not include arrays of subConjureForms
+    this.detailsLookup = detailsLookup;             // lookup table for finding details about a ConjureForm or ConjureFormItem
+    this.arrayDefaults = arrayTable;                // lookup table to get a default value for a new item in a ConjureForm array
+
+    // convert arrayTable objects to be an array of items that use Ustra
+    let arrayObjects = arrayTable;
+    for (let key in arrayObjects) {
+      arrayObjects[key] = [new Ustra(arrayObjects[key])];
+    }
+    this.arrayTable = arrayObjects;
   }
 
 
   getOutputObject() {
     return this.outputObject.get_truth();
+
+    let output = new Ustra(this.outputObject.get_truth()); // create a clone of the outputObject to fill out
+    for (let key in this.arrayTable) {
+      output.update(this.arrayTable[key], key);
+    }
+    return output.get_truth();
   }
 
   getDetailsLookup() {
