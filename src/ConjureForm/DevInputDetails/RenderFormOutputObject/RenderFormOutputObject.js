@@ -44,39 +44,65 @@ class RenderFormOutputObject extends Component {
 
   renderObject = (obj, depth = 1, result = []) => {
 
-    let numSubforms = Object.keys(obj).length;
-    let i = 0;
-    for (let formID in obj) {
-      i += 1;
-      let paddingLeft = this.getSpacePaddingLeft(depth);
-      let outputName = this.props.formDetailsLookup[formID]['outputID'];
-      let parameterName = this.renderParameterName(formID, outputName);
+    let paddingLeft = this.getSpacePaddingLeft(depth);
 
-      if (this.props.formDetailsLookup[formID]['type'] === "ConjureForm") {
-        result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {__leftBracketChar}</pre>)
+    if (Array.isArray(obj)) {
 
-        result.push(this.renderObject(obj[formID], depth + 1));
+      for (let i = 0; i < obj.length; i++) {
+        //result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {leftBracket}</pre>)
+        result.push(<pre className="text">{paddingLeft}{__leftBracketChar}</pre>);
+        result.push(this.renderObject(obj[i], depth + 1));
+        result.push(<pre className="text">{paddingLeft}{__rightBracketChar}</pre>);
 
-        // render } to end current subform object. logic used to render with or without comma
-        if (i < numSubforms) {
-          result.push(<pre className="text">{paddingLeft}{__rightBracketChar},</pre>);
-        } else {
-          result.push(<pre className="text">{paddingLeft}{__rightBracketChar}</pre>);
-        }
-
-      } else if (this.props.formDetailsLookup[formID]['type'] === "ConjureFormItem") {
-
-        let itemDefaultValue = JSON.stringify(obj[formID]);
-
-        // render } to end current subform object. logic used to render with or without comma
-        if (i < numSubforms) {
-          result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {itemDefaultValue},</pre>)
-        } else {
-          result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {itemDefaultValue}</pre>)
-        }
       }
 
+    } else {
+
+      let numSubforms = Object.keys(obj).length;
+      let i = 0;
+
+      //
+      for (let formID in obj) {
+        i += 1;
+        let outputName = this.props.formDetailsLookup[formID]['outputID'];
+        let parameterName = this.renderParameterName(formID, outputName);
+
+        if (this.props.formDetailsLookup[formID]['type'] === "ConjureForm") {
+
+          // get the right brackets
+          let leftBracket = "{";
+          let rightBracket = "}";
+          if (this.props.formDetailsLookup[formID]['maxForms'] > 1) {
+            leftBracket = "[";
+            rightBracket = "]";
+          }
+
+          result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {leftBracket}</pre>)
+          result.push(this.renderObject(obj[formID], depth + 1));
+
+          // render } to end current subform object. logic used to render with or without comma
+          if (i < numSubforms) {
+            result.push(<pre className="text">{paddingLeft}{rightBracket},</pre>);
+          } else {
+            result.push(<pre className="text">{paddingLeft}{rightBracket}</pre>);
+          }
+
+        } else if (this.props.formDetailsLookup[formID]['type'] === "ConjureFormItem") {
+
+          let itemDefaultValue = JSON.stringify(obj[formID]);
+
+          // render } to end current subform object. logic used to render with or without comma
+          if (i < numSubforms) {
+            result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {itemDefaultValue},</pre>)
+          } else {
+            result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {itemDefaultValue}</pre>)
+          }
+        }
+
+      }
     }
+
+
     return result;
   }
 

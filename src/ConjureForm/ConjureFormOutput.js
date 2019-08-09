@@ -28,11 +28,13 @@ class ConjureFormOutput {
 
 
   getOutputObject() {
-    return this.outputObject.get_truth();
-
     let output = new Ustra(this.outputObject.get_truth()); // create a clone of the outputObject to fill out
     for (let key in this.arrayTable) {
-      output.update(this.arrayTable[key], key);
+      let arrayTableConverted = [];
+      for (let i = 0; i < this.arrayTable[key].length; i++) {
+        arrayTableConverted.push(this.arrayTable[key][i].get_truth());
+      }
+      output.update(arrayTableConverted, key);
     }
     return output.get_truth();
   }
