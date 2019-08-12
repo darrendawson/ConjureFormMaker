@@ -9,34 +9,18 @@ import React from 'react';
 
 import RenderFormOutputObject from './DevInputDetails/RenderFormOutputObject/RenderFormOutputObject.js';
 
-import Ustra from '../Ustra.js';
+import ConjureFormOutputState from './ConjureFormOutputState.js';
 
 class ConjureFormOutput {
 
-  constructor(outputObject, arrayTable, detailsLookup) {
-    this.outputObject = new Ustra(outputObject);    // the output object for the whole ConjureForm, does not include arrays of subConjureForms
+  constructor(outputObject, detailsLookup) {
+    this.outputObject = new ConjureFormOutputState(outputObject);
     this.detailsLookup = detailsLookup;             // lookup table for finding details about a ConjureForm or ConjureFormItem
-    this.arrayDefaults = arrayTable;                // lookup table to get a default value for a new item in a ConjureForm array
-
-    // convert arrayTable objects to be an array of items that use Ustra
-    let arrayObjects = arrayTable;
-    for (let key in arrayObjects) {
-      arrayObjects[key] = [new Ustra(arrayObjects[key])];
-    }
-    this.arrayTable = arrayObjects;
   }
 
 
   getOutputObject() {
-    let output = new Ustra(this.outputObject.get_truth()); // create a clone of the outputObject to fill out
-    for (let key in this.arrayTable) {
-      let arrayTableConverted = [];
-      for (let i = 0; i < this.arrayTable[key].length; i++) {
-        arrayTableConverted.push(this.arrayTable[key][i].get_truth());
-      }
-      output.update(arrayTableConverted, key);
-    }
-    return output.get_truth();
+    return this.outputObject.get();
   }
 
   getDetailsLookup() {
@@ -56,6 +40,13 @@ class ConjureFormOutput {
     for (let key in outputObject) {
       if (key === id) {
         return true;
+      } else if (Array.isArray(outputObject[key])) {
+        for (let i = 0; i < outputObject[key].length; i++) {
+          let childResult = this.__checkIfIDInOutput(id, outputObject[key][i]);
+          if (childResult) {
+            return true;
+          }
+        }
       } else if (typeof outputObject === "object") {
         let childResult = this.__checkIfIDInOutput(id, outputObject[key]);
         if (childResult) {

@@ -517,17 +517,9 @@ class ConjureForm {
 
 
   getFormOutputObject() {
-    /*
-    let outputObject = this.__getOutputObjectWithFormIDs();
-    let lookupTable = this.__getFormDetailsLookupTable();
-    let output =  new ConjureFormOutput(outputObject, lookupTable);
-    */
-
-    let output = this.__getOutput();
-    let formOutputObject = output['outputObject'];
-    let formArrayTable = output['formArrayTable'];
+    let formOutputObject = this.__getOutput();
     let formDetailsLookupTable = this.__getFormDetailsLookupTable();
-    let formOutput =  new ConjureFormOutput(formOutputObject, formArrayTable, formDetailsLookupTable);
+    let formOutput =  new ConjureFormOutput(formOutputObject, formDetailsLookupTable);
 
     return formOutput;
   }
@@ -557,9 +549,8 @@ class ConjureForm {
 
   // builds up variables
   // - outputObject:    the default output object of a ConjureForm, nested from ConjureForm -> ConjureFormItem
-  //                    This object stops nesting when it reaches a ConjureForm that is meant to be stored as an array
-  // - formArrayTable:  lookup table of 
-  __getOutput(outputObject = {}, formArrayTable = {}) {
+  //                    If a ConjureForm is an array (formDetails.maxForms > 1), then place it inside an array
+  __getOutput(outputObject = {}) {
 
     // only return branches of ConjureForm tree that actually have output objects
     let validOutputObjectFound = false;
@@ -580,29 +571,27 @@ class ConjureForm {
       // -> outputObject[key] is an array, and the recursive outputObject that would normally go here is placed into formArrayTable[key]
       if (this.subforms[key].formDetails.maxForms > 1) {
 
-        outputObject[key] = [];
-        let childResult = this.subforms[key].__getOutput({}, formArrayTable);
-        if (childResult !== false) {
-          formArrayTable = childResult['formArrayTable'];
-          formArrayTable[key] = childResult['outputObject'];
+        let childResult = this.subforms[key].__getOutput();
+        if (childResult) {
+          outputObject[key] = [childResult];
           validOutputObjectFound = true;
         }
+
 
       } else if (this.subforms[key].formDetails.maxForms == 1) {
 
         // if a subform has maxForms = 1, then it is represented in output as a dict
         // therefore, we can just add the recursive outputObject to outputObject
-        let childResult = this.subforms[key].__getOutput({}, formArrayTable);
+        let childResult = this.subforms[key].__getOutput();
         if (childResult !== false) {
           validOutputObjectFound = true;
-          outputObject[key] = childResult['outputObject'];
-          formArrayTable = childResult['formArrayTable'];
+          outputObject[key] = childResult;
         }
       }
     }
 
     if (validOutputObjectFound) {
-      return {'outputObject': outputObject, 'formArrayTable': formArrayTable};
+      return outputObject;
     } else {
       return false;
     }

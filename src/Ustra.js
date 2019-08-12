@@ -100,17 +100,21 @@ class Ustra {
     } else {
 
       // get full path to desired object
-      let full_path = this.path_lookup[path_tag].slice(); // slice makes a copy
-      let temp = this.truth;
+      if (path_tag in this.path_lookup) {
+        let full_path = this.path_lookup[path_tag].slice(); // slice makes a copy
+        let temp = this.truth;
 
-      // iterate through truth object until we reach the value we are looking for
-      for (let i = 0; i < full_path.length; i++) {
-        let next_path = full_path[i];
-        temp = temp[next_path];
+        // iterate through truth object until we reach the value we are looking for
+        for (let i = 0; i < full_path.length; i++) {
+          let next_path = full_path[i];
+          temp = temp[next_path];
 
-        if (i === full_path.length - 1) {
-          return temp;
+          if (i === full_path.length - 1) {
+            return temp;
+          }
         }
+      } else {
+        return false;
       }
     }
 
