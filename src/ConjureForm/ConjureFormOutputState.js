@@ -246,6 +246,44 @@ class ConjureFormOutputState {
     // if we've made it this far and found nothing, return false
     return false;
   }
+
+
+  // create a conversion table of {originalID -> newly generated random IDs}
+  // pass in part of an outputObject
+  getIDConversionTable(outputObject = false) {
+    if (outputObject === false) { alert('test'); return this.arrayIDConversions; }
+    return this.__getIDConversionTable(outputObject);
+  }
+
+  // does the work for this.getIDConversionTable()
+  __getIDConversionTable(obj = {}, table = {}) {
+
+    // recurse
+    if (Array.isArray(obj)) {
+      for (let i = 0; i < obj.length; i++) {
+        table = this.__getIDConversionTable(obj[i], table);
+      }
+    } else if (typeof(obj) === "object") {
+
+      for (let key in obj) {
+
+        // add conversion
+        if (key in this.arrayIDConversions) {
+          let originalID = this.arrayIDConversions[key];
+          table[originalID] = key;
+        } else {
+          table[key] = key;
+        }
+
+        // recurse
+        table = this.__getIDConversionTable(obj[key], table);
+      }
+    }
+
+    return table;
+  }
+
+
 }
 
 export default ConjureFormOutputState;

@@ -8,13 +8,20 @@ class ConjureFormComponent extends Component {
   }
 
 
+  getID = () => {
+    if (this.props.formID in this.props.idConversionTable) {
+      return this.props.idConversionTable[this.props.formID];
+    }
+    return this.props.formID;
+  }
+
   // onClick -------------------------------------------------------------------
 
   // this function acts as an intermediary to this.props.onClick_selectForm
   // this prevents cascading onClicks when the user clicks a nested <ConjureFormComponent/>
   onClick_selectForm = (e) => {
     e.stopPropagation();
-    this.props.onClick_selectForm(this.props.formID);
+    this.props.onClick_selectForm(this.getID());
   }
   // render --------------------------------------------------------------------
 
@@ -59,7 +66,7 @@ class ConjureFormComponent extends Component {
     if (this.props.formDetails.maxForms > 1) {
       return (
         <div>
-          <button onClick={() => this.props.onClick_addNewSubformToArray(this.props.formID)}>Add New</button>
+          <button onClick={() => this.props.onClick_addNewSubformToArray(this.getID())}>Add New</button>
         </div>
       );
     }
@@ -79,8 +86,6 @@ class ConjureFormComponent extends Component {
 
     let childrenToRender = [];
 
-    //console.log(this.props.formOutput.get(this.props.formID));
-
     // for each child, call their render function
     for (let i = 0; i < this.props.order.length; i++) {
 
@@ -94,9 +99,10 @@ class ConjureFormComponent extends Component {
         child = this.props.items[childID];
       }
 
+      let childOutput = this.props.formOutput.get(childID);
+
 
       // handle case that child is an array of subforms AND has multiple forms active in output
-      let childOutput = this.props.formOutput.get(childID);
       if (this.props.order[i]["type"] === "ConjureForm" &&
           child.formDetails.maxForms > 1 &&
           childOutput !== false &&
@@ -108,24 +114,26 @@ class ConjureFormComponent extends Component {
         for (let i = 0; i < childOutput.length; i++) {
 
           let formOutput = this.props.formOutput;
+          let idConversionTable = formOutput.getIDConversionTable(childOutput[i]);
           let selectForm = this.props.onClick_selectForm;
           let devModeOn = this.props.devModeOn;
           let answerInput = this.props.onInput_answerFormQuestion;
           let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
           let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
-          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray);
+          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable);
           childrenToRender.push(rendered);
         }
 
       // otherwise, just render the child normally
       } else {
         let formOutput = this.props.formOutput;
+        let idConversionTable = this.props.idConversionTable;
         let selectForm = this.props.onClick_selectForm;
         let devModeOn = this.props.devModeOn;
         let answerInput = this.props.onInput_answerFormQuestion;
         let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
         let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
-        let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray);
+        let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable);
         childrenToRender.push(rendered);
       }
     }
@@ -134,7 +142,7 @@ class ConjureFormComponent extends Component {
     // determine border styling
     let borderCSS;
     if (this.props.devModeOn) {
-      if (this.props.selectedID === this.props.formID) {
+      if (this.props.selectedID === this.getID()) {
         borderCSS = "dev_mode_selected";
       } else {
         borderCSS = "dev_mode_hover";
@@ -153,9 +161,10 @@ class ConjureFormComponent extends Component {
           className={this.getContainerCSS(this.props.containerType)}
           style={this.getContainerStyling(this.props.containerType)}>
           {childrenToRender}
-          {this.renderAddNewButton()}
           {this.renderEmptySpace()}
         </div>
+        {this.renderAddNewButton()}
+
       </div>
     );
   }

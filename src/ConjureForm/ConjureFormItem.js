@@ -188,13 +188,16 @@ class ConjureFormItem {
 
   // renders <ConjureFormItemomponent/>
   // arguments are runtime values / functions that make it work in production
+  // addNewSubformToArray() won't be used, but is placed here for simplicity for ConjureForm
   render(
     formOutput = {},
     onClick_selectForm = () => {},
     devModeOn = false,
     selectedID,
     onInput_answerFormQuestion = () => {},
-    onClick_answerMultipleChoiceQuestion = () => {}
+    onClick_answerMultipleChoiceQuestion = () => {},
+    addNewSubformToArray = () => {},
+    idConversionTable = {}
   )
   {
 
@@ -216,6 +219,7 @@ class ConjureFormItem {
         titleColor={this.colors.title}
         backgroundColor={this.colors.background}
         formOutput={formOutput}
+        idConversionTable={idConversionTable}
         onClick_selectItem={onClick_selectForm}
         onInput_answerFormQuestion={onInput_answerFormQuestion}
         onClick_answerMultipleChoiceQuestion={onClick_answerMultipleChoiceQuestion}

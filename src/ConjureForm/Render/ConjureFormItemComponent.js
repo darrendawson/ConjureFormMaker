@@ -10,12 +10,19 @@ class ConjureFormItemComponent extends Component {
     super();
   }
 
+  getID = () => {
+    if (this.props.itemID in this.props.idConversionTable) {
+      return this.props.idConversionTable[this.props.itemID];
+    }
+    return this.props.itemID;
+  }
+
   // onClick -------------------------------------------------------------------
 
   // this function acts as an intermediary to prevent cascading onClicks
   onClick_selectItem = (e) => {
     e.stopPropagation();
-    this.props.onClick_selectItem(this.props.itemID);
+    this.props.onClick_selectItem(this.getID());
   }
 
   // render --------------------------------------------------------------------
@@ -69,7 +76,7 @@ class ConjureFormItemComponent extends Component {
       return (
         <div>
           <FormQuestionInput
-            itemID={this.props.itemID}
+            itemID={this.getID()}
             onInput_answerFormQuestion={this.props.onInput_answerFormQuestion}
             devModeOn={this.props.devModeOn}
           />
@@ -80,12 +87,14 @@ class ConjureFormItemComponent extends Component {
     if (itemDetails.questionType === "multipleChoice") {
 
       let formOutput = this.props.formOutput;
-      let selectedChoices = formOutput.get(this.props.itemID);
+      let selectedChoices = formOutput.get(this.getID());
+      console.log(this.getID())
+      console.log(selectedChoices);
 
       return (
         <div>
           <MultipleChoice
-            questionID={this.props.itemID}
+            questionID={this.getID()}
             choices={itemDetails.choices}
             backgroundColor={this.props.backgroundColor}
             borderColor={this.props.titleColor}
@@ -107,7 +116,7 @@ class ConjureFormItemComponent extends Component {
     // determine border styling
     let borderCSS;
     if (this.props.devModeOn) {
-      if (this.props.selectedID === this.props.itemID) {
+      if (this.props.selectedID === this.getID()) {
         borderCSS = "dev_mode_selected";
       } else {
         borderCSS = "dev_mode_hover";

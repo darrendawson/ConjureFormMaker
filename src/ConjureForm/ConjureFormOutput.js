@@ -31,7 +31,7 @@ class ConjureFormOutput {
       let originalID = this.outputObject.arrayIDConversions[key];
       lookup[key] = lookup[originalID];
     }
-    
+
     return lookup;
   }
 
@@ -138,6 +138,10 @@ class ConjureFormOutput {
     return this.outputObject.get(formID);
   }
 
+  // gets a lookup table {original ConjureForm ID -> newly generated ID (for arrays)}
+  getIDConversionTable(formID) {
+    return this.outputObject.getIDConversionTable(formID);
+  }
   // declare -------------------------------------------------------------------
 
   declareNewArrayItem(arrayID) {
