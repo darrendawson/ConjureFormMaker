@@ -220,9 +220,8 @@ class ConjureFormOutputState {
 
   // Get -----------------------------------------------------------------------
 
-
+  // returns object with specified pathTag
   get(pathTag = false) {
-
     // if no tag is specified, just return everything
     if (pathTag === false) { return this.truth; }
 
@@ -230,7 +229,38 @@ class ConjureFormOutputState {
     if (! (pathTag in this.pathLookup)) { return false; }
 
     // otherwise, get full path to the desired object and grab it
-    let fullPath = this.pathLookup[pathTag].slice() // .slice() makes a copy
+    let fullPath = this.pathLookup[pathTag].slice() // .slice makes a copy
+    return this.__get(fullPath);
+  }
+
+  // returns the parent of a specified pathTag
+  getParent(pathTag = false) {
+    // if no tag is specified, just return everything
+    if (pathTag === false) { return this.truth; }
+
+    // if specified tag isn't present in pathLookup, return false
+    if (! (pathTag in this.pathLookup)) { return false; }
+
+    // otherwise, get full path and trim the end of it so we stop at the parent
+    let fullPath = this.pathLookup[pathTag].slice();
+    fullPath.pop();
+    fullPath.pop();
+
+    // if parent is an array, then we need to remove the extra [i] in path to get the full array
+    //  - In the case of [parent][i][pathTag], we want to return parent, not [i]
+    if (fullPath.length - 1 > 0) {
+      if (typeof(fullPath[fullPath.length - 1]) === "number") {
+        fullPath.pop();
+      }
+    }
+
+    return this.__get(fullPath);
+  }
+
+
+  // does the work for .get() and .getParent()
+  __get(fullPath) {
+
     let temp = this.truth;
 
     // iterate through truth object until we reach the value we are looking for
@@ -253,7 +283,7 @@ class ConjureFormOutputState {
   // create a conversion table of {originalID -> newly generated random IDs}
   // pass in part of an outputObject
   getIDConversionTable(outputObject = false) {
-    if (outputObject === false) { alert('test'); return this.arrayIDConversions; }
+    if (outputObject === false) { return this.arrayIDConversions; }
     return this.__getIDConversionTable(outputObject);
   }
 

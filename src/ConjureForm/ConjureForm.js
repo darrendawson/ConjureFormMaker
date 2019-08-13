@@ -647,7 +647,8 @@ class ConjureForm {
     onInput_answerFormQuestion = () => {},
     onClick_answerMultipleChoiceQuestion = () => {},
     onClick_addNewSubformToArray = () => {},
-    idConversionTable = {}
+    idConversionTable = {},
+    lastInArray = false
   )
   {
 
@@ -663,6 +664,7 @@ class ConjureForm {
         devModeOn={devModeOn}
         selectedID={selectedID}
         formOutput={formOutput}
+        lastInArray={lastInArray}
         idConversionTable={idConversionTable}
         shadowColor={this.colors.shadowColor}
         onClick_selectForm={onClick_selectForm}

@@ -19,51 +19,6 @@ class ConjureFormOutput {
   }
 
 
-  getOutputObject() {
-    return this.outputObject.get();
-  }
-
-  getDetailsLookup() {
-    let lookup = this.detailsLookup;
-
-    // add any newly generated IDs that were created for Arrays in ConjureFormOutputState
-    for (let key in this.outputObject.arrayIDConversions) {
-      let originalID = this.outputObject.arrayIDConversions[key];
-      lookup[key] = lookup[originalID];
-    }
-
-    return lookup;
-  }
-
-
-  // public wrapper for calling this.__checkIfIDInOutput()
-  // returns true if a formID is in the output object
-  checkIfIDInOutput(id) {
-    return this.__checkIfIDInOutput(id, this.getOutputObject());
-  }
-
-  // recursive function for handling this.checkIfIDInOutput()
-  // returns true if an ID is in the ConjureFormOutput
-  __checkIfIDInOutput(id, outputObject) {
-    for (let key in outputObject) {
-      if (key === id) {
-        return true;
-      } else if (Array.isArray(outputObject[key])) {
-        for (let i = 0; i < outputObject[key].length; i++) {
-          let childResult = this.__checkIfIDInOutput(id, outputObject[key][i]);
-          if (childResult) {
-            return true;
-          }
-        }
-      } else if (typeof outputObject === "object") {
-        let childResult = this.__checkIfIDInOutput(id, outputObject[key]);
-        if (childResult) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
 
 
   // answer form questions -----------------------------------------------------
@@ -140,6 +95,7 @@ class ConjureFormOutput {
 
   // get -----------------------------------------------------------------------
 
+
   get(formID) {
     return this.outputObject.get(formID);
   }
@@ -149,9 +105,54 @@ class ConjureFormOutput {
     return this.outputObject.getIDConversionTable(formID);
   }
 
-  testGet() {
-    return this.outputObject.objArrayItemDefinitions;
+
+  getOutputObject() {
+    return this.outputObject.get();
   }
+
+  getDetailsLookup() {
+    let lookup = this.detailsLookup;
+
+    // add any newly generated IDs that were created for Arrays in ConjureFormOutputState
+    for (let key in this.outputObject.arrayIDConversions) {
+      let originalID = this.outputObject.arrayIDConversions[key];
+      lookup[key] = lookup[originalID];
+    }
+
+    return lookup;
+  }
+
+
+  // public wrapper for calling this.__checkIfIDInOutput()
+  // returns true if a formID is in the output object
+  checkIfIDInOutput(id) {
+    return this.__checkIfIDInOutput(id, this.getOutputObject());
+  }
+
+  // recursive function for handling this.checkIfIDInOutput()
+  // returns true if an ID is in the ConjureFormOutput
+  __checkIfIDInOutput(id, outputObject) {
+    for (let key in outputObject) {
+      if (key === id) {
+        return true;
+      } else if (Array.isArray(outputObject[key])) {
+        for (let i = 0; i < outputObject[key].length; i++) {
+          let childResult = this.__checkIfIDInOutput(id, outputObject[key][i]);
+          if (childResult) {
+            return true;
+          }
+        }
+      } else if (typeof outputObject === "object") {
+        let childResult = this.__checkIfIDInOutput(id, outputObject[key]);
+        if (childResult) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
 
   // declare -------------------------------------------------------------------
 

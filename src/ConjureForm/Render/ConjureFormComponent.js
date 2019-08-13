@@ -23,6 +23,8 @@ class ConjureFormComponent extends Component {
     e.stopPropagation();
     this.props.onClick_selectForm(this.getID());
   }
+
+
   // render --------------------------------------------------------------------
 
 
@@ -62,15 +64,19 @@ class ConjureFormComponent extends Component {
   // if a ConjureForm is actually supposed to be an array of other ConjureForms, then we want to render an "add new" button
   // that the user can click to create a new subform in the array
   renderAddNewButton = () => {
-
     if (this.props.formDetails.maxForms > 1) {
-      return (
-        <div>
-          <button onClick={() => this.props.onClick_addNewSubformToArray(this.getID())}>Add New</button>
-        </div>
-      );
+      let formOutputObject = this.props.formOutput.get(this.getID());
+      if (
+        (Array.isArray(formOutputObject) && formOutputObject.length === 1) ||
+        (this.props.lastInArray && this.props.formDetails.maxForms > formOutputObject.length)
+      ) {
+        return (
+          <div>
+            <button onClick={() => this.props.onClick_addNewSubformToArray(this.getID())}>Add New</button>
+          </div>
+        );
+      }
     }
-
   }
 
   // render <ConjureFormComponent/>
@@ -120,7 +126,8 @@ class ConjureFormComponent extends Component {
           let answerInput = this.props.onInput_answerFormQuestion;
           let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
           let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
-          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable);
+          let lastInArray = (i + 1 === childOutput.length) ? true : false;
+          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, lastInArray);
           childrenToRender.push(rendered);
         }
 
@@ -133,7 +140,7 @@ class ConjureFormComponent extends Component {
         let answerInput = this.props.onInput_answerFormQuestion;
         let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
         let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
-        let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable);
+        let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, false);
         childrenToRender.push(rendered);
       }
     }
