@@ -142,6 +142,11 @@ class ConjureFormOutput {
   getIDConversionTable(formID) {
     return this.outputObject.getIDConversionTable(formID);
   }
+
+  testGet() {
+    return this.outputObject.objArrayItemDefinitions;
+  }
+
   // declare -------------------------------------------------------------------
 
   declareNewArrayItem(arrayID) {

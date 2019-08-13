@@ -88,8 +88,6 @@ class ConjureFormItemComponent extends Component {
 
       let formOutput = this.props.formOutput;
       let selectedChoices = formOutput.get(this.getID());
-      console.log(this.getID())
-      console.log(selectedChoices);
 
       return (
         <div>

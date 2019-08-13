@@ -202,6 +202,8 @@ class ConjureFormOutputState {
 
       if (Array.isArray(value) && value.length > 0 && typeof(value[0]) === "object") {
         newObj[newID] = this.replaceAllIDsInObject(value[0], {}, usedIDs);
+      } else if (Array.isArray(value)) {
+        newObj[newID] = [];
       } else if (typeof(value) === "object") {
         newObj[newID] = this.replaceAllIDsInObject(value, {}, usedIDs);
       } else {
