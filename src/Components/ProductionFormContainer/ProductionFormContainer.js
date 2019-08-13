@@ -25,10 +25,11 @@ class ProductionFormContainer extends Component {
     let selectedID = false;                    // there is no such thing as a selected form in production
     let onInput_answerFormQuestion = this.props.onInput_answerFormQuestion;
     let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
+    let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
     return (
       <div id="ProductionFormContainer" style={{'background-color': this.props.backgroundColor}}>
         <div id="form_container">
-          {conjureForm.render(formOutput, selectForm, devModeOn, selectedID, onInput_answerFormQuestion, answerMC)}
+          {conjureForm.render(formOutput, selectForm, devModeOn, selectedID, onInput_answerFormQuestion, answerMC, addNewSubformToArray)}
         </div>
       </div>
     );

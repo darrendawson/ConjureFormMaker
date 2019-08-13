@@ -645,7 +645,8 @@ class ConjureForm {
     devModeOn = false,
     selectedID,
     onInput_answerFormQuestion = () => {},
-    onClick_answerMultipleChoiceQuestion = () => {}
+    onClick_answerMultipleChoiceQuestion = () => {},
+    onClick_addNewSubformToArray = () => {}
   )
   {
 
@@ -665,6 +666,7 @@ class ConjureForm {
         onClick_selectForm={onClick_selectForm}
         onInput_answerFormQuestion={onInput_answerFormQuestion}
         onClick_answerMultipleChoiceQuestion={onClick_answerMultipleChoiceQuestion}
+        onClick_addNewSubformToArray={onClick_addNewSubformToArray}
       />
     );
   }

@@ -24,7 +24,15 @@ class ConjureFormOutput {
   }
 
   getDetailsLookup() {
-    return this.detailsLookup;
+    let lookup = this.detailsLookup;
+
+    // add any newly generated IDs that were created for Arrays in ConjureFormOutputState
+    for (let key in this.outputObject.arrayIDConversions) {
+      let originalID = this.outputObject.arrayIDConversions[key];
+      lookup[key] = lookup[originalID];
+    }
+    
+    return lookup;
   }
 
 
@@ -130,6 +138,11 @@ class ConjureFormOutput {
     return this.outputObject.get(formID);
   }
 
+  // declare -------------------------------------------------------------------
+
+  declareNewArrayItem(arrayID) {
+    this.outputObject.declareNewArrayItem(arrayID);
+  }
   // render --------------------------------------------------------------------
 
   render(selectedID = false, renderTextClickable = false, onClick_selectFormSection = () => {}) {

@@ -182,9 +182,8 @@ class ConjureFormOutputState {
 
   // parentID is the parent that contains the array we want to insert into
   // {parentID: [{item we want to duplicate}]}
-  insertNewArrayItem(parentID) {
+  declareNewArrayItem(parentID) {
     let array = this.get(parentID);
-
     let itemDefinition = this.objArrayItemDefinitions[parentID];
     itemDefinition = this.replaceAllIDsInObject(itemDefinition);
 
@@ -194,6 +193,7 @@ class ConjureFormOutputState {
 
 
   replaceAllIDsInObject(oldObj, newObj = {}, usedIDs = Object.keys(this.pathLookup)) {
+
     for (const [key, value] of Object.entries(oldObj)) {
 
       let newID = this.getNewUniqueID(usedIDs);
@@ -225,7 +225,7 @@ class ConjureFormOutputState {
     if (pathTag === false) { return this.truth; }
 
     // if specified tag isn't present in pathLookup, return false
-    if (! pathTag in this.pathLookup) { return false; }
+    if (! (pathTag in this.pathLookup)) { return false; }
 
     // otherwise, get full path to the desired object and grab it
     let fullPath = this.pathLookup[pathTag].slice() // .slice() makes a copy

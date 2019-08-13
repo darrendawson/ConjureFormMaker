@@ -279,6 +279,12 @@ class App extends Component {
     this.update(formOutput, PT_formOutput);
   }
 
+  onClick_addNewSubformToArray = (arrayID) => {
+    let formOutput = this.state.truth[PT_formOutput];
+    formOutput.declareNewArrayItem(arrayID);
+    this.update(formOutput, PT_formOutput);
+  }
+
   // render --------------------------------------------------------------------
 
 
@@ -380,6 +386,7 @@ class App extends Component {
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
             onInput_answerFormQuestion={this.onInput_answerFormQuestion}
             onClick_answerMultipleChoiceQuestion={this.onClick_answerMultipleChoiceQuestion}
+            onClick_addNewSubformToArray={this.onClick_addNewSubformToArray}
           />
         </div>
       );

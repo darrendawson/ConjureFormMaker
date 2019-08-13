@@ -52,6 +52,20 @@ class ConjureFormComponent extends Component {
   }
 
 
+  // if a ConjureForm is actually supposed to be an array of other ConjureForms, then we want to render an "add new" button
+  // that the user can click to create a new subform in the array
+  renderAddNewButton = () => {
+
+    if (this.props.formDetails.maxForms > 1) {
+      return (
+        <div>
+          <button onClick={() => this.props.onClick_addNewSubformToArray(this.props.formID)}>Add New</button>
+        </div>
+      );
+    }
+
+  }
+
   // render <ConjureFormComponent/>
   // - because ConjureForm can have ConjureForms and ConjureFormItems as children,
   //      we need to call their render functions as well:
@@ -65,25 +79,55 @@ class ConjureFormComponent extends Component {
 
     let childrenToRender = [];
 
+    //console.log(this.props.formOutput.get(this.props.formID));
+
     // for each child, call their render function
     for (let i = 0; i < this.props.order.length; i++) {
 
+
       // get full child object from this.subforms or this.items
-      let id = this.props.order[i]["id"];
+      let childID = this.props.order[i]["id"];
       let child;
       if (this.props.order[i]["type"] === "ConjureForm") {
-        child = this.props.subforms[id];
+        child = this.props.subforms[childID];
       } else if (this.props.order[i]["type"] === "ConjureFormItem"){
-        child = this.props.items[id];
+        child = this.props.items[childID];
       }
 
-      let formOutput = this.props.formOutput;
-      let selectForm = this.props.onClick_selectForm;
-      let devModeOn = this.props.devModeOn;
-      let answerInput = this.props.onInput_answerFormQuestion;
-      let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
-      let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC);
-      childrenToRender.push(rendered);
+
+      // handle case that child is an array of subforms AND has multiple forms active in output
+      let childOutput = this.props.formOutput.get(childID);
+      if (this.props.order[i]["type"] === "ConjureForm" &&
+          child.formDetails.maxForms > 1 &&
+          childOutput !== false &&
+          Array.isArray(childOutput) &&
+          childOutput.length > 1
+        ) {
+
+        // iterate over the output and add items for each
+        for (let i = 0; i < childOutput.length; i++) {
+
+          let formOutput = this.props.formOutput;
+          let selectForm = this.props.onClick_selectForm;
+          let devModeOn = this.props.devModeOn;
+          let answerInput = this.props.onInput_answerFormQuestion;
+          let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
+          let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
+          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray);
+          childrenToRender.push(rendered);
+        }
+
+      // otherwise, just render the child normally
+      } else {
+        let formOutput = this.props.formOutput;
+        let selectForm = this.props.onClick_selectForm;
+        let devModeOn = this.props.devModeOn;
+        let answerInput = this.props.onInput_answerFormQuestion;
+        let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
+        let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
+        let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray);
+        childrenToRender.push(rendered);
+      }
     }
 
 
@@ -109,6 +153,7 @@ class ConjureFormComponent extends Component {
           className={this.getContainerCSS(this.props.containerType)}
           style={this.getContainerStyling(this.props.containerType)}>
           {childrenToRender}
+          {this.renderAddNewButton()}
           {this.renderEmptySpace()}
         </div>
       </div>
