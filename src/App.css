@@ -4,7 +4,7 @@ html { font-family: 'Inter', sans-serif; }
   html { font-family: 'Inter var', sans-serif; }
 }
 
-h1, h2, h3, p {
+h1, h2, h3, p, button {
   font-family: 'Inter var';
 }
 

@@ -440,6 +440,7 @@ class ConjureForm {
     } else if (containerType === "card") {
       this.colors.backgroundColor = colors.card;
       this.colors.shadowColor = colors.shadow;
+      this.colors.titleColor = colors.title;
     }
 
 
@@ -652,6 +653,7 @@ class ConjureForm {
   )
   {
 
+    console.log(this.colors);
     return (
       <ConjureFormComponent
         subforms={this.subforms}
@@ -661,12 +663,13 @@ class ConjureForm {
         containerType={this.formDetails.containerType}
         formID={this.formID}
         backgroundColor={this.colors.backgroundColor}
+        shadowColor={this.colors.shadowColor}
+        titleColor={this.colors.titleColor}
         devModeOn={devModeOn}
         selectedID={selectedID}
         formOutput={formOutput}
         lastInArray={lastInArray}
         idConversionTable={idConversionTable}
-        shadowColor={this.colors.shadowColor}
         onClick_selectForm={onClick_selectForm}
         onInput_answerFormQuestion={onInput_answerFormQuestion}
         onClick_answerMultipleChoiceQuestion={onClick_answerMultipleChoiceQuestion}

@@ -71,8 +71,13 @@ class ConjureFormComponent extends Component {
         (this.props.lastInArray && this.props.formDetails.maxForms > formOutputObject.length)
       ) {
         return (
-          <div>
-            <button onClick={() => this.props.onClick_addNewSubformToArray(this.getID())}>Add New</button>
+          <div id="new_array_subform_button_container">
+            <button
+              id="new_array_subform_button"
+              style={{'background-color': this.props.titleColor, 'color': this.props.backgroundColor}}
+              onClick={() => this.props.onClick_addNewSubformToArray(this.getID())}>
+              Add New
+            </button>
           </div>
         );
       }
