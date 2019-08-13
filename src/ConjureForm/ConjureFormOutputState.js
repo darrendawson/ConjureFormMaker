@@ -286,6 +286,15 @@ class ConjureFormOutputState {
   }
 
 
+  // gets the originalID for an ID (if the ID is the original, just return it)
+  convertID(id) {
+    if (id in this.arrayIDConversions) {
+      return this.arrayIDConversions[id];
+    }
+    return id;
+  }
+
+
 }
 
 export default ConjureFormOutputState;

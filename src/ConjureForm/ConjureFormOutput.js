@@ -84,7 +84,13 @@ class ConjureFormOutput {
   answerMultipleChoiceQuestion(value, questionID) {
 
     // get details about this question, such as minSelected and maxSelected
-    let questionDetails = this.detailsLookup[questionID];
+    let questionDetails;
+    if (questionID in this.detailsLookup) {
+      questionDetails = this.detailsLookup[questionID];
+    } else {
+      let convertedID = this.outputObject.convertID(questionID);
+      questionDetails = this.detailsLookup[convertedID];
+    }
 
     // get current answer
     let currentAnswer = this.outputObject.get(questionID);
