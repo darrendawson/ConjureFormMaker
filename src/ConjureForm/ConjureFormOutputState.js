@@ -108,7 +108,7 @@ class ConjureFormOutputState {
 
       // if this is an array, we want to register its contents
       if (Array.isArray(value) && value.length > 0 && typeof(value[0]) === 'object') {
-        this.objArrayItemDefinitions[key] = value[0];   // register the array item definition
+        this.objArrayItemDefinitions[key] = this.__createCopy(value[0]);   // register the array item definition
         this.registerArrayItemDefinitions(value[0]);    // recurse on the array item to find nested arrays
 
       // if this is an object, recurse
@@ -116,6 +116,12 @@ class ConjureFormOutputState {
         this.registerArrayItemDefinitions(value);
       }
     }
+  }
+
+  // use this function when you want to create a copy of an object (to avoid referencing issues)
+  // Using JSON this way isn't ideal, but it should work for any object that is compatible with Ustra
+  __createCopy(oldObj) {
+    return JSON.parse(JSON.stringify(oldObj));
   }
 
 
