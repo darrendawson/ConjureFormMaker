@@ -654,7 +654,6 @@ class ConjureForm {
   )
   {
 
-    console.log(this.colors);
     return (
       <ConjureFormComponent
         subforms={this.subforms}

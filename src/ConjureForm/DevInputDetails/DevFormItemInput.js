@@ -166,6 +166,15 @@ class DevFormItemInput extends Component {
             onChange={this.onInput_updateItemDetail.bind(this, "defaultValue")}
           />
         </div>
+
+        <div className="input_row">
+          <h3 className="input_title">Input Prompt</h3>
+          <input
+            className="form_input"
+            value={this.props.itemDetails.inputPrompt}
+            onChange={this.onInput_updateItemDetail.bind(this, "inputPrompt")}
+          />
+        </div>
       </div>
 
     );

@@ -73,10 +73,15 @@ class ConjureFormItemComponent extends Component {
 
     // render <FormQuestionInput/>
     if (itemDetails.questionType === "input") {
+
+      let value = this.props.formOutput.get(this.getID());
+
       return (
         <div>
           <FormQuestionInput
             itemID={this.getID()}
+            inputValue={value}
+            prompt={itemDetails.inputPrompt}
             onInput_answerFormQuestion={this.props.onInput_answerFormQuestion}
             devModeOn={this.props.devModeOn}
           />

@@ -15,13 +15,17 @@ class FormQuestionInput extends Component {
     if (this.props.devModeOn) {
       return (
         <div id="FormQuestionInput">
-          <input placeholder="placeholder"/>
+          <input placeholder={this.props.prompt} value={this.props.inputValue}/>
         </div>
       );
     } else {
       return (
         <div id="FormQuestionInput">
-          <input placeholder="placeholder" onChange={this.props.onInput_answerFormQuestion.bind(this, this.props.itemID)}/>
+          <input
+            placeholder={this.props.prompt}
+            value={this.props.inputValue} 
+            onChange={this.props.onInput_answerFormQuestion.bind(this, this.props.itemID)}
+          />
 
         </div>
       );
