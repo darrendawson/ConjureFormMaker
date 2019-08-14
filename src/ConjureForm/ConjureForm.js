@@ -35,7 +35,8 @@ class ConjureForm {
     this.formDetails = {
       "containerType": formType,
       "outputID": this.formID,
-      "maxForms": 1
+      "maxForms": 1,
+      "newSubformButtonText": "Add New"
     };
 
     // determine colors

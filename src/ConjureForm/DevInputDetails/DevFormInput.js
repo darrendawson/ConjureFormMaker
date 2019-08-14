@@ -49,8 +49,26 @@ class DevFormInput extends Component {
             onChange={this.onInput_updateFormDetail.bind(this, "maxForms")}
           />
         </div>
+
+        {this.renderNewSubformArrayButton()}
       </div>
     );
+  }
+
+
+  renderNewSubformArrayButton = () => {
+    if (this.props.formDetails.maxForms > 1) {
+      return (
+        <div className="input_row">
+          <h3 className="input_title">New Subform Text</h3>
+          <input
+            className="form_input"
+            value={this.props.formDetails.newSubformButtonText}
+            onChange={this.onInput_updateFormDetail.bind(this, "newSubformButtonText")}
+          />
+        </div>
+      );
+    }
   }
 
   // render form output --------------------------------------------------------

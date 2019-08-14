@@ -76,7 +76,7 @@ class ConjureFormComponent extends Component {
               id="new_array_subform_button"
               style={{'background-color': this.props.titleColor, 'color': this.props.backgroundColor}}
               onClick={() => this.props.onClick_addNewSubformToArray(this.getID())}>
-              Add New
+              {this.props.formDetails.newSubformButtonText}
             </button>
           </div>
         );
