@@ -218,6 +218,20 @@ class ConjureFormOutputState {
   }
 
 
+  // delete --------------------------------------------------------------------
+
+  // given the pathtag for an array, remove the item at a given index in that array
+  deleteArrayItem(arrayID, arrayIndex) {
+    let oldArray = this.get(arrayID);
+    let newArray = [];
+    for (let i = 0; i < oldArray.length; i++) {
+      if (i !== arrayIndex) {
+        newArray.push(oldArray[i]);
+      }
+    }
+    this.updateArray(newArray, arrayID);
+  }
+
   // Get -----------------------------------------------------------------------
 
   // returns object with specified pathTag

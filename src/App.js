@@ -285,6 +285,12 @@ class App extends Component {
     this.update(formOutput, PT_formOutput);
   }
 
+  onClick_removeSubformFromArray = (arrayID, subformIndex) => {
+    let formOutput = this.state.truth[PT_formOutput];
+    formOutput.removeArrayItem(arrayID, subformIndex);
+    this.update(formOutput, PT_formOutput);
+  }
+
   // render --------------------------------------------------------------------
 
 
@@ -387,6 +393,7 @@ class App extends Component {
             onInput_answerFormQuestion={this.onInput_answerFormQuestion}
             onClick_answerMultipleChoiceQuestion={this.onClick_answerMultipleChoiceQuestion}
             onClick_addNewSubformToArray={this.onClick_addNewSubformToArray}
+            onClick_removeSubformFromArray={this.onClick_removeSubformFromArray}
           />
         </div>
       );

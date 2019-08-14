@@ -189,7 +189,7 @@ class ConjureFormItem {
   // renders <ConjureFormItemomponent/>
   // arguments are runtime values / functions that make it work in production
   // addNewSubformToArray() won't be used, but is placed here for simplicity for ConjureForm
-  // lastInArray also won't be used for the same reason
+  // indexInArray and onClick_removeSubformFromArray() also won't be used for the same reason
   render(
     formOutput = {},
     onClick_selectForm = () => {},
@@ -199,7 +199,8 @@ class ConjureFormItem {
     onClick_answerMultipleChoiceQuestion = () => {},
     addNewSubformToArray = () => {},
     idConversionTable = {},
-    lastInArray = false
+    indexInArray = -1,
+    onClick_removeSubformFromArray = () => {}
   )
   {
 

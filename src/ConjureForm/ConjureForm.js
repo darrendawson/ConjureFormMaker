@@ -650,7 +650,8 @@ class ConjureForm {
     onClick_answerMultipleChoiceQuestion = () => {},
     onClick_addNewSubformToArray = () => {},
     idConversionTable = {},
-    lastInArray = false
+    indexInArray = -1,
+    onClick_removeSubformFromArray = () => {}
   )
   {
 
@@ -668,12 +669,13 @@ class ConjureForm {
         devModeOn={devModeOn}
         selectedID={selectedID}
         formOutput={formOutput}
-        lastInArray={lastInArray}
+        indexInArray={indexInArray}
         idConversionTable={idConversionTable}
         onClick_selectForm={onClick_selectForm}
         onInput_answerFormQuestion={onInput_answerFormQuestion}
         onClick_answerMultipleChoiceQuestion={onClick_answerMultipleChoiceQuestion}
         onClick_addNewSubformToArray={onClick_addNewSubformToArray}
+        onClick_removeSubformFromArray={onClick_removeSubformFromArray}
       />
     );
   }

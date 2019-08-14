@@ -53,6 +53,29 @@
   padding-right: 15px;
 }
 
+#ConjureFormComponent #dismiss_subform_button_row {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#ConjureFormComponent #dismiss_subform_button_row #dismiss_subform_button {
+  border: none;
+  cursor: pointer;
+  width: 100px;
+  text-align: right;
+  border: 1px solid black;
+  border-radius: 13px;
+  height: 26px;
+  width: 26px;
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+
+
 /* <ConjureFormItemComponent/> -----------------------------------------------*/
 
 #ConjureFormItemComponent {

@@ -66,9 +66,12 @@ class ConjureFormComponent extends Component {
   renderAddNewButton = () => {
     if (this.props.formDetails.maxForms > 1) {
       let formOutputObject = this.props.formOutput.get(this.getID());
+
+      // if there is only one form, render "add New Button"
+      // OR, if array isn't full and this is the last subform in the array, render the button
       if (
         (Array.isArray(formOutputObject) && formOutputObject.length === 1) ||
-        (this.props.lastInArray && this.props.formDetails.maxForms > formOutputObject.length)
+        (Array.isArray(formOutputObject) && (formOutputObject.length === this.props.indexInArray + 1) && (this.props.formDetails.maxForms > formOutputObject.length))
       ) {
         return (
           <div id="new_array_subform_button_container">
@@ -83,6 +86,27 @@ class ConjureFormComponent extends Component {
       }
     }
   }
+
+  // for arrays of subforms, render a menu with the option to dismiss
+  renderDismissButton = () => {
+    if (this.props.formDetails.maxForms > 1) {
+      let formOutputObject = this.props.formOutput.get(this.getID());
+      if (Array.isArray(formOutputObject) && formOutputObject.length > 1 && this.props.indexInArray !== 0) {
+        return (
+          <div id="dismiss_subform_button_row">
+            <button
+              id="dismiss_subform_button"
+              style={{'background-color': this.props.backgroundColor, 'color': this.props.titleColor, 'border-color': this.props.titleColor}}
+              onClick={() => this.props.onClick_removeSubformFromArray(this.getID(), this.props.indexInArray)}>
+              X
+            </button>
+          </div>
+        );
+      }
+    }
+  }
+
+
 
   // render <ConjureFormComponent/>
   // - because ConjureForm can have ConjureForms and ConjureFormItems as children,
@@ -131,8 +155,9 @@ class ConjureFormComponent extends Component {
           let answerInput = this.props.onInput_answerFormQuestion;
           let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
           let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
-          let lastInArray = (i + 1 === childOutput.length) ? true : false;
-          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, lastInArray);
+          let indexInArray = i;
+          let removeSubform = this.props.onClick_removeSubformFromArray;
+          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, indexInArray, removeSubform);
           childrenToRender.push(rendered);
         }
 
@@ -145,7 +170,8 @@ class ConjureFormComponent extends Component {
         let answerInput = this.props.onInput_answerFormQuestion;
         let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
         let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
-        let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, false);
+        let removeSubform = this.props.onClick_removeSubformFromArray;
+        let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, -1, removeSubform);
         childrenToRender.push(rendered);
       }
     }
@@ -172,6 +198,7 @@ class ConjureFormComponent extends Component {
         <div
           className={this.getContainerCSS(this.props.containerType)}
           style={this.getContainerStyling(this.props.containerType)}>
+          {this.renderDismissButton()}
           {childrenToRender}
           {this.renderEmptySpace()}
         </div>

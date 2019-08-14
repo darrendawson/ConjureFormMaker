@@ -159,6 +159,14 @@ class ConjureFormOutput {
   declareNewArrayItem(arrayID) {
     this.outputObject.declareNewArrayItem(arrayID);
   }
+
+  // remove --------------------------------------------------------------------
+
+  removeArrayItem(arrayID, arrayIndex) {
+    this.outputObject.deleteArrayItem(arrayID, arrayIndex);
+  }
+
+
   // render --------------------------------------------------------------------
 
   render(selectedID = false, renderTextClickable = false, onClick_selectFormSection = () => {}) {
