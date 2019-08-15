@@ -114,3 +114,19 @@
   margin-right: 20px;
   border-radius: 2px;
 }
+
+#FormSidebar #devform_input_container_tall {
+  width: 100%;
+  height: calc(100% - 60px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+#FormSidebar #devform_input_container_short {
+  width: 100%;
+  height: calc(100% - 60px - 50px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}

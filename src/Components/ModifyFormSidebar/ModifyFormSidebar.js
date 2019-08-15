@@ -56,29 +56,41 @@ class FormSidebar extends Component {
       return;
     }
 
+
+    // get height of the scroll container
+    let scrollContainer_CSS = "devform_input_container_tall";
+    if (this.state.createNewFormBarOpen) {
+      scrollContainer_CSS = "devform_input_container_short";
+    }
+
     // otherwise, render Inputs so user can modify ConjureForm / ConjureFormItem details
     if (selectedSection.getClassName() === "ConjureForm") {
       return (
-        <DevFormInput
-          formDetails={selectedSection.formDetails}
-          selectedID={selectedSection.formID}
-          formOutput={this.props.formOutput}
-          onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
-          onClick_selectFormSection={this.props.onClick_selectFormSection}
-        />
+        <div id={scrollContainer_CSS}>
+          <DevFormInput
+            formDetails={selectedSection.formDetails}
+            selectedID={selectedSection.formID}
+            formOutput={this.props.formOutput}
+            onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
+            onClick_selectFormSection={this.props.onClick_selectFormSection}
+          />
+        </div>
+
       );
     } else if (selectedSection.getClassName() === "ConjureFormItem") {
       return (
-        <DevFormItemInput
-          itemType={selectedSection.itemType}
-          itemDetails={selectedSection.getItemDetails()}
-          selectedID={selectedSection.itemID}
-          selectedSection={selectedSection}
-          formOutput={this.props.formOutput}
-          onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
-          onClick_selectFormSection={this.props.onClick_selectFormSection}
-          onClick_updateWholeSection={this.props.onClick_updateWholeSection}
-        />
+        <div id={scrollContainer_CSS}>
+          <DevFormItemInput
+            itemType={selectedSection.itemType}
+            itemDetails={selectedSection.getItemDetails()}
+            selectedID={selectedSection.itemID}
+            selectedSection={selectedSection}
+            formOutput={this.props.formOutput}
+            onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
+            onClick_selectFormSection={this.props.onClick_selectFormSection}
+            onClick_updateWholeSection={this.props.onClick_updateWholeSection}
+          />
+        </div>
       );
     }
   }

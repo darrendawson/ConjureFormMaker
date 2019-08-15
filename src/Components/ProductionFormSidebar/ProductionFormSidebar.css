@@ -44,4 +44,8 @@
 #ProductionFormSidebar #render_form_output_container {
   width: calc(100% - 40px);
   padding: 20px;
+  height: calc(100% - 60px - 40px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
