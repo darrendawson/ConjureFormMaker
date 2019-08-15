@@ -8,15 +8,27 @@
 #RenderFormOutputObject .text {
   margin: 2px;
   color: white;
-  font-size: 1.2em;
+  font-size: 1.1em;
+}
+
+#RenderFormOutputObject .text_banned {
+  margin: 2px;
+  color: grey;
+  font-size: 1.1em;
+}
+
+#RenderFormOutputObject .text_clickable {
+  font-size: 1.1em;
 }
 
 #RenderFormOutputObject .text_clickable:hover {
   color: #f7ba02;
   cursor: pointer;
+  font-size: 1.1em;
 }
 
 #RenderFormOutputObject .text_clickable_selected {
   background-color: #f7ba02;
   color: #282828;
+  font-size: 1.1em;
 }

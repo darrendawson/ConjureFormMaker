@@ -11,6 +11,24 @@ class RenderFormOutputObject extends Component {
     super();
   }
 
+
+  // returns true if a given formID has been banned
+  checkIfIDBanned = (formID) => {
+    if (Array.isArray(this.props.bannedIDs) && (this.props.bannedIDs.indexOf(formID) >= 0)) {
+      return true;
+    }
+    return false;
+  }
+  
+  // onClick -------------------------------------------------------------------
+
+  onClick_selectFormSection = (formID) => {
+    if (! this.checkIfIDBanned(formID)) {
+      this.props.onClick_selectFormSection(formID);
+    }
+  }
+
+
   // render --------------------------------------------------------------------
 
   // gets the appropriate number of spaces for an object nested at a certain depth
@@ -24,7 +42,12 @@ class RenderFormOutputObject extends Component {
 
 
   renderParameterName = (formID, outputName) => {
-    if (this.props.renderTextClickable === false) {
+
+    if (this.checkIfIDBanned(formID)) {
+      return (
+        <span className="text_banned">{outputName}</span>
+      );
+    } else if (this.props.renderTextClickable === false) {
       return (
         <span className="text">{outputName}</span>
       );
@@ -49,7 +72,7 @@ class RenderFormOutputObject extends Component {
     if (Array.isArray(obj)) {
 
       for (let i = 0; i < obj.length; i++) {
-        //result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {leftBracket}</pre>)
+        //result.push(<pre className="text" onClick={() => this.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {leftBracket}</pre>)
         result.push(<pre className="text">{paddingLeft}{__leftBracketChar}</pre>);
         result.push(this.renderObject(obj[i], depth + 1));
         result.push(<pre className="text">{paddingLeft}{__rightBracketChar}</pre>);
@@ -77,7 +100,7 @@ class RenderFormOutputObject extends Component {
             rightBracket = "]";
           }
 
-          result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {leftBracket}</pre>)
+          result.push(<pre className="text" onClick={() => this.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {leftBracket}</pre>)
           result.push(this.renderObject(obj[formID], depth + 1));
 
           // render } to end current subform object. logic used to render with or without comma
@@ -93,9 +116,9 @@ class RenderFormOutputObject extends Component {
 
           // render } to end current subform object. logic used to render with or without comma
           if (i < numSubforms) {
-            result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {itemDefaultValue},</pre>)
+            result.push(<pre className="text" onClick={() => this.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {itemDefaultValue},</pre>)
           } else {
-            result.push(<pre className="text" onClick={() => this.props.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {itemDefaultValue}</pre>)
+            result.push(<pre className="text" onClick={() => this.onClick_selectFormSection(formID)}>{paddingLeft}{parameterName}: {itemDefaultValue}</pre>)
           }
         }
 

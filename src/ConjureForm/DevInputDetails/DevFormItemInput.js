@@ -307,8 +307,33 @@ class DevFormItemInput extends Component {
 
   renderConditionalMaker = () => {
     if (this.props.itemDetails.renderConditionally) {
+
+      let outputObject = this.props.formOutput.getOutputObject();
+      let detailsLookup = this.props.formOutput.getDetailsLookup();
+
+      // get the IDs for all multiple choice questions
+      let mc_IDs = [];
+      let nonMC_IDs = [];
+      for (let key in detailsLookup) {
+        if (('questionType' in detailsLookup[key]) && (detailsLookup[key]['questionType'] === 'multipleChoice')) {
+          mc_IDs.push(key);
+        } else {
+          nonMC_IDs.push(key);
+        }
+      }
+
       return (
-        <ConditionalMaker/>
+        <div className="input_row">
+          <ConditionalMaker
+            selectedID={this.props.selectedID}
+            condition={this.props.itemDetails.renderCondition}
+            formOutputObject={outputObject}
+            formDetailsLookup={detailsLookup}
+            bannedIDs={nonMC_IDs}
+            onClick_selectFormSection={() => alert('test')}
+          />
+        </div>
+
       );
     }
   }
@@ -322,8 +347,8 @@ class DevFormItemInput extends Component {
       <div id="DevFormItemInput">
         {this.renderFormOutputDetails()}
         {this.renderFormItemText()}
-        {this.renderConditionals()}
         {this.renderFormItemQuestion()}
+        {this.renderConditionals()}
       </div>
     );
   }

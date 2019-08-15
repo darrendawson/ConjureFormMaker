@@ -176,6 +176,7 @@ class ConjureFormOutput {
         formOutputObject={this.getOutputObject()}
         formDetailsLookup={this.getDetailsLookup()}
         renderTextClickable={renderTextClickable}
+        bannedIDs={[]}
         onClick_selectFormSection={onClick_selectFormSection}
       />
     );
