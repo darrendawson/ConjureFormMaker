@@ -321,16 +321,18 @@ class DevFormItemInput extends Component {
           nonMC_IDs.push(key);
         }
       }
+      nonMC_IDs.push(this.props.selectedID); // we don't want a question to be conditionally dependent on itself
 
       return (
         <div className="input_row">
           <ConditionalMaker
-            selectedID={this.props.selectedID}
             condition={this.props.itemDetails.renderCondition}
             formOutputObject={outputObject}
             formDetailsLookup={detailsLookup}
             bannedIDs={nonMC_IDs}
-            onClick_selectFormSection={() => alert('test')}
+            questionConditionID={this.props.itemDetails.renderCondition.questionID}
+            questionConditionValue={this.props.itemDetails.renderCondition.questionValue}
+            onClick_updateItemDetail={this.onClick_updateItemDetail}
           />
         </div>
 
