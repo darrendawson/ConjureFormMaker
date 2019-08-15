@@ -50,7 +50,7 @@ class DevFormItemInput extends Component {
   renderFormItemText = () => {
     if (this.props.itemType === "text") {
       return (
-        <div className="form_input_container">
+        <div className="form_input_container with_margin">
 
           <h1 className="section_title">Text Details</h1>
 
@@ -104,7 +104,7 @@ class DevFormItemInput extends Component {
 
 
     return (
-      <div className="form_input_container">
+      <div className="form_input_container with_margin">
 
         <h1 className="section_title">Question Details</h1>
         <div className="input_row">
@@ -247,7 +247,7 @@ class DevFormItemInput extends Component {
     }
 
     return (
-      <div className="form_input_container">
+      <div className="form_input_container with_margin">
         <h1 className="section_title">Output Object</h1>
 
 
@@ -291,7 +291,7 @@ class DevFormItemInput extends Component {
     }
 
     return (
-      <div className="form_input_container">
+      <div className="form_input_container with_margin">
         <h1 className="section_title">Conditional Render</h1>
 
         <div className="input_row">

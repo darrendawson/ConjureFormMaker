@@ -26,7 +26,11 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+}
+
+#DevFormItemInput .form_input_container.with_margin {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .form_input_container .input_row {
