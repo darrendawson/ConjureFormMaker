@@ -60,7 +60,9 @@ class ConjureFormItem {
         "inputType": "string",
         "inputPrompt": "prompt...",
         "defaultValue": "",
-        "outputID": itemID
+        "outputID": itemID,
+        "renderConditionally": false,
+        "renderCondition": {'questionID': false, 'questionValue': false}
       };
     }
 

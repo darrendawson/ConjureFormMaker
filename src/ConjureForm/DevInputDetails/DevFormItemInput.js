@@ -5,7 +5,8 @@
 import React, { Component } from 'react';
 import './DevFormInput.css';
 
-import MultipleChoiceMaker from './MultipleChoiceMaker/MultipleChoiceMaker';
+import MultipleChoiceMaker from './MultipleChoiceMaker/MultipleChoiceMaker.js';
+import ConditionalMaker from './ConditionalMaker/ConditionalMaker.js';
 
 import ConjureFormConstants from '../ConjureFormConstants.js';
 const __conjureConstants = new ConjureFormConstants();
@@ -269,6 +270,50 @@ class DevFormItemInput extends Component {
   }
 
 
+  // render conditionals -------------------------------------------------------
+  /*
+    Conditional render is a section for specifying when a ConjureForm/ConjureFormItem should be rendered
+    For example:
+      - User is filling out a ConjureForm for creating sql
+      - User is adding columns to a table
+      - if a user specifies the column type as being a VARCHAR, it'll render additional questions like LENGTH
+      - if a user specifies the column type as being a DOUBLE, it'll render additional questions like number of digits
+      - These conditionals allow this type of functionality
+  */
+
+  renderConditionals = () => {
+
+    let alwaysButton_CSS = "button_selected";
+    let conditionallyButton_CSS = "button";
+    if (this.props.itemDetails.renderConditionally) {
+      alwaysButton_CSS = "button";
+      conditionallyButton_CSS = "button_selected";
+    }
+
+    return (
+      <div className="form_input_container">
+        <h1 className="section_title">Conditional Render</h1>
+
+        <div className="input_row">
+          <h3 className="input_title">When to Render</h3>
+          <button className={alwaysButton_CSS} onClick={() => this.onClick_updateItemDetail("renderConditionally", false)}>Always</button>
+          <button className={conditionallyButton_CSS} onClick={() => this.onClick_updateItemDetail("renderConditionally", true)}>Conditionally</button>
+        </div>
+
+        {this.renderConditionalMaker()}
+      </div>
+    );
+  }
+
+  renderConditionalMaker = () => {
+    if (this.props.itemDetails.renderConditionally) {
+      return (
+        <ConditionalMaker/>
+      );
+    }
+  }
+
+
   // render --------------------------------------------------------------------
 
 
@@ -277,6 +322,7 @@ class DevFormItemInput extends Component {
       <div id="DevFormItemInput">
         {this.renderFormOutputDetails()}
         {this.renderFormItemText()}
+        {this.renderConditionals()}
         {this.renderFormItemQuestion()}
       </div>
     );

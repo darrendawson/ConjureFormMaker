@@ -36,7 +36,9 @@ class ConjureForm {
       "containerType": formType,
       "outputID": this.formID,
       "maxForms": 1,
-      "newSubformButtonText": "Add New"
+      "newSubformButtonText": "Add New",
+      "renderConditionally": false,
+      "renderCondition": {'questionID': false, 'questionValue': false}
     };
 
     // determine colors
