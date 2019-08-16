@@ -152,6 +152,27 @@ class ConjureFormOutput {
     return false;
   }
 
+  // returns the IDs for all items nested within a ConjureForm
+  getAllChildIDs(formID) {
+    let obj = this.outputObject.get(formID);
+    let childIDs = this.__getAllChildIDs(obj);
+    return childIDs;
+  }
+
+  // recursively gets the IDs for all children in an object
+  __getAllChildIDs(obj, childIDs = []) {
+    if (Array.isArray(obj)) {
+      for (let i = 0; i < obj.length; i++) {
+        childIDs = this.__getAllChildIDs(obj[i], childIDs);
+      }
+    } else if (typeof(obj) === "object") {
+      for (let key in obj) {
+        childIDs.push(key);
+        childIDs = this.__getAllChildIDs(obj[key], childIDs);
+      }
+    }
+    return childIDs;
+  }
 
 
   // declare -------------------------------------------------------------------

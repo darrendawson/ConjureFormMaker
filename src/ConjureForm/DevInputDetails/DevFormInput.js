@@ -155,16 +155,19 @@ class DevFormInput extends Component {
       let detailsLookup = this.props.formOutput.getDetailsLookup();
 
       // get the IDs for all multiple choice questions
-      let mc_IDs = [];
-      let nonMC_IDs = [];
+      let bannedIDs = [];
+      bannedIDs.push(this.props.selectedID); // we don't want a question to be conditionally dependent on itself
       for (let key in detailsLookup) {
-        if (('questionType' in detailsLookup[key]) && (detailsLookup[key]['questionType'] === 'multipleChoice')) {
-          mc_IDs.push(key);
-        } else {
-          nonMC_IDs.push(key);
+        if (! (('questionType' in detailsLookup[key]) && (detailsLookup[key]['questionType'] === 'multipleChoice'))) {
+          bannedIDs.push(key);
         }
       }
-      nonMC_IDs.push(this.props.selectedID); // we don't want a question to be conditionally dependent on itself
+
+      // ban all IDs that are nested within the current ConjureForm
+      let childIDs = this.props.formOutput.getAllChildIDs(this.props.selectedID);
+      for (let i = 0; i < childIDs.length; i++) {
+        bannedIDs.push(childIDs[i]);
+      }
 
       return (
         <div className="input_row">
@@ -172,7 +175,7 @@ class DevFormInput extends Component {
             condition={this.props.formDetails.renderCondition}
             formOutputObject={outputObject}
             formDetailsLookup={detailsLookup}
-            bannedIDs={nonMC_IDs}
+            bannedIDs={bannedIDs}
             questionConditionID={this.props.formDetails.renderCondition.questionID}
             questionConditionValue={this.props.formDetails.renderCondition.questionValue}
             onClick_updateItemDetail={this.onClick_updateFormDetail}
