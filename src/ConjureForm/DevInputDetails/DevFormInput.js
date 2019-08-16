@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './DevFormInput.css';
 
+import ConditionalMaker from './ConditionalMaker/ConditionalMaker.js';
 
 
 class DevFormInput extends Component {
@@ -17,6 +18,13 @@ class DevFormInput extends Component {
     let updatedItemDetails = this.props.formDetails;
     updatedItemDetails[detailType] = e.target.value;
     this.props.onClick_updateFormSectionDetails(this.props.selectedID, updatedItemDetails);
+  }
+
+  // same as onInput_updateFormDetail, but for an onClick
+  onClick_updateFormDetail = (detailType, detailValue) => {
+    let updatedFormDetails = this.props.formDetails;
+    updatedFormDetails[detailType] = detailValue;
+    this.props.onClick_updateFormSectionDetails(this.props.selectedID, updatedFormDetails);
   }
 
   // render Form Details -------------------------------------------------------
@@ -104,6 +112,77 @@ class DevFormInput extends Component {
   }
 
 
+
+  // render conditionals -------------------------------------------------------
+  /*
+    Conditional render is a section for specifying when a ConjureForm/ConjureFormItem should be rendered
+    For example:
+      - User is filling out a ConjureForm for creating sql
+      - User is adding columns to a table
+      - if a user specifies the column type as being a VARCHAR, it'll render additional questions like LENGTH
+      - if a user specifies the column type as being a DOUBLE, it'll render additional questions like number of digits
+      - These conditionals allow this type of functionality
+  */
+
+  renderConditionals = () => {
+
+    let alwaysButton_CSS = "button_selected";
+    let conditionallyButton_CSS = "button";
+    if (this.props.formDetails.renderConditionally) {
+      alwaysButton_CSS = "button";
+      conditionallyButton_CSS = "button_selected";
+    }
+
+    return (
+      <div className="form_input_container with_margin">
+        <h1 className="section_title">Conditional Render</h1>
+
+        <div className="input_row">
+          <h3 className="input_title">When to Render</h3>
+          <button className={alwaysButton_CSS} onClick={() => this.onClick_updateFormDetail("renderConditionally", false)}>Always</button>
+          <button className={conditionallyButton_CSS} onClick={() => this.onClick_updateFormDetail("renderConditionally", true)}>Conditionally</button>
+        </div>
+
+        {this.renderConditionalMaker()}
+      </div>
+    );
+  }
+
+  renderConditionalMaker = () => {
+    if (this.props.formDetails.renderConditionally) {
+
+      let outputObject = this.props.formOutput.getOutputObject();
+      let detailsLookup = this.props.formOutput.getDetailsLookup();
+
+      // get the IDs for all multiple choice questions
+      let mc_IDs = [];
+      let nonMC_IDs = [];
+      for (let key in detailsLookup) {
+        if (('questionType' in detailsLookup[key]) && (detailsLookup[key]['questionType'] === 'multipleChoice')) {
+          mc_IDs.push(key);
+        } else {
+          nonMC_IDs.push(key);
+        }
+      }
+      nonMC_IDs.push(this.props.selectedID); // we don't want a question to be conditionally dependent on itself
+
+      return (
+        <div className="input_row">
+          <ConditionalMaker
+            condition={this.props.formDetails.renderCondition}
+            formOutputObject={outputObject}
+            formDetailsLookup={detailsLookup}
+            bannedIDs={nonMC_IDs}
+            questionConditionID={this.props.formDetails.renderCondition.questionID}
+            questionConditionValue={this.props.formDetails.renderCondition.questionValue}
+            onClick_updateItemDetail={this.onClick_updateFormDetail}
+          />
+        </div>
+
+      );
+    }
+  }
+
   // render <DevFormInput/> ----------------------------------------------------
 
   render() {
@@ -111,6 +190,7 @@ class DevFormInput extends Component {
       <div id="DevFormInput">
         {this.renderFormOutputObject()}
         {this.renderFormDetails()}
+        {this.renderConditionals()}
       </div>
     );
   }

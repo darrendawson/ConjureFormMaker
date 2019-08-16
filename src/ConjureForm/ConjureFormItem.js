@@ -52,6 +52,8 @@ class ConjureFormItem {
       this.textDetails.titleText = "Title";
       this.textDetails.sectionTitleText = "Section Title";
       this.textDetails.outputID = itemID;
+      this.textDetails.renderConditionally = false;
+      this.textDetails.renderCondition = {'questionID': false, 'questionValue': false};
     } else if (itemType === "question"){
       this.questionDetails = {
         "questionTitle": "Question Title",
