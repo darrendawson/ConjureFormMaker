@@ -332,9 +332,17 @@ class ConjureForm {
   */
 
 
+  // when a user wants to delete a ConjureForm or ConjureFormItem, they call this function
+  // needs to delete the targetID and clean up any dangling references that may have been caused
+  delete(targetID) {
+    this.__delete(targetID);
+    this.__deleteConditionalReferences(targetID);
+  }
+
+
   // finds the ConjureForm or ConjureFormItem with targetID and deletes it
   // - need to delete from this.subforms / this.items AND this.order
-  delete(targetID) {
+  __delete(targetID) {
 
     // this function removes an item with deletedID from the order
     // works by creating a copy of old order and omitting the deletedID
@@ -355,7 +363,7 @@ class ConjureForm {
         this.order = getNewOrder(targetID, this.order)
         return;
       } else {
-        this.subforms[key].delete(targetID);
+        this.subforms[key].__delete(targetID);
       }
     }
 
@@ -365,6 +373,25 @@ class ConjureForm {
         this.order = getNewOrder(targetID, this.order);
         return;
       }
+    }
+  }
+
+
+  // used to delete conditional references to certain IDs.
+  // useful for cleaning up dangling references when a user deletes a question
+  __deleteConditionalReferences(deletedID) {
+    if (this.formDetails.renderCondition.questionID === deletedID) {
+      this.formDetails.renderConditionally = false;
+      this.formDetails.renderCondition.questionID = false;
+      this.formDetails.renderCondition.questionValue = false;
+    }
+
+    for (let key in this.subforms) {
+      this.subforms[key].__deleteConditionalReferences(deletedID);
+    }
+
+    for (let key in this.items) {
+      this.items[key].__deleteConditionalReferences(deletedID);
     }
   }
 

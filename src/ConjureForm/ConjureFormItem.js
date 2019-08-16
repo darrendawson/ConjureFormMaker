@@ -130,6 +130,26 @@ class ConjureFormItem {
     }
   }
 
+  // Delete --------------------------------------------------------------------
+
+  // used to delete conditional references to certain IDs.
+  // useful for cleaning up dangling references when a user deletes a question
+  __deleteConditionalReferences(deletedID) {
+    if (this.itemType === "text") {
+      if (this.textDetails.renderCondition.questionID === deletedID) {
+        this.textDetails.renderConditionally = false;
+        this.textDetails.renderCondition.questionID = false;
+        this.textDetails.renderCondition.questionValue = false;
+      }
+    } else if (this.itemType === "question") {
+      if (this.questionDetails.renderCondition.questionID === deletedID) {
+        this.questionDetails.renderConditionally = false;
+        this.questionDetails.renderCondition.questionID = false;
+        this.questionDetails.renderCondition.questionValue = false;
+      }
+    }
+  }
+
   // UX ------------------------------------------------------------------------
   /*
 
