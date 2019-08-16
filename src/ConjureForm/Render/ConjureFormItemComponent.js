@@ -114,31 +114,64 @@ class ConjureFormItemComponent extends Component {
     }
   }
 
+
+  // Conditional Render --------------------------------------------------------
+
+  // returns true if this component should be rendered, false otherwise
+  checkConditionalRender = () => {
+    let itemDetails = this.props.itemDetails;
+    let formOutput = this.props.formOutput;
+
+    // if renderConditionally is set to false, we always want to render
+    if (this.props.devModeOn) { return true;}
+    if (! itemDetails.renderConditionally) { return true; }
+    if (! itemDetails.renderCondition.questionID) { return true; }
+    if (! itemDetails.renderCondition.questionValue) { return true; }
+
+    // check for correct render condition
+    let targetID = itemDetails.renderCondition.questionID;
+    let targetValue = itemDetails.renderCondition.questionValue;
+    return formOutput.checkForMCAnswer(targetID, this.getID(), targetValue);
+  }
+
+
+
+  // Render <ConjureFormItemComponent/>
   render() {
 
-    // determine border styling
-    let borderCSS;
-    if (this.props.devModeOn) {
-      if (this.props.selectedID === this.getID()) {
-        borderCSS = "dev_mode_selected";
+    // if ConjureFormItem should be rendered, do so
+    if (this.checkConditionalRender()) {
+
+      // determine border styling
+      let borderCSS;
+      if (this.props.devModeOn) {
+        if (this.props.selectedID === this.getID()) {
+          borderCSS = "dev_mode_selected";
+        } else {
+          borderCSS = "dev_mode_hover";
+        }
       } else {
-        borderCSS = "dev_mode_hover";
+        borderCSS = "dev_mode_off_border";
       }
+
+      return (
+        <div
+          id="ConjureFormItemComponent"
+          className={borderCSS}
+          onClick={this.onClick_selectItem}>
+
+          {this.renderItemDetails()}
+
+        </div>
+      );
+
+    // otherwise, item should not be rendered so return an empty div
     } else {
-      borderCSS = "dev_mode_off_border";
+      return (
+        <div></div>
+      )
     }
 
-
-    return (
-      <div
-        id="ConjureFormItemComponent"
-        className={borderCSS}
-        onClick={this.onClick_selectItem}>
-
-        {this.renderItemDetails()}
-
-      </div>
-    );
   }
 }
 

@@ -345,6 +345,58 @@ class ConjureFormOutputState {
   }
 
 
+
+  // ConjureFormOutputState will automatically create new IDs for arrays of objects and will save an ID mapping
+  // getRelevantVersionOfID() is a function that finds the equivalent version of an ID for an object
+  //  - contextID:    this is the ID we are anchoring around
+  //                  The targetID will be in the path to this object (it won't be in a different array object)
+  //  - targetID:     the ID we want to convert to match contextID
+  getRelevantVersionOfID(targetID, contextID) {
+    let path = this.pathLookup[contextID].slice();
+    let result = this.__getRelevantVersionOfID(targetID, path);
+    return result;
+  }
+
+  // does the recursive work for this.getRelevantVersionOfID()
+  __getRelevantVersionOfID(targetID, path) {
+
+    // if we've reached the end, bubble up
+    if (path.length === 0) {
+      return targetID;
+    }
+
+    // check for case where object is nested in an array
+    // -> we want to grab that parent array and then check all of the parameters in the item
+    // if [{...}, {p1, p2, contextID}, {...}],    we want to grab the array and then look at p1, p2, etc...
+    if ((path.length - 3 > 0) && (typeof(path[path.length - 2]) === "number")) {
+
+      // check all items in the array at the right index
+      let arrayParentID = path[path.length - 3];
+      let arrayIndex = path[path.length - 2];
+      let arrayObj = this.get(arrayParentID);
+
+      for (let key in arrayObj[arrayIndex]) {
+        if (key === targetID) { return key; }
+        if ((key in this.arrayIDConversions) && (this.arrayIDConversions[key] === targetID)) { return key; }
+      }
+
+    // check for case where object
+    } else {
+      let obj = this.get(path[path.length - 1]);
+      for (let key in obj) {
+        if (key === targetID) { return key; }
+        if ((key in this.arrayIDConversions) && (this.arrayIDConversions[key] === targetID)) { return key; }
+      }
+    }
+
+    // recurse
+    path.pop();
+    if ((path.length - 1 > 0) && (typeof(path[path.length - 1]) === "number")) {
+      path.pop();
+    }
+    return this.__getRelevantVersionOfID(targetID, path);
+  }
+
 }
 
 export default ConjureFormOutputState;

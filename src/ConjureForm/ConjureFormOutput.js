@@ -188,6 +188,32 @@ class ConjureFormOutput {
   }
 
 
+  // Check conditional values --------------------------------------------------
+
+
+  // returns true if the specified MultipleChoice question includes the desiredValue
+  // uses contextID to find the right version of the MultipleChoice question
+  // - (useful for when there are multiple versions of the same question due to arrays of subforms)
+  checkForMCAnswer(mcQuestionID, contextID, desiredValue) {
+    let questionID = this.getRelevantVersionOfID(mcQuestionID, contextID);
+    let mcAnswers = this.outputObject.get(questionID);
+    if (mcAnswers.indexOf(desiredValue) >= 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+
+  // ConjureFormOutputState will automatically create new IDs for arrays of objects and will save an ID mapping
+  //  - contextID:    this is the ID we are anchoring around
+  //                  The targetID will be in the path to this object (it won't be in a different array object)
+  //  - targetID:     the ID we want to convert to match contextID
+  getRelevantVersionOfID(targetID, contextID) {
+    return this.outputObject.getRelevantVersionOfID(targetID, contextID);
+  }
+
   // render --------------------------------------------------------------------
 
   render(selectedID = false, renderTextClickable = false, onClick_selectFormSection = () => {}) {
