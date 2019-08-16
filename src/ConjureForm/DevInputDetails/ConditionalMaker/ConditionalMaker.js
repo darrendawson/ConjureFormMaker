@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './ConditionalMaker.css';
 
 import RenderFormOutputObject from '../RenderFormOutputObject/RenderFormOutputObject.js';
+import MultipleChoice from '../../Render/QuestionTypes/MultipleChoice/MultipleChoice.js';
 
 class ConditionalMaker extends Component {
 
@@ -53,6 +54,16 @@ class ConditionalMaker extends Component {
   }
 
 
+  onClick_selectQuestionValue = (value) => {
+    if (this.props.questionConditionValue !== value) {
+      let renderCondition = {'questionID': this.props.questionConditionID, 'questionValue': value};
+      this.props.onClick_updateItemDetail('renderCondition', renderCondition);
+    }
+
+    // close the <MultipleChoice/>
+    this.setState({'expanded': false, 'expandedCategory': false})
+  }
+
   // render --------------------------------------------------------------------
 
   // button that user presses to toggle <RenderFormOutputObject/>
@@ -93,26 +104,40 @@ class ConditionalMaker extends Component {
   // button user clicks to toggle selecting value from multiple choice
   renderSelectValueButton = () => {
 
-    // get name to render
-    let questionText = "(value)";
-    if (this.props.questionConditionValue) {
-      questionText = this.props.questionConditionValue; // change this so it shows output name, not ID
-    }
+    // render <MultipleChoice/> so user can select a value
+    if (this.props.questionConditionID !== false) {
 
-    // get coloring on the button
-    let questionCSS = "question_button";
-    if (this.state.expandedCategory === "questionValue") {
-      questionCSS = "question_button_selected";
-    }
+      // get choices
+      let itemDetails = this.props.formDetailsLookup[this.props.questionConditionID];
+      let selectedChoices = [];
+      if (this.props.questionConditionValue !== false) {
+        selectedChoices.push(this.props.questionConditionValue);
+      }
 
-    // render
-    return (
-      <button
-        className={questionCSS}
-        onClick={() => this.onClick_selectButton('questionValue')}>
-        {questionText}
-      </button>
-    );
+      // determine whether "no answer" is a valid answer
+      let minSelected = (itemDetails.minSelected > 0) ? 1 : 0;
+
+      return (
+        <MultipleChoice
+          questionID={this.props.questionConditionID}
+          choices={itemDetails.choices}
+          backgroundColor="#353535"
+          borderColor="white"
+          textColor="white"
+          minSelected={minSelected}
+          maxSelected={1}
+          multipleChoiceType="dropdown"
+          devModeOn={false}
+          selectedChoices={selectedChoices}
+          onClick_answerMultipleChoiceQuestion={this.onClick_selectQuestionValue}
+        />
+      );
+
+
+    // otherwise, there arent any options to select
+    } else {
+      return (<button className="question_button_unclickable">(value)</button>);
+    }
   }
 
 
