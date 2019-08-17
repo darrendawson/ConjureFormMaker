@@ -214,6 +214,12 @@ class ConjureFormOutput {
     return this.outputObject.getRelevantVersionOfID(targetID, contextID);
   }
 
+
+
+  createConditionalRenderLookupTable() {
+
+  }
+
   // render --------------------------------------------------------------------
 
   render(selectedID = false, renderTextClickable = false, onClick_selectFormSection = () => {}) {

@@ -126,6 +126,9 @@ class DevFormInput extends Component {
 
   renderConditionals = () => {
 
+    // if this form isnt present in ConjureFormOutput, it cant have the option to be conditionally rendered
+    if (! this.props.formOutput.checkIfIDInOutput(this.props.selectedID)) { return; }
+
     let alwaysButton_CSS = "button_selected";
     let conditionallyButton_CSS = "button";
     if (this.props.formDetails.renderConditionally) {

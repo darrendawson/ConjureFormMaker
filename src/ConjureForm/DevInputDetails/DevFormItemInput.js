@@ -283,6 +283,9 @@ class DevFormItemInput extends Component {
 
   renderConditionals = () => {
 
+    // Text items cannot be conditionally rendered because they arent present in ConjureForm
+    if (this.props.itemType === "text") { return; }
+
     let alwaysButton_CSS = "button_selected";
     let conditionallyButton_CSS = "button";
     if (this.props.itemDetails.renderConditionally) {
