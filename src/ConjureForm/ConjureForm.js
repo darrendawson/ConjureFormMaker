@@ -680,7 +680,8 @@ class ConjureForm {
     onClick_addNewSubformToArray = () => {},
     idConversionTable = {},
     indexInArray = -1,
-    onClick_removeSubformFromArray = () => {}
+    onClick_removeSubformFromArray = () => {},
+    conditionalRenderLookup = {}
   )
   {
 
@@ -698,6 +699,7 @@ class ConjureForm {
         devModeOn={devModeOn}
         selectedID={selectedID}
         formOutput={formOutput}
+        conditionalRenderLookup={conditionalRenderLookup}
         indexInArray={indexInArray}
         idConversionTable={idConversionTable}
         onClick_selectForm={onClick_selectForm}

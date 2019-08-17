@@ -300,6 +300,15 @@ class ConjureFormOutputState {
   }
 
 
+  getListOfAllIDs() {
+    let allIDs = [];
+    for (let key in this.pathLookup) {
+      allIDs.push(key);
+    }
+    return allIDs;
+  }
+
+
   // create a conversion table of {originalID -> newly generated random IDs}
   // pass in part of an outputObject
   getIDConversionTable(outputObject = false) {

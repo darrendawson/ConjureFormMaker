@@ -119,19 +119,11 @@ class ConjureFormItemComponent extends Component {
 
   // returns true if this component should be rendered, false otherwise
   checkConditionalRender = () => {
-    let itemDetails = this.props.itemDetails;
-    let formOutput = this.props.formOutput;
-
-    // if renderConditionally is set to false, we always want to render
-    if (this.props.devModeOn) { return true;}
-    if (! itemDetails.renderConditionally) { return true; }
-    if (! itemDetails.renderCondition.questionID) { return true; }
-    if (! itemDetails.renderCondition.questionValue) { return true; }
-
-    // check for correct render condition
-    let targetID = itemDetails.renderCondition.questionID;
-    let targetValue = itemDetails.renderCondition.questionValue;
-    return formOutput.checkForMCAnswer(targetID, this.getID(), targetValue);
+    if (this.getID() in this.props.conditionalRenderLookup) {
+      return this.props.conditionalRenderLookup[this.getID()];
+    } else {
+      return true;
+    }
   }
 
 

@@ -218,6 +218,59 @@ class ConjureFormOutput {
 
   createConditionalRenderLookupTable() {
 
+    let renderTable = {};
+    let attemptsTable = {}; // keeps track of the number of times we have tried to add a certain formID to lookupTable and failed
+    let formIDs = this.outputObject.getListOfAllIDs();
+
+    // initialize attempts table to zero
+    for (let i = 0; i < formIDs.length; i++) {
+      attemptsTable[formIDs[i]] = 0;
+    }
+
+    // keep looping over formIDs until all dependencies have been dealt with
+    while(Object.keys(renderTable).length < formIDs.length) {
+      for (let i = 0; i < formIDs.length; i++) {
+
+        let formID = formIDs[i];
+        if (! (formID in renderTable)) {
+
+          let formDetails = this.detailsLookup[formID];
+          let dependencyID = formDetails.renderCondition.questionID;
+          let dependencyValue = formDetails.renderCondition.questionValue;
+
+          // check for cases where the section will always render
+          if (formDetails.renderConditionally === false) {
+            renderTable[formID] = true;
+          } else if ((dependencyID === false) || (dependencyValue === false)) {
+            renderTable[formID] = true;
+          }
+
+          // check for case where the renderCondition dependency has already been answered
+          else if (dependencyID in renderTable) {
+
+            // if the form this one depends on won't render, neither should this one
+            if (renderTable[dependencyID] === false) {
+              console.log("YOOOOO")
+              renderTable[formID] = false;
+
+            // if the form this one depends on will render, we need to check whether it has the right MC answer for this one to render
+            } else {
+              renderTable[formID] = this.checkForMCAnswer(dependencyID, formID, dependencyValue);
+            }
+
+          // if none of these worked, log that we couldn't figure out whether we should render this form
+          // if we have done this too many times (like in an infinite loop), just render the item
+          } else {
+            attemptsTable[formID] += 1;
+            if (attemptsTable[formID] > formIDs.length) {
+              renderTable[formID] = true;
+            }
+          }
+        }
+      }
+    }
+
+    return renderTable;
   }
 
   // render --------------------------------------------------------------------

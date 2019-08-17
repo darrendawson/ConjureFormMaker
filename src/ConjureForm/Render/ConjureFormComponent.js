@@ -112,19 +112,11 @@ class ConjureFormComponent extends Component {
 
   // returns true if this component should be rendered, false otherwise
   checkConditionalRender = () => {
-    let formDetails = this.props.formDetails;
-    let formOutput = this.props.formOutput;
-
-    // if renderConditionally is set to false, we always want to render
-    if (this.props.devModeOn) { return true;}
-    if (! formDetails.renderConditionally) { return true; }
-    if (! formDetails.renderCondition.questionID) { return true; }
-    if (! formDetails.renderCondition.questionValue) { return true; }
-
-    // check for correct render condition
-    let targetID = formDetails.renderCondition.questionID;
-    let targetValue = formDetails.renderCondition.questionValue;
-    return formOutput.checkForMCAnswer(targetID, this.getID(), targetValue);
+    if (this.getID() in this.props.conditionalRenderLookup) {
+      return this.props.conditionalRenderLookup[this.getID()];
+    } else {
+      return true;
+    }
   }
 
 
@@ -171,7 +163,8 @@ class ConjureFormComponent extends Component {
           let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
           let indexInArray = i;
           let removeSubform = this.props.onClick_removeSubformFromArray;
-          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, indexInArray, removeSubform);
+          let conditionalRenderLookup = this.props.conditionalRenderLookup;
+          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, indexInArray, removeSubform, conditionalRenderLookup);
           childrenToRender.push(rendered);
         }
 
@@ -185,7 +178,8 @@ class ConjureFormComponent extends Component {
         let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
         let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
         let removeSubform = this.props.onClick_removeSubformFromArray;
-        let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, -1, removeSubform);
+        let conditionalRenderLookup = this.props.conditionalRenderLookup;
+        let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, -1, removeSubform, conditionalRenderLookup);
         childrenToRender.push(rendered);
       }
     }

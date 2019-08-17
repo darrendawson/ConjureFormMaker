@@ -224,7 +224,8 @@ class ConjureFormItem {
     addNewSubformToArray = () => {},
     idConversionTable = {},
     indexInArray = -1,
-    onClick_removeSubformFromArray = () => {}
+    onClick_removeSubformFromArray = () => {},
+    conditionalRenderLookup = {}
   )
   {
 
@@ -246,6 +247,7 @@ class ConjureFormItem {
         titleColor={this.colors.title}
         backgroundColor={this.colors.background}
         formOutput={formOutput}
+        conditionalRenderLookup={conditionalRenderLookup}
         idConversionTable={idConversionTable}
         onClick_selectItem={onClick_selectForm}
         onInput_answerFormQuestion={onInput_answerFormQuestion}
