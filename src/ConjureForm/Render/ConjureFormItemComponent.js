@@ -135,6 +135,20 @@ class ConjureFormItemComponent extends Component {
   }
 
 
+  // Render --------------------------------------------------------------------
+
+  // determine border styling for <ConjureFormComponent/>
+  getBorderStyling = () => {
+    if (this.props.devModeOn) {
+      if (this.props.selectedID === this.getID()) {
+        return "dev_mode_selected";
+      } else {
+        return"dev_mode_hover";
+      }
+    } else {
+      return "dev_mode_off_border";
+    }
+  }
 
   // Render <ConjureFormItemComponent/>
   render() {
@@ -142,22 +156,10 @@ class ConjureFormItemComponent extends Component {
     // if ConjureFormItem should be rendered, do so
     if (this.checkConditionalRender()) {
 
-      // determine border styling
-      let borderCSS;
-      if (this.props.devModeOn) {
-        if (this.props.selectedID === this.getID()) {
-          borderCSS = "dev_mode_selected";
-        } else {
-          borderCSS = "dev_mode_hover";
-        }
-      } else {
-        borderCSS = "dev_mode_off_border";
-      }
-
       return (
         <div
           id="ConjureFormItemComponent"
-          className={borderCSS}
+          className={this.getBorderStyling()}
           onClick={this.onClick_selectItem}>
 
           {this.renderItemDetails()}

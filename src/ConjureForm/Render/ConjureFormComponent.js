@@ -108,16 +108,30 @@ class ConjureFormComponent extends Component {
 
 
 
-  // render <ConjureFormComponent/>
-  // - because ConjureForm can have ConjureForms and ConjureFormItems as children,
-  //      we need to call their render functions as well:
-  //      <ConjureForm
-  //        {children}
-  //      />
-  //
-  // - objects in this.props.subforms and this.props.items are ConjureForm and ConjureFormItem classes
-  //      they ARE NOT <ConjureFormComponent/> or <ConjureFormItemComponent/>
-  render() {
+  // Conditional Render --------------------------------------------------------
+
+  // returns true if this component should be rendered, false otherwise
+  checkConditionalRender = () => {
+    let formDetails = this.props.formDetails;
+    let formOutput = this.props.formOutput;
+
+    // if renderConditionally is set to false, we always want to render
+    if (this.props.devModeOn) { return true;}
+    if (! formDetails.renderConditionally) { return true; }
+    if (! formDetails.renderCondition.questionID) { return true; }
+    if (! formDetails.renderCondition.questionValue) { return true; }
+
+    // check for correct render condition
+    let targetID = formDetails.renderCondition.questionID;
+    let targetValue = formDetails.renderCondition.questionValue;
+    return formOutput.checkForMCAnswer(targetID, this.getID(), targetValue);
+  }
+
+
+
+  // get children --------------------------------------------------------------
+
+  getChildrenToRender = () => {
 
     let childrenToRender = [];
 
@@ -176,36 +190,63 @@ class ConjureFormComponent extends Component {
       }
     }
 
+    return childrenToRender;
+  }
 
-    // determine border styling
-    let borderCSS;
+
+  // render --------------------------------------------------------------------
+
+  // determine border styling for <ConjureFormComponent/>
+  getBorderStyling = () => {
     if (this.props.devModeOn) {
       if (this.props.selectedID === this.getID()) {
-        borderCSS = "dev_mode_selected";
+        return "dev_mode_selected";
       } else {
-        borderCSS = "dev_mode_hover";
+        return"dev_mode_hover";
       }
     } else {
-      borderCSS = "dev_mode_off_border";
+      return "dev_mode_off_border";
     }
+  }
 
 
-    return (
-      <div
-        id="ConjureFormComponent"
-        className={borderCSS}
-        onClick={this.onClick_selectForm}>
+  // render <ConjureFormComponent/>
+  // - because ConjureForm can have ConjureForms and ConjureFormItems as children,
+  //      we need to call their render functions as well:
+  //      <ConjureForm
+  //        {children}
+  //      />
+  //
+  // - objects in this.props.subforms and this.props.items are ConjureForm and ConjureFormItem classes
+  //      they ARE NOT <ConjureFormComponent/> or <ConjureFormItemComponent/>
+  render() {
+
+    // if ConjureForm should be rendered, do so
+    if (this.checkConditionalRender()) {
+
+      return (
         <div
-          className={this.getContainerCSS(this.props.containerType)}
-          style={this.getContainerStyling(this.props.containerType)}>
-          {this.renderDismissButton()}
-          {childrenToRender}
-          {this.renderEmptySpace()}
-        </div>
-        {this.renderAddNewButton()}
+          id="ConjureFormComponent"
+          className={this.getBorderStyling()}
+          onClick={this.onClick_selectForm}>
+          <div
+            className={this.getContainerCSS(this.props.containerType)}
+            style={this.getContainerStyling(this.props.containerType)}>
+            {this.renderDismissButton()}
+            {this.getChildrenToRender()}
+            {this.renderEmptySpace()}
+          </div>
+          {this.renderAddNewButton()}
 
-      </div>
-    );
+        </div>
+      );
+
+    // otherwise, form should not be rendered so return an empty div
+    } else {
+      return (
+        <div></div>
+      );
+    }
   }
 }
 
