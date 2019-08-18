@@ -225,7 +225,8 @@ class ConjureFormItem {
     idConversionTable = {},
     indexInArray = -1,
     onClick_removeSubformFromArray = () => {},
-    conditionalRenderLookup = {}
+    conditionalRenderLookup = {},
+    onClick_moveToPage = () => {}
   )
   {
 

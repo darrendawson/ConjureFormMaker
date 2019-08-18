@@ -107,6 +107,31 @@ class ConjureFormComponent extends Component {
   }
 
 
+  //
+  renderPageButtons = () => {
+    if (this.props.formDetails.containerType === "page" && (! this.props.devModeOn)) {
+      let buttonStyle = {
+        'background-color': this.props.titleColor,
+        'color': this.props.backgroundColor
+      }
+      return (
+        <div id="new_array_subform_button_container" style={{'margin-top': '20px'}}>
+          <button
+            id="new_array_subform_button"
+            style={buttonStyle}
+            onClick={() => this.props.onClick_moveToPage("prev")}>
+            Prev
+          </button>
+          <button
+            id="new_array_subform_button"
+            style={buttonStyle}
+            onClick={() => this.props.onClick_moveToPage("next")}>
+            Next
+          </button>
+        </div>
+      );
+    }
+  }
 
   // Conditional Render --------------------------------------------------------
 
@@ -164,7 +189,8 @@ class ConjureFormComponent extends Component {
           let indexInArray = i;
           let removeSubform = this.props.onClick_removeSubformFromArray;
           let conditionalRenderLookup = this.props.conditionalRenderLookup;
-          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, indexInArray, removeSubform, conditionalRenderLookup);
+          let moveToPage = this.props.onClick_moveToPage;
+          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, indexInArray, removeSubform, conditionalRenderLookup, moveToPage);
           childrenToRender.push(rendered);
         }
 
@@ -179,7 +205,8 @@ class ConjureFormComponent extends Component {
         let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
         let removeSubform = this.props.onClick_removeSubformFromArray;
         let conditionalRenderLookup = this.props.conditionalRenderLookup;
-        let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, -1, removeSubform, conditionalRenderLookup);
+        let moveToPage = this.props.onClick_moveToPage;
+        let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, -1, removeSubform, conditionalRenderLookup, moveToPage);
         childrenToRender.push(rendered);
       }
     }
@@ -231,6 +258,7 @@ class ConjureFormComponent extends Component {
             {this.renderEmptySpace()}
           </div>
           {this.renderAddNewButton()}
+          {this.renderPageButtons()}
 
         </div>
       );

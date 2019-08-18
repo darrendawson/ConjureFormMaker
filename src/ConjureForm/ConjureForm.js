@@ -467,6 +467,7 @@ class ConjureForm {
     // update colors of this ConjureForm
     if (containerType === "all" || containerType === "page") {
       this.colors.backgroundColor = colors.background;
+      this.colors.titleColor = colors.title;
     } else if (containerType === "card") {
       this.colors.backgroundColor = colors.card;
       this.colors.shadowColor = colors.shadow;
@@ -628,6 +629,25 @@ class ConjureForm {
     }
   }
 
+  // Pages ---------------------------------------------------------------------
+
+  // if this ConjureForm is of type all (and so its children are pages),
+  // determines which page to render by adding to a lookup table
+  addPagesToConditionalRenderLookup(renderLookup = {}, pageNum = 0) {
+    if (this.formDetails.containerType === "all") {
+      for (let i = 0; i < this.order.length; i++) {
+        let pageID = this.order[i]['id'];
+        if (i === pageNum) {
+          renderLookup[pageID] = true;
+        } else {
+          renderLookup[pageID] = false;
+        }
+      }
+      return renderLookup;
+    } else {
+      return false;
+    }
+  }
 
   // debug ---------------------------------------------------------------------
   /*
@@ -681,7 +701,8 @@ class ConjureForm {
     idConversionTable = {},
     indexInArray = -1,
     onClick_removeSubformFromArray = () => {},
-    conditionalRenderLookup = {}
+    conditionalRenderLookup = {},
+    onClick_moveToPage = () => {}
   )
   {
 
@@ -707,6 +728,7 @@ class ConjureForm {
         onClick_answerMultipleChoiceQuestion={onClick_answerMultipleChoiceQuestion}
         onClick_addNewSubformToArray={onClick_addNewSubformToArray}
         onClick_removeSubformFromArray={onClick_removeSubformFromArray}
+        onClick_moveToPage={onClick_moveToPage}
       />
     );
   }

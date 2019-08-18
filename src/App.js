@@ -32,6 +32,7 @@ const PT_devModeActive = "devModeActive";
 const PT_productionSidebarExpanded = "productionSidebarExpanded";
 
 const PT_formOutput = "formOutput";
+const PT_currentPageIndex = "currentPageIndex";
 
 const defaultColors = {
   "background": "#eaeaea",
@@ -49,7 +50,8 @@ let dataSkeleton = {
   [PT_formColors]: defaultColors,
   [PT_devModeActive]: true,
   [PT_productionSidebarExpanded]: false,
-  [PT_formOutput]: {}
+  [PT_formOutput]: {},
+  [PT_currentPageIndex]: 0
 }
 
 
@@ -258,6 +260,9 @@ class App extends Component {
 
       // save changes to ConjureForm
       this.saveConjureForm(conjureForm);
+
+      // reset page to 0
+      this.update(0, PT_currentPageIndex);
     }
   }
 
@@ -289,6 +294,17 @@ class App extends Component {
     let formOutput = this.state.truth[PT_formOutput];
     formOutput.removeArrayItem(arrayID, subformIndex);
     this.update(formOutput, PT_formOutput);
+  }
+
+
+  onClick_moveToPage = (moveType) => {
+    let newPageNum = this.state.truth[PT_currentPageIndex];
+    if (moveType === "next") {
+      newPageNum += 1;
+    } else if (moveType === "prev" && newPageNum > 0){
+      newPageNum -= 1;
+    }
+    this.update(newPageNum, PT_currentPageIndex);
   }
 
   // render --------------------------------------------------------------------
@@ -388,12 +404,14 @@ class App extends Component {
           <ProductionFormContainer
             conjureForm={conjureForm}
             formOutput={formOutput}
+            currentPageIndex={truth[PT_currentPageIndex]}
             backgroundColor={truth[PT_formColors]['background']}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
             onInput_answerFormQuestion={this.onInput_answerFormQuestion}
             onClick_answerMultipleChoiceQuestion={this.onClick_answerMultipleChoiceQuestion}
             onClick_addNewSubformToArray={this.onClick_addNewSubformToArray}
             onClick_removeSubformFromArray={this.onClick_removeSubformFromArray}
+            onClick_moveToPage={this.onClick_moveToPage}
           />
         </div>
       );

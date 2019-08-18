@@ -27,11 +27,13 @@ class ProductionFormContainer extends Component {
     let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
     let removeSubform = this.props.onClick_removeSubformFromArray;
     let conditionalRenderLookup = formOutput.createConditionalRenderLookupTable();
-
+    conditionalRenderLookup = conjureForm.addPagesToConditionalRenderLookup(conditionalRenderLookup, this.props.currentPageIndex);
+    let moveToPage = this.props.onClick_moveToPage;
+    
     return (
       <div id="ProductionFormContainer" style={{'background-color': this.props.backgroundColor}}>
         <div id="form_container">
-          {conjureForm.render(formOutput, selectForm, devModeOn, selectedID, onInput_answerFormQuestion, answerMC, addNewSubformToArray, {}, -1, removeSubform, conditionalRenderLookup)}
+          {conjureForm.render(formOutput, selectForm, devModeOn, selectedID, onInput_answerFormQuestion, answerMC, addNewSubformToArray, {}, -1, removeSubform, conditionalRenderLookup, moveToPage)}
         </div>
       </div>
     );
