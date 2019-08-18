@@ -97,6 +97,15 @@ class ConjureFormItem {
   getDefaultOutputObject() {
     if (this.itemType === "question") {
       if (this.questionDetails.questionType === "input") {
+        if (this.questionDetails.inputType === "number") {
+          if (typeof(this.questionDetails.defaultValue) === "number") {
+            return this.questionDetails.defaultValue;
+          } else if (parseFloat(this.questionDetails.defaultValue)){
+            return parseFloat(this.questionDetails.defaultValue);
+          } else {
+            return 0;
+          }
+        }
         return this.questionDetails.defaultValue;
       } else if (this.questionDetails.questionType === "multipleChoice") {
         if (this.questionDetails.minSelected == 1 && this.questionDetails.choices.length > 0) {

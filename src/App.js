@@ -272,9 +272,9 @@ class App extends Component {
     Functions that get passed to ConjureForms so that they can fill out the result object properly when a user answers the form
   */
 
-  onInput_answerFormQuestion = (itemID, e) => {
+  onInput_answerFormQuestion = (itemID, value) => {
     let formOutput = this.state.truth[PT_formOutput];
-    formOutput.answerInputQuestion(e.target.value, itemID);
+    formOutput.answerInputQuestion(value, itemID);
     this.update(formOutput, PT_formOutput);
   }
 

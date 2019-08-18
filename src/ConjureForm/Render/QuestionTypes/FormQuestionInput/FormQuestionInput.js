@@ -7,6 +7,16 @@ class FormQuestionInput extends Component {
     super();
   }
 
+  // onInput -------------------------------------------------------------------
+
+  onInput_answerQuestion = (e) => {
+    if (this.props.inputType === "string") {
+      this.props.onInput_answerFormQuestion(this.props.itemID, e.target.value);
+    } else if (this.props.inputType === "number") {
+      let numValue = parseFloat(e.target.value);
+      this.props.onInput_answerFormQuestion(this.props.itemID, numValue);
+    }
+  }
   // render --------------------------------------------------------------------
 
   // Renders <FormQuestionInput/>
@@ -23,8 +33,8 @@ class FormQuestionInput extends Component {
         <div id="FormQuestionInput">
           <input
             placeholder={this.props.prompt}
-            value={this.props.inputValue} 
-            onChange={this.props.onInput_answerFormQuestion.bind(this, this.props.itemID)}
+            value={this.props.inputValue}
+            onChange={this.onInput_answerQuestion.bind(this)}
           />
 
         </div>
