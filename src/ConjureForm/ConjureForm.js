@@ -11,7 +11,7 @@ import ConjureFormComponent from './Render/ConjureFormComponent.js';
 import ConjureFormItem from './ConjureFormItem.js';
 import ConjureFormOutput from './ConjureFormOutput.js';
 
-const __containerTypes = ["all", "page", "card"];
+const __containerTypes = ["all", "page", "card", "subcard"];
 
 // default colors
 const __allColorDefault = "#eaeaea";
@@ -322,6 +322,8 @@ class ConjureForm {
     } else if (this.formDetails.containerType === "page") {
       return "card";
     } else if (this.formDetails.containerType === "card") {
+      return "subcard";
+    } else if (this.formDetails.containerType === "subcard") {
       return "";
     }
   }
@@ -472,6 +474,9 @@ class ConjureForm {
       this.colors.backgroundColor = colors.card;
       this.colors.shadowColor = colors.shadow;
       this.colors.titleColor = colors.title;
+    } else if (containerType === "subcard") {
+      this.colors.backgroundColor = "green";
+      this.colors.titleColor = "yellow";
     }
 
 

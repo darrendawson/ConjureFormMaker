@@ -32,7 +32,7 @@ class DevFormInput extends Component {
   renderFormDetails = () => {
 
     let containerType = this.props.formDetails.containerType;
-    if (containerType !== "card") {
+    if (["card", "subcard"].indexOf(containerType) < 0) {
       return;
     }
 

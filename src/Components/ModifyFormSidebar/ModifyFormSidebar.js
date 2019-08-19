@@ -264,11 +264,11 @@ class FormSidebar extends Component {
     // filter out options where it doesnt make sense to create another subform
     let selected = this.props.selectedSection;
     if (selected) {
-      if (selected.getClassName() === "ConjureForm" && ["all", "page"].indexOf(selected.formDetails.containerType) < 0 && this.state.insertInto) {
+      if (selected.getClassName() === "ConjureForm" && ["all", "page", "card"].indexOf(selected.formDetails.containerType) < 0 && this.state.insertInto) {
         return;
       }
 
-      if (selected.getClassName() === "ConjureFormItem" && ["all", "page"].indexOf(this.props.parentContainerType) < 0) {
+      if (selected.getClassName() === "ConjureFormItem" && ["all", "page", "card"].indexOf(this.props.parentContainerType) < 0) {
         return;
       }
     }
