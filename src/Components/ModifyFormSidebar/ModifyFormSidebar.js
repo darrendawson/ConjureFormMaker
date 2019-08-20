@@ -209,15 +209,7 @@ class FormSidebar extends Component {
     // dont render if these conditions are true
     // ex: it does not make sense for you to be able to add a question in ConjureForm (type = all)
     let selected = this.props.selectedSection;
-    if (selected) {
-      if (selected.getClassName() === "ConjureForm" && ["all", "page"].indexOf(selected.formDetails.containerType) >= 0) {
-        return;
-      }
-
-      if (selected.getClassName() === "ConjureForm" && !this.state.insertInto) {
-        return;
-      }
-    } else {
+    if (selected && (selected.getClassName() === "ConjureForm") && (["all", "page"].indexOf(selected.formDetails.containerType) >= 0)) {
       return;
     }
 
@@ -237,14 +229,7 @@ class FormSidebar extends Component {
     // dont render if these conditions are true
     // ex: it does not make sense for you to be able to add a question in ConjureForm (type = all)
     let selected = this.props.selectedSection;
-    if (selected) {
-      if (selected.getClassName() === "ConjureForm" && ["all", "page"].indexOf(selected.formDetails.containerType) >= 0) {
-        return;
-      }
-      if (selected.getClassName() === "ConjureForm" && !this.state.insertInto) {
-        return;
-      }
-    } else {
+    if (selected && (selected.getClassName() === "ConjureForm") && (["all", "page"].indexOf(selected.formDetails.containerType) >= 0)) {
       return;
     }
 
@@ -355,6 +340,16 @@ class FormSidebar extends Component {
             className="color_input"
             value={colors.shadow}
             onChange={this.onInput_updateColor.bind(this, "shadow")}
+          />
+        </div>
+
+        <div className="colors_input_row">
+          <h3 className="colors_title">Subcard</h3>
+          <div id="color_square" style={{'background-color': colors.subcard}}></div>
+          <input
+            className="color_input"
+            value={colors.subcard}
+            onChange={this.onInput_updateColor.bind(this, "subcard")}
           />
         </div>
 

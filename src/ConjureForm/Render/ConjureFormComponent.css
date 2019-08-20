@@ -31,6 +31,11 @@
   padding: 20px;
 }
 
+#ConjureFormComponent .container_type_subcard {
+  width: 100%;
+  margin: 10px 0px;
+}
+
 #ConjureFormComponent #empty_space {
   height: 120px;
 }
@@ -65,7 +70,6 @@
   cursor: pointer;
   width: 100px;
   text-align: right;
-  border: 1px solid black;
   border-radius: 13px;
   height: 26px;
   width: 26px;

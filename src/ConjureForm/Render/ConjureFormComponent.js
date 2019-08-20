@@ -35,6 +35,8 @@ class ConjureFormComponent extends Component {
       return "container_type_page";
     } else if (containerType === "card") {
       return "container_type_card";
+    } else if (containerType === "subcard") {
+      return "container_type_subcard";
     } else {
       return "";
     }

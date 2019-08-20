@@ -475,8 +475,8 @@ class ConjureForm {
       this.colors.shadowColor = colors.shadow;
       this.colors.titleColor = colors.title;
     } else if (containerType === "subcard") {
-      this.colors.backgroundColor = "green";
-      this.colors.titleColor = "yellow";
+      this.colors.backgroundColor = colors.subcard;
+      this.colors.titleColor = colors.title;
     }
 
 

@@ -39,7 +39,8 @@ const defaultColors = {
   "card": "#f4f4f4",
   "shadow": "#7c7c7c",
   "text": "#262626",
-  "title": "#262626"
+  "title": "#262626",
+  "subcard": "#eaeaea"
 };
 
 
