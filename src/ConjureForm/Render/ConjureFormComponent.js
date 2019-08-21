@@ -169,25 +169,35 @@ class ConjureFormComponent extends Component {
         child = this.props.items[childFormID];
       }
 
+      // get subcards
+      // if the child is an array of subcards, we need to get the subcards properly
+      let convertedID = this.props.idConversionTable[childFormID];
+      let subcardsArray = this.props.formOutput.get(convertedID);
 
       // boolean check to make sure that a child is an array with more than 1 object
       let checkIfActiveArray = function(child, childOutput) {
         return (
           (child.formDetails.maxForms > 1) &&
           (childOutput !== false) &&
-          (Array.isArray(childOutput)) &&
-          (childOutput.length > 1)
+          (Array.isArray(childOutput))
         );
       }
 
       // handle case that child is an array of cards AND has multiple forms active in output
-      //child.formDetails.containerType === "card" &&
-      //
-      if (this.props.order[i]["type"] === "ConjureForm" &&
-          checkIfActiveArray(child, childOutput)
+      if (
+          (
+            (this.props.order[i]["type"] === "ConjureForm") &&
+            (child.formDetails.containerType === "card") &&
+            (checkIfActiveArray(child, childOutput))
+          ) ||
+          (
+            (this.props.order[i]["type"] === "ConjureForm") &&
+            (child.formDetails.containerType === "subcard") &&
+            (checkIfActiveArray(child, childOutput)) &&
+            (! checkIfActiveArray(child, subcardsArray))
+          )
         ) {
 
-          console.log('-');
           // iterate over the output and add items for each
           for (let j = 0; j < childOutput.length; j++) {
 
@@ -204,28 +214,33 @@ class ConjureFormComponent extends Component {
             let moveToPage = this.props.onClick_moveToPage;
             let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, indexInArray, removeSubform, conditionalRenderLookup, moveToPage);
             childrenToRender.push(rendered);
-
-            if (child.formDetails.containerType === "subcard") {
-              console.log(idConversionTable);
-            }
           }
 
       // handle case where child is an array of subcards
       } else if (
         (this.props.order[i]["type"] === "ConjureForm") &&
         (child.formDetails.containerType === "subcard") &&
-        (checkIfActiveArray(child, childOutput))
+        (checkIfActiveArray(child, subcardsArray))
       ) {
 
-        /*
-          let subcardIDs = this.props.formOutput.getAllVersionsOfSameID(childID);
-          let rightID = this.props.formOutput.getRelevantVersionOfID(childID, this.getID());
+        // iterate over the output and add items for each
+        for (let j = 0; j < subcardsArray.length; j++) {
 
-          console.log("right: " + rightID);
-          console.log("child: " + childID);
-          console.log("test: " + this.props.idConversionTable[childID]);
-          console.log(this.props.formOutput.getAllVersionsOfSameID(childID));
-          */
+          let formOutput = this.props.formOutput;
+          let idConversionTable = formOutput.getIDConversionTable(subcardsArray[j]);
+          idConversionTable[childFormID] = this.props.idConversionTable[childFormID]; // add parent array ID to idConversion Lookup table
+          let selectForm = this.props.onClick_selectForm;
+          let devModeOn = this.props.devModeOn;
+          let answerInput = this.props.onInput_answerFormQuestion;
+          let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
+          let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
+          let indexInArray = j;
+          let removeSubform = this.props.onClick_removeSubformFromArray;
+          let conditionalRenderLookup = this.props.conditionalRenderLookup;
+          let moveToPage = this.props.onClick_moveToPage;
+          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, indexInArray, removeSubform, conditionalRenderLookup, moveToPage);
+          childrenToRender.push(rendered);
+        }
 
       // otherwise, just render the child normally
       } else {

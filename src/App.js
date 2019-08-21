@@ -424,7 +424,6 @@ class App extends Component {
   // renders <App/> ------------------------------------------------------------
 
   render() {
-    console.log('new render -------------------------------------------------')
     return (
       <div id="App">
         <Navbar/>

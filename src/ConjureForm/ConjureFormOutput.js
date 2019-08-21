@@ -274,7 +274,6 @@ class ConjureFormOutput {
 
             // if the form this one depends on won't render, neither should this one
             if (renderTable[dependencyID] === false) {
-              console.log("YOOOOO")
               renderTable[formID] = false;
 
             // if the form this one depends on will render, we need to check whether it has the right MC answer for this one to render

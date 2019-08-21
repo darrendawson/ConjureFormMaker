@@ -195,7 +195,7 @@ class ConjureFormOutputState {
     if (parentID in this.arrayIDConversions) {
       originalID = this.arrayIDConversions[parentID];
     }
-    
+
     let array = this.get(parentID);
     let itemDefinition = this.objArrayItemDefinitions[originalID];
     itemDefinition = this.replaceAllIDsInObject(itemDefinition);
@@ -378,7 +378,13 @@ class ConjureFormOutputState {
       }
 
       // if the parents didn't find a new answer, check the children
+      let pathToObj = this.pathLookup[contextID];
+      let lastStepInPath = pathToObj[pathToObj.length - 1];
       let downstreamObject = this.get(contextID);
+      if (typeof(lastStepInPath) === "number") {
+        downstreamObject = downstreamObject[lastStepInPath]; // covers case where contextID is an array of items (this steps into the correct version)
+      }
+
       let downstreamResult = this.__getRelevantVersionOfID_downstream(targetID, downstreamObject);
       if (downstreamResult) {
         return downstreamResult;
