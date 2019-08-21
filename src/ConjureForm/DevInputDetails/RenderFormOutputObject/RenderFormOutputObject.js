@@ -4,6 +4,7 @@ import './RenderFormOutputObject.css';
 
 const __leftBracketChar = "{";
 const __rightBracketChar = "}";
+const __DEV_MODE_ON = true;
 
 class RenderFormOutputObject extends Component {
 
@@ -19,7 +20,7 @@ class RenderFormOutputObject extends Component {
     }
     return false;
   }
-  
+
   // onClick -------------------------------------------------------------------
 
   onClick_selectFormSection = (formID) => {
@@ -42,6 +43,10 @@ class RenderFormOutputObject extends Component {
 
 
   renderParameterName = (formID, outputName) => {
+
+    if ((formID !== outputName) && __DEV_MODE_ON) {
+      outputName = formID + "->" + outputName;
+    }
 
     if (this.checkIfIDBanned(formID)) {
       return (

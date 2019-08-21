@@ -189,8 +189,15 @@ class ConjureFormOutputState {
   // parentID is the parent that contains the array we want to insert into
   // {parentID: [{item we want to duplicate}]}
   declareNewArrayItem(parentID) {
+
+    // convert parentID to original ID if parentID is an alias
+    let originalID = parentID;
+    if (parentID in this.arrayIDConversions) {
+      originalID = this.arrayIDConversions[parentID];
+    }
+    
     let array = this.get(parentID);
-    let itemDefinition = this.objArrayItemDefinitions[parentID];
+    let itemDefinition = this.objArrayItemDefinitions[originalID];
     itemDefinition = this.replaceAllIDsInObject(itemDefinition);
 
     array.push(itemDefinition);
@@ -207,7 +214,7 @@ class ConjureFormOutputState {
       usedIDs.push(newID);
 
       if (Array.isArray(value) && value.length > 0 && typeof(value[0]) === "object") {
-        newObj[newID] = this.replaceAllIDsInObject(value[0], {}, usedIDs);
+        newObj[newID] = [this.replaceAllIDsInObject(value[0], {}, usedIDs)];
       } else if (Array.isArray(value)) {
         newObj[newID] = [];
       } else if (typeof(value) === "object") {
@@ -361,17 +368,37 @@ class ConjureFormOutputState {
   //                  The targetID will be in the path to this object (it won't be in a different array object)
   //  - targetID:     the ID we want to convert to match contextID
   getRelevantVersionOfID(targetID, contextID) {
-    let path = this.pathLookup[contextID].slice();
-    let result = this.__getRelevantVersionOfID(targetID, path);
-    return result;
+    if (contextID in this.pathLookup) {
+
+      // check the parents of the target ID
+      let path = this.pathLookup[contextID].slice();
+      let upstreamResult = this.__getRelevantVersionOfID_upstream(targetID, path);
+      if (upstreamResult) {
+        return upstreamResult;
+      }
+
+      // if the parents didn't find a new answer, check the children
+      let downstreamObject = this.get(contextID);
+      let downstreamResult = this.__getRelevantVersionOfID_downstream(targetID, downstreamObject);
+      if (downstreamResult) {
+        return downstreamResult;
+      }
+
+      // otherwise, just return the targetID
+      return targetID;
+
+    } else {
+      return targetID;
+    }
   }
 
   // does the recursive work for this.getRelevantVersionOfID()
-  __getRelevantVersionOfID(targetID, path) {
+  // looks at all IDs above the targetID (parents)
+  __getRelevantVersionOfID_upstream(targetID, path) {
 
     // if we've reached the end, bubble up
     if (path.length === 0) {
-      return targetID;
+      return false;
     }
 
     // check for case where object is nested in an array
@@ -403,7 +430,28 @@ class ConjureFormOutputState {
     if ((path.length - 1 > 0) && (typeof(path[path.length - 1]) === "number")) {
       path.pop();
     }
-    return this.__getRelevantVersionOfID(targetID, path);
+    return this.__getRelevantVersionOfID_upstream(targetID, path);
+  }
+
+
+  // checks all the IDs below an object for a targetID (or targetID conversion)
+  // returns false if targetID is verbatum in the object (it doesn't have an alias)
+  __getRelevantVersionOfID_downstream(targetID, obj) {
+
+    if (Array.isArray(obj)) {
+      for (let i = 0; i < obj.length; i++) {
+        let childResult = this.__getRelevantVersionOfID_downstream(targetID, obj[i]);
+        if (childResult !== false) { return childResult; }
+      }
+    } else if (typeof(obj) === "object") {
+      for (let key in obj) {
+        if ((key in this.arrayIDConversions) && (this.arrayIDConversions[key] === targetID)) { return key; }
+        let childResult = this.__getRelevantVersionOfID_downstream(targetID, obj[key]);
+        if (childResult !== false) { return childResult; }
+      }
+    }
+
+    return false;
   }
 
 }

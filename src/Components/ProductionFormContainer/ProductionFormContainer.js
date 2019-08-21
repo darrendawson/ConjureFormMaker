@@ -29,7 +29,7 @@ class ProductionFormContainer extends Component {
     let conditionalRenderLookup = formOutput.createConditionalRenderLookupTable();
     conditionalRenderLookup = conjureForm.addPagesToConditionalRenderLookup(conditionalRenderLookup, this.props.currentPageIndex);
     let moveToPage = this.props.onClick_moveToPage;
-    
+
     return (
       <div id="ProductionFormContainer" style={{'background-color': this.props.backgroundColor}}>
         <div id="form_container">

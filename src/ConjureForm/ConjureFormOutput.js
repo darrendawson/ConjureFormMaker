@@ -175,6 +175,28 @@ class ConjureFormOutput {
   }
 
 
+  // returns a list with all versions of the same ID
+  getAllVersionsOfSameID(formID) {
+
+    let results = [formID];
+    let idLookupTable = this.outputObject.getIDConversionTable();
+
+    // case where given key is an alias -> repeat with the original ID
+    if (formID in idLookupTable) {
+      return this.getAllVersionsOfSameID(idLookupTable[formID]);
+    }
+
+    // otherwise, this is the original ID and we want to add every alias to results
+    for (let key in idLookupTable) {
+      if (idLookupTable[key] === formID) {
+        results.push(key);
+      }
+    }
+
+    return results;
+  }
+
+
   // declare -------------------------------------------------------------------
 
   declareNewArrayItem(arrayID) {
@@ -234,7 +256,7 @@ class ConjureFormOutput {
         let formID = formIDs[i];
         if (! (formID in renderTable)) {
 
-          // get dependencies 
+          // get dependencies
           let formDetailID = this.outputObject.convertID(formID); // formDetails are stored by their original initialized IDs, so we may need to convert
           let formDetails = this.detailsLookup[formDetailID];
           let dependencyID = formDetails.renderCondition.questionID;

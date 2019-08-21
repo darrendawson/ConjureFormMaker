@@ -159,42 +159,73 @@ class ConjureFormComponent extends Component {
 
 
       // get full child object from this.subforms or this.items
-      let childID = this.props.order[i]["id"];
+      let childFormID = this.props.order[i]["id"];
+      let childOutputID = this.props.formOutput.getRelevantVersionOfID(childFormID, this.getID());
+      let childOutput = this.props.formOutput.get(childOutputID);
       let child;
       if (this.props.order[i]["type"] === "ConjureForm") {
-        child = this.props.subforms[childID];
+        child = this.props.subforms[childFormID];
       } else if (this.props.order[i]["type"] === "ConjureFormItem"){
-        child = this.props.items[childID];
+        child = this.props.items[childFormID];
       }
 
-      let childOutput = this.props.formOutput.get(childID);
 
+      // boolean check to make sure that a child is an array with more than 1 object
+      let checkIfActiveArray = function(child, childOutput) {
+        return (
+          (child.formDetails.maxForms > 1) &&
+          (childOutput !== false) &&
+          (Array.isArray(childOutput)) &&
+          (childOutput.length > 1)
+        );
+      }
 
-      // handle case that child is an array of subforms AND has multiple forms active in output
+      // handle case that child is an array of cards AND has multiple forms active in output
+      //child.formDetails.containerType === "card" &&
+      //
       if (this.props.order[i]["type"] === "ConjureForm" &&
-          child.formDetails.maxForms > 1 &&
-          childOutput !== false &&
-          Array.isArray(childOutput) &&
-          childOutput.length > 1
+          checkIfActiveArray(child, childOutput)
         ) {
 
-        // iterate over the output and add items for each
-        for (let i = 0; i < childOutput.length; i++) {
+          console.log('-');
+          // iterate over the output and add items for each
+          for (let j = 0; j < childOutput.length; j++) {
 
-          let formOutput = this.props.formOutput;
-          let idConversionTable = formOutput.getIDConversionTable(childOutput[i]);
-          let selectForm = this.props.onClick_selectForm;
-          let devModeOn = this.props.devModeOn;
-          let answerInput = this.props.onInput_answerFormQuestion;
-          let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
-          let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
-          let indexInArray = i;
-          let removeSubform = this.props.onClick_removeSubformFromArray;
-          let conditionalRenderLookup = this.props.conditionalRenderLookup;
-          let moveToPage = this.props.onClick_moveToPage;
-          let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, indexInArray, removeSubform, conditionalRenderLookup, moveToPage);
-          childrenToRender.push(rendered);
-        }
+            let formOutput = this.props.formOutput;
+            let idConversionTable = formOutput.getIDConversionTable(childOutput[j]);
+            let selectForm = this.props.onClick_selectForm;
+            let devModeOn = this.props.devModeOn;
+            let answerInput = this.props.onInput_answerFormQuestion;
+            let answerMC = this.props.onClick_answerMultipleChoiceQuestion;
+            let addNewSubformToArray = this.props.onClick_addNewSubformToArray;
+            let indexInArray = j;
+            let removeSubform = this.props.onClick_removeSubformFromArray;
+            let conditionalRenderLookup = this.props.conditionalRenderLookup;
+            let moveToPage = this.props.onClick_moveToPage;
+            let rendered = child.render(formOutput, selectForm, devModeOn, this.props.selectedID, answerInput, answerMC, addNewSubformToArray, idConversionTable, indexInArray, removeSubform, conditionalRenderLookup, moveToPage);
+            childrenToRender.push(rendered);
+
+            if (child.formDetails.containerType === "subcard") {
+              console.log(idConversionTable);
+            }
+          }
+
+      // handle case where child is an array of subcards
+      } else if (
+        (this.props.order[i]["type"] === "ConjureForm") &&
+        (child.formDetails.containerType === "subcard") &&
+        (checkIfActiveArray(child, childOutput))
+      ) {
+
+        /*
+          let subcardIDs = this.props.formOutput.getAllVersionsOfSameID(childID);
+          let rightID = this.props.formOutput.getRelevantVersionOfID(childID, this.getID());
+
+          console.log("right: " + rightID);
+          console.log("child: " + childID);
+          console.log("test: " + this.props.idConversionTable[childID]);
+          console.log(this.props.formOutput.getAllVersionsOfSameID(childID));
+          */
 
       // otherwise, just render the child normally
       } else {
