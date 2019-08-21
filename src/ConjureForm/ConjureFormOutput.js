@@ -256,7 +256,6 @@ class ConjureFormOutput {
         let formID = formIDs[i];
         if (! (formID in renderTable)) {
 
-          // get dependencies
           let formDetailID = this.outputObject.convertID(formID); // formDetails are stored by their original initialized IDs, so we may need to convert
           let formDetails = this.detailsLookup[formDetailID];
           let dependencyID = formDetails.renderCondition.questionID;

@@ -90,7 +90,11 @@ class ConjureFormOutputState {
 
         // if this is an object, recurse!
         if (typeof(value) === "object") {
-          totalPath = this.__initializePathLookup(value, newPath, totalPath);
+
+          // don't recurse if the next object is an array of strings
+          if ( ! (Array.isArray(value) && value.length > 0 && typeof(value[0]) === "string")) {
+            totalPath = this.__initializePathLookup(value, newPath, totalPath);
+          }
         }
       }
     }
