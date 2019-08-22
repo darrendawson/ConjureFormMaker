@@ -275,7 +275,7 @@ class ConjureFormOutputState {
     // otherwise, get full path and trim the end of it so we stop at the parent
     let fullPath = this.pathLookup[pathTag].slice();
     fullPath.pop();
-    fullPath.pop();
+    //fullPath.pop();
 
     // if parent is an array, then we need to remove the extra [i] in path to get the full array
     //  - In the case of [parent][i][pathTag], we want to return parent, not [i]
@@ -374,24 +374,30 @@ class ConjureFormOutputState {
   getRelevantVersionOfID(targetID, contextID) {
     if (contextID in this.pathLookup) {
 
-      // check the parents of the target ID
+      // 1) check the parents of the target ID
       let path = this.pathLookup[contextID].slice();
       let upstreamResult = this.__getRelevantVersionOfID_upstream(targetID, path);
       if (upstreamResult) {
         return upstreamResult;
       }
 
-      // if the parents didn't find a new answer, check the children
-      let pathToObj = this.pathLookup[contextID];
+      // 2) if the parents didn't find a new answer, check the children
+      // covers case where contextID is an array of items (this steps into the correct version)
+      let pathToObj = this.pathLookup[contextID].slice();
       let lastStepInPath = pathToObj[pathToObj.length - 1];
       let downstreamObject = this.get(contextID);
-      if (typeof(lastStepInPath) === "number") {
-        downstreamObject = downstreamObject[lastStepInPath]; // covers case where contextID is an array of items (this steps into the correct version)
-      }
+      if (typeof(lastStepInPath) === "number") { downstreamObject = downstreamObject[lastStepInPath]; }
 
       let downstreamResult = this.__getRelevantVersionOfID_downstream(targetID, downstreamObject);
       if (downstreamResult) {
         return downstreamResult;
+      }
+
+      // 3) check the current object
+      let currentObj = this.getParent(contextID);
+      for (let key in currentObj) {
+        if (key === targetID) { return key; }
+        if (this.arrayIDConversions[key] === targetID) { return key; }
       }
 
       // otherwise, just return the targetID
