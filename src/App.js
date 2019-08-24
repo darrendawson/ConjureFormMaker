@@ -34,6 +34,7 @@ const PT_productionSidebarExpanded = "productionSidebarExpanded";
 const PT_formOutput = "formOutput";
 const PT_currentPageIndex = "currentPageIndex";
 
+
 const defaultColors = {
   "background": "#eaeaea",
   "card": "#f4f4f4",

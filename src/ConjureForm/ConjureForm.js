@@ -693,6 +693,11 @@ class ConjureForm {
   }
 
 
+  export() {
+    return (JSON.stringify(this, null, 2));
+  }
+
+
   // renders <ConjureFormComponent/>
   // arguments are runtime values / functions that make it work in production
   render(

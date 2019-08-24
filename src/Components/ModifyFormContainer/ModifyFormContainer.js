@@ -14,9 +14,26 @@ class ModifyFormContainer extends Component {
     this.props.onClick_setDevModeActive(false);
   }
 
+
+  onClick_saveFormExportToClipboard = (e) => {
+    e.stopPropagation();
+    let conjureJSON = this.props.conjureForm.export();
+    navigator.clipboard.writeText(conjureJSON);
+  }
+
   // render --------------------------------------------------------------------
 
+
   renderActionsMenu = () => {
+    return (
+      <div id="actions_menu_row">
+        {this.renderActionsMenu_ExportButton()}
+        {this.renderActionsMenu_RunButton()}
+      </div>
+    );
+  }
+
+  renderActionsMenu_RunButton = () => {
     return (
       <div id="actions_menu" onClick={this.onClick_runProductionForm}>
         <h3 className="actions_menu_clickable">&#9654;</h3>
@@ -24,8 +41,19 @@ class ModifyFormContainer extends Component {
     );
   }
 
+  renderActionsMenu_ExportButton = () => {
+    return (
+      <div id="actions_menu" onClick={this.onClick_saveFormExportToClipboard}>
+        <h3 className="actions_menu_clickable">&#128427;</h3>
+      </div>
+    );
+  }
 
-  render() {
+
+  // render ConjureForm --------------------------------------------------------
+
+
+  renderConjureForm = () => {
 
     let conjureForm = this.props.conjureForm;
     let formOutput = this.props.formOutput;
@@ -45,15 +73,19 @@ class ModifyFormContainer extends Component {
     let conditionalRenderLookup = {};
     let moveToPage = () => {};
 
+    return conjureForm.render(formOutput, selectForm, devModeOn, selectedID, onInput_answerFormQuestion, answerMC, addNewSubformToArray, {}, -1, removeSubform, conditionalRenderLookup, moveToPage);
+  }
+
+  // render <ModifyFormContainer/> ---------------------------------------------
+
+  render() {
     return (
       <div id="ModifyFormContainer" onClick={this.props.onClick_deselectItem} style={{'background-color': this.props.backgroundColor}}>
 
-        <div id="actions_menu_row">
-          {this.renderActionsMenu()}
-        </div>
+        {this.renderActionsMenu()}
 
         <div id="form_container">
-          {conjureForm.render(formOutput, selectForm, devModeOn, selectedID, onInput_answerFormQuestion, answerMC, addNewSubformToArray, {}, -1, removeSubform, conditionalRenderLookup, moveToPage)}
+          {this.renderConjureForm()}
         </div>
       </div>
     );
