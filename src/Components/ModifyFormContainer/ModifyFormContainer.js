@@ -58,7 +58,7 @@ class ModifyFormContainer extends Component {
 
   renderActionsMenu_RunButton = () => {
     return (
-      <div id="actions_menu" onClick={this.onClick_runProductionForm}>
+      <div id="actions_menu" title="Run" onClick={this.onClick_runProductionForm}>
         <h3 className="actions_menu_clickable">&#9654;</h3>
       </div>
     );
@@ -66,20 +66,17 @@ class ModifyFormContainer extends Component {
 
   renderActionsMenu_ExportButton = () => {
     return (
-      <div id="actions_menu" onClick={this.onClick_saveFormExportToClipboard}>
+      <div id="actions_menu" title="Copy Form to Clipboard" onClick={this.onClick_saveFormExportToClipboard}>
         <h3 className="actions_menu_clickable">&#128427;</h3>
       </div>
     );
   }
 
   renderActionsMenu_ImportButton = () => {
-
-
-
     return (
       <div>
         <input type='file' id='file' onChange={this.onChange_handleNewFile} ref={this.inputFileRef} style={{display: 'none'}}/>
-        <div id="actions_menu" onClick={this.onClick_openFileBrowser}>
+        <div id="actions_menu" title="Import Form" onClick={this.onClick_openFileBrowser}>
           <h3 className="actions_menu_clickable">&#x2191;</h3>
         </div>
       </div>
