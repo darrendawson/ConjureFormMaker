@@ -207,6 +207,19 @@ class ConjureFormItem {
       this.questionDetails["choices"] = [];
     }
   }
+
+  // Import --------------------------------------------------------------------
+  /*
+    Functions for loading an item's details from a previously saved object
+  */
+
+  loadConjureFormItem(obj) {
+    for (let key in obj) {
+      this[key] = obj[key];
+    }
+  }
+
+
   // export --------------------------------------------------------------------
   /*
     Functions for exporting this class into other usable formats like:
@@ -214,10 +227,6 @@ class ConjureFormItem {
       - <ConjureFormItemComponent/> to render
   */
 
-
-  dumpToJSON() {
-
-  }
 
   // renders <ConjureFormItemomponent/>
   // arguments are runtime values / functions that make it work in production

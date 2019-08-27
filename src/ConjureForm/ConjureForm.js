@@ -673,6 +673,40 @@ class ConjureForm {
   }
 
 
+  // Import --------------------------------------------------------------------
+  /*
+    Functions for loading saved conjureForm details into this ConjureForm
+  */
+
+  loadConjureForm(obj) {
+
+    // iterate over all keys in the object to load ie: formID, subforms, items, colors, etc
+    for (let key in obj) {
+
+      // if this key corresponds to subforms, we want to create new ConjureForms for each subform in the array
+      if (key === "subforms") {
+        this.subforms = {};
+        for (let subformKey in obj[key]) {
+          let subform = new ConjureForm();
+          subform.loadConjureForm(obj[key][subformKey]);
+          this.subforms[subformKey] = subform;
+        }
+
+      // similarly, if this key corresponds to items, we want to create a new ConjureFormItem for each
+      } else if (key === "items") {
+        this.items = {};
+        for (let itemKey in obj[key]) {
+          let item = new ConjureFormItem();
+          item.loadConjureFormItem(obj[key][itemKey]);
+          this.items[itemKey] = item;
+        }
+
+      // otherwise, this key doesn't have a nested value so we can just copy it over directly
+      } else {
+        this[key] = obj[key];
+      }
+    }
+  }
 
   // Export --------------------------------------------------------------------
   /*
@@ -680,17 +714,6 @@ class ConjureForm {
      - JSON
      - render
   */
-
-  // just dumps the contents of this ConjureForm into an object
-  dumpToJSON() {
-    return {
-      "subforms": this.subforms,
-      "items": this.items,
-      "order": this.order,
-      "formDetails": this.formDetails,
-      "formID": this.formID
-    }
-  }
 
 
   export() {

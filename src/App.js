@@ -316,10 +316,13 @@ class App extends Component {
   */
 
   // obj is a JSON.parse()'ed object
+  // we want to create a new ConjureForm and load the data into it
   loadConjureForm = (obj) => {
-    console.log(obj);
+    let conjureForm = new ConjureForm();
+    conjureForm.loadConjureForm(obj);
+    this.saveConjureForm(conjureForm);
   }
-  
+
 
   // render --------------------------------------------------------------------
 
