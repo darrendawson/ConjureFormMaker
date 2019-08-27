@@ -309,6 +309,18 @@ class App extends Component {
     this.update(newPageNum, PT_currentPageIndex);
   }
 
+
+  // Load ConjureForm ----------------------------------------------------------
+  /*
+    Functions for loading a ConjureForm in from a JSON object
+  */
+
+  // obj is a JSON.parse()'ed object
+  loadConjureForm = (obj) => {
+    console.log(obj);
+  }
+  
+
   // render --------------------------------------------------------------------
 
 
@@ -391,6 +403,7 @@ class App extends Component {
             onClick_selectFormSection={this.onClick_selectFormSection}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
             onClick_setDevModeActive={this.onClick_setDevModeActive}
+            onClick_loadConjureForm={this.loadConjureForm}
           />
         </div>
       );

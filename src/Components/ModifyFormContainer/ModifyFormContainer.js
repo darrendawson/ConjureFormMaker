@@ -5,6 +5,8 @@ class ModifyFormContainer extends Component {
 
   constructor() {
     super();
+
+    this.inputFileRef = React.createRef();
   }
 
   // onClick -------------------------------------------------------------------
@@ -21,12 +23,33 @@ class ModifyFormContainer extends Component {
     navigator.clipboard.writeText(conjureJSON);
   }
 
+
+  onClick_openFileBrowser = () => {
+    this.inputFileRef.current.click();
+  };
+
+  onChange_handleNewFile = () => {
+    let fileList = this.inputFileRef.current.files;
+    if (fileList.length > 0) {
+      let file = fileList[0];
+      let blob = file.slice();
+      this.convertFileToJS(blob);
+    }
+  }
+
+  async convertFileToJS(blob) {
+    let text = await new Response(blob).text()
+    let obj = JSON.parse(text);
+    this.props.onClick_loadConjureForm(obj);
+  }
+
   // render --------------------------------------------------------------------
 
 
   renderActionsMenu = () => {
     return (
       <div id="actions_menu_row">
+        {this.renderActionsMenu_ImportButton()}
         {this.renderActionsMenu_ExportButton()}
         {this.renderActionsMenu_RunButton()}
       </div>
@@ -45,6 +68,20 @@ class ModifyFormContainer extends Component {
     return (
       <div id="actions_menu" onClick={this.onClick_saveFormExportToClipboard}>
         <h3 className="actions_menu_clickable">&#128427;</h3>
+      </div>
+    );
+  }
+
+  renderActionsMenu_ImportButton = () => {
+
+
+
+    return (
+      <div>
+        <input type='file' id='file' onChange={this.onChange_handleNewFile} ref={this.inputFileRef} style={{display: 'none'}}/>
+        <div id="actions_menu" onClick={this.onClick_openFileBrowser}>
+          <h3 className="actions_menu_clickable">&#x2191;</h3>
+        </div>
       </div>
     );
   }
