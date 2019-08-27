@@ -318,8 +318,19 @@ class App extends Component {
   // obj is a JSON.parse()'ed object
   // we want to create a new ConjureForm and load the data into it
   loadConjureForm = (obj) => {
+
+    // create ConjureForm
     let conjureForm = new ConjureForm();
     conjureForm.loadConjureForm(obj);
+
+    // get correct colors
+    let colors = obj['colors'];
+    delete colors['backgroundColor'];
+    delete colors['titleColor'];
+    conjureForm.updateAllColors(colors);
+    this.update(colors, PT_formColors);
+
+    // save
     this.saveConjureForm(conjureForm);
   }
 

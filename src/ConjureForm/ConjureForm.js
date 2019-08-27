@@ -467,7 +467,11 @@ class ConjureForm {
     let containerType = this.formDetails.containerType;
 
     // update colors of this ConjureForm
-    if (containerType === "all" || containerType === "page") {
+    if (containerType === "all") {
+      this.colors = colors;
+      this.colors.backgroundColor = colors.background;
+      this.colors.titleColor = colors.title;
+    } else if (containerType === "page") {
       this.colors.backgroundColor = colors.background;
       this.colors.titleColor = colors.title;
     } else if (containerType === "card") {
