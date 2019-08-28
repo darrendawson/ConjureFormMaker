@@ -395,8 +395,11 @@ class FormSidebar extends Component {
       return (
         <div id="FormSidebar">
           {this.renderTitleBar()}
-          {this.renderFormOutputObject()}
-          {this.renderSelectColors()}
+          <div id="devform_input_container_tall">
+            {this.renderFormOutputObject()}
+            {this.renderSelectColors()}
+          </div>
+
         </div>
       );
 
