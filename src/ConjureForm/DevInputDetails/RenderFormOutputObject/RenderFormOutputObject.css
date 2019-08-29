@@ -1,9 +1,31 @@
 #RenderFormOutputObject {
   width: 100%;
-  background-color: #282828;
-  text-align: left;
   margin-top: 20px;
 }
+
+#RenderFormOutputObject #output_container {
+  width: 100%;
+  background-color: #282828;
+  text-align: left;
+}
+
+#RenderFormOutputObject #buttons_container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#RenderFormOutputObject #copy_output_text_clickable {
+  color: grey;
+  margin: 10px 0px;
+  cursor: pointer;
+}
+
+#RenderFormOutputObject #copy_output_text_clickable:hover {
+  color: white;
+}
+
 
 #RenderFormOutputObject .text {
   margin: 2px;

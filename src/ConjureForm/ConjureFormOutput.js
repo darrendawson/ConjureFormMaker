@@ -384,6 +384,13 @@ class ConjureFormOutput {
   // render --------------------------------------------------------------------
 
   render(filterByRender = false, selectedID = false, renderTextClickable = false, onClick_selectFormSection = () => {}) {
+
+    // function for saving output to the user's clipboard
+    let onClick_copyOutputToClipboard = () => {
+      let outputJSON = this.export(filterByRender);
+      navigator.clipboard.writeText(outputJSON);
+    }
+
     return (
       <RenderFormOutputObject
         selectedID={selectedID}
@@ -392,6 +399,7 @@ class ConjureFormOutput {
         renderTextClickable={renderTextClickable}
         bannedIDs={[]}
         onClick_selectFormSection={onClick_selectFormSection}
+        onClick_exportOutput={onClick_copyOutputToClipboard}
       />
     );
   }

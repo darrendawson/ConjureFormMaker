@@ -18,12 +18,6 @@ class ProductionFormSidebar extends Component {
     this.props.update(expand, this.props.sidebarExpandedTag);
   }
 
-  onClick_copyOutputToClipboard = () => {
-    let outputJSON = this.props.formOutput.export(true);
-    navigator.clipboard.writeText(outputJSON);
-  }
-
-
   // render --------------------------------------------------------------------
 
   // Renders <ProductionFormSidebar/>
@@ -47,13 +41,6 @@ class ProductionFormSidebar extends Component {
 
           <div id="render_form_output_container">
             {this.props.formOutput.render(true)}
-            <div className="row">
-              <h3
-                id="copy_output_text_clickable"
-                onClick={this.onClick_copyOutputToClipboard}>
-                Copy output object to clipboard
-              </h3>
-            </div>
           </div>
         </div>
       );

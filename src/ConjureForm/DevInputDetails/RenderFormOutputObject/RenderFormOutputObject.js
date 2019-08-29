@@ -139,9 +139,15 @@ class RenderFormOutputObject extends Component {
   render() {
     return (
       <div id="RenderFormOutputObject">
-        <pre className="text">{__leftBracketChar}</pre>
-        {this.renderObject(this.props.formOutputObject)}
-        <pre className="text">{__rightBracketChar}</pre>
+        <div id="output_container">
+          <pre className="text">{__leftBracketChar}</pre>
+          {this.renderObject(this.props.formOutputObject)}
+          <pre className="text">{__rightBracketChar}</pre>
+        </div>
+
+        <div id="buttons_container">
+          <h3 id="copy_output_text_clickable" onClick={this.props.onClick_exportOutput}>copy output object to clipboard</h3>
+        </div>
       </div>
     );
   }
