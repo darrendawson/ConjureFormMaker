@@ -9,3 +9,14 @@
   background-color: #353535;
   color: white;
 }
+
+#Navbar #conjure_icon {
+  height: 100%;
+  margin-right: 10px;
+}
+
+#Navbar .navbar_group {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './Navbar.css';
 
+import MagicCircle from '../../Images/mc_icon/magic_circle.ico';
+
 class Navbar extends Component {
 
   constructor() {
@@ -12,7 +14,11 @@ class Navbar extends Component {
 
     return (
       <div id="Navbar">
-        <h1>Conjure</h1>
+        <div className="navbar_group">
+          <img id="conjure_icon" src={MagicCircle}/>
+          <h1>Conjure</h1>
+        </div>
+
       </div>
     );
   }
