@@ -105,11 +105,19 @@ class ConjureFormOutput {
     return this.outputObject.getIDConversionTable(formID);
   }
 
-
-  getOutputObject() {
-    return this.outputObject.get();
+  // returns the entire output object
+  getOutputObject(filterByRender = false) {
+    if (! filterByRender) {
+      return this.outputObject.get();
+    } else {
+      let outputObject = this.outputObject.get();
+      let renderTable = this.createConditionalRenderLookupTable();
+      return this.__filterOutUnrenderedValues(renderTable, outputObject);
+    }
   }
 
+
+  // returns details lookup for all items in the output object
   getDetailsLookup() {
     let lookup = this.detailsLookup;
 
@@ -296,6 +304,36 @@ class ConjureFormOutput {
   }
 
 
+  // takes in an Output Object and a render table and removes all items that aren't rendered
+  __filterOutUnrenderedValues(renderTable, oldObj, newObj = {}) {
+
+    // handle case where object is an array of items
+    if (Array.isArray(oldObj)) {
+      newObj = [];
+      for (let i = 0; i < oldObj.length; i++) {
+        let childResult = this.__filterOutUnrenderedValues(renderTable, oldObj[i]); // recurse
+        if (childResult !== false) {
+          newObj.push(childResult);
+        }
+      }
+      return newObj;
+
+    // handle case where object is a dict
+    } else if (typeof(oldObj) === "object") {
+      for (let key in oldObj) {
+        if ((key in renderTable) && (renderTable[key] === true)) {
+          newObj[key] = this.__filterOutUnrenderedValues(renderTable, oldObj[key]);
+        }
+      }
+      return newObj;
+
+    // otherwise, object isn't an Array or a dict, so just return it
+    } else {
+      return oldObj;
+    }
+  }
+
+
   // export --------------------------------------------------------------------
   /*
     Functions for exporting the output of a ConjureForm into JSON
@@ -303,16 +341,16 @@ class ConjureFormOutput {
   */
 
   // exports output of a ConjureForm to JSON
-  export() {
-    let outputObject = this.getOutputObject();
+  export(filterByRender = false) {
+    let outputObject = this.getOutputObject(filterByRender);
     let detailsLookup = this.getDetailsLookup();
     let exported = JSON.stringify(this.__convertNames(detailsLookup, outputObject));
     return exported;
   }
 
   // exports output of a ConjureForm as an object (like export but without the JSON step)
-  exportAsObj() {
-    let outputObject = this.getOutputObject();
+  exportAsObj(filterByRender = false) {
+    let outputObject = this.getOutputObject(filterByRender);
     let detailsLookup = this.getDetailsLookup();
     let exported = this.__convertNames(detailsLookup, outputObject);
     return exported;
@@ -345,11 +383,11 @@ class ConjureFormOutput {
 
   // render --------------------------------------------------------------------
 
-  render(selectedID = false, renderTextClickable = false, onClick_selectFormSection = () => {}) {
+  render(filterByRender = false, selectedID = false, renderTextClickable = false, onClick_selectFormSection = () => {}) {
     return (
       <RenderFormOutputObject
         selectedID={selectedID}
-        formOutputObject={this.getOutputObject()}
+        formOutputObject={this.getOutputObject(filterByRender)}
         formDetailsLookup={this.getDetailsLookup()}
         renderTextClickable={renderTextClickable}
         bannedIDs={[]}

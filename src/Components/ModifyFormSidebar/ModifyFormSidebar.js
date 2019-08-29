@@ -381,7 +381,7 @@ class FormSidebar extends Component {
     return (
       <div className="sidebar_section_align_left">
         <h1 className="section_title">Output Object</h1>
-        {this.props.formOutput.render(this.props.selectedID, true, this.props.onClick_selectFormSection)}
+        {this.props.formOutput.render(false, this.props.selectedID, true, this.props.onClick_selectFormSection)}
       </div>
     );
   }

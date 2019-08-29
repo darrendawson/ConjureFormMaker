@@ -19,7 +19,7 @@ class ProductionFormSidebar extends Component {
   }
 
   onClick_copyOutputToClipboard = () => {
-    let outputJSON = this.props.formOutput.export();
+    let outputJSON = this.props.formOutput.export(true);
     navigator.clipboard.writeText(outputJSON);
   }
 
@@ -46,7 +46,7 @@ class ProductionFormSidebar extends Component {
           </div>
 
           <div id="render_form_output_container">
-            {this.props.formOutput.render()}
+            {this.props.formOutput.render(true)}
             <div className="row">
               <h3
                 id="copy_output_text_clickable"
