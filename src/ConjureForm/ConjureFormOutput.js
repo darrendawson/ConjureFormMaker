@@ -295,6 +295,54 @@ class ConjureFormOutput {
     return renderTable;
   }
 
+
+  // export --------------------------------------------------------------------
+  /*
+    Functions for exporting the output of a ConjureForm into JSON
+    -> handles all the key conversions from unique ConjureID to user specified parameter names
+  */
+
+  // exports output of a ConjureForm to JSON
+  export() {
+    let outputObject = this.getOutputObject();
+    let detailsLookup = this.getDetailsLookup();
+    let exported = JSON.stringify(this.__convertNames(detailsLookup, outputObject));
+    return exported;
+  }
+
+  // exports output of a ConjureForm as an object (like export but without the JSON step)
+  exportAsObj() {
+    let outputObject = this.getOutputObject();
+    let detailsLookup = this.getDetailsLookup();
+    let exported = this.__convertNames(detailsLookup, outputObject);
+    return exported;
+  }
+
+  // converts Conjure unique IDs to user specified parameter names
+  __convertNames(detailsLookup, oldObj, newObj = {}) {
+
+    // handle case where parent is an array and needs to recurse over the array
+    if (Array.isArray(oldObj)) {
+      newObj = [];
+      for (let i = 0; i < oldObj.length; i++) {
+        newObj.push(this.__convertNames(detailsLookup, oldObj[i]));
+      }
+      return newObj;
+
+    // handle case where parent is a dict and needs to iterate over keys
+    } else if (typeof(oldObj) === "object") {
+      for (let key in oldObj) {
+        let convertedID = (key in detailsLookup) ? detailsLookup[key]["outputID"] : key;
+        newObj[convertedID] = this.__convertNames(detailsLookup, oldObj[key]);
+      }
+      return newObj;
+
+    // otherwise, if parent is not an array or a dict, just return it because we cant recurse
+    } else {
+      return oldObj;
+    }
+  }
+
   // render --------------------------------------------------------------------
 
   render(selectedID = false, renderTextClickable = false, onClick_selectFormSection = () => {}) {

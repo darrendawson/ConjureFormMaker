@@ -49,3 +49,20 @@
   overflow-y: auto;
   scrollbar-width: none;
 }
+
+#ProductionFormSidebar .row {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#ProductionFormSidebar #copy_output_text_clickable {
+  color: grey;
+  margin: 10px 0px;
+  cursor: pointer;
+}
+
+#ProductionFormSidebar #copy_output_text_clickable:hover {
+  color: white;
+}
