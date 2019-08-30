@@ -104,7 +104,7 @@ class DevFormInput extends Component {
         </div>
 
         <div className="input_row">
-          {formOutput.render(this.props.selectedID, true, this.props.onClick_selectFormSection)}
+          {formOutput.render(false, this.props.selectedID, true, this.props.onClick_selectFormSection)}
         </div>
 
       </div>
