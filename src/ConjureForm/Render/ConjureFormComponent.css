@@ -31,7 +31,7 @@
 }
 
 #ConjureFormComponent .container_type_subcard {
-  width: 100%;
+  width: calc(100% - 40px);
   margin: 10px 0px;
 }
 
