@@ -51,6 +51,29 @@ class ConjureFormItemComponent extends Component {
     }
   }
 
+  renderDescription = (text) => {
+
+    let linesOfText = text.split("\\n");
+    let linesToRender = [];
+
+    for (let i = 0; i < linesOfText.length; i++) {
+      linesToRender.push(
+        <p
+          className="item_text_no_margins"
+          style={{'color': this.props.textColor}}>
+          {linesOfText[i]}
+        </p>
+      );
+    }
+    return (
+      <div style={{'margin-bottom': this.props.appearance.paddingBelowDescription + 'px'}}>
+        {linesToRender}
+      </div>
+    );
+  }
+
+
+
   renderItemDetails = () => {
 
     let itemDetails = this.props.itemDetails;
@@ -60,14 +83,14 @@ class ConjureFormItemComponent extends Component {
         <div className="item_container" style={this.getContainerPadding()}>
           {this.renderSectionTitle(itemDetails.sectionTitleText)}
           <h1 className="item_text_no_margins" style={{'color': this.props.titleColor, 'margin-bottom': this.props.appearance.paddingBelowRegularTitle + 'px'}}>{itemDetails.titleText}</h1>
-          <p className="item_text_no_margins" style={{'color': this.props.textColor}}>{itemDetails.descriptionText}</p>
+          {this.renderDescription(itemDetails.descriptionText)}
         </div>
       );
     } else if (this.props.itemType === "question") {
       return (
         <div className="item_container" style={this.getContainerPadding()}>
           <h1 className="item_text_no_margins" style={{'color': this.props.titleColor, 'margin-bottom': this.props.appearance.paddingBelowTitle + 'px'}}>{itemDetails.questionTitle}</h1>
-          <p className="item_text_no_margins" style={{'color': this.props.textColor, 'margin-bottom': this.props.appearance.paddingBelowDescription + 'px'}}>{itemDetails.questionDescription}</p>
+          {this.renderDescription(itemDetails.questionDescription)}
           {this.renderQuestion()}
         </div>
       );
