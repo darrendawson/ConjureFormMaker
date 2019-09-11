@@ -27,7 +27,19 @@ class DevFormInput extends Component {
     this.props.onClick_updateFormSectionDetails(this.props.selectedID, updatedFormDetails);
   }
 
+  onInput_updateAppearance = (appearanceType, e) => {
+    let updatedAppearance = this.props.appearance;
+    updatedAppearance[appearanceType] = e.target.value;
+    this.props.onClick_updateFormAppearances(this.props.selectedID, updatedAppearance);
+  }
+
+
+  // ===========================================================================
+  // render Details
+  // ===========================================================================
+
   // render Form Details -------------------------------------------------------
+
 
   renderFormDetails = () => {
 
@@ -189,16 +201,62 @@ class DevFormInput extends Component {
     }
   }
 
+
+  // ===========================================================================
+  // render Appearance
+  // ===========================================================================
+
+  // render padding ------------------------------------------------------------
+
+
+  renderPaddingInputRow = (title, key) => {
+    return (
+      <div className="input_row">
+        <h3 className="input_title">{title}</h3>
+        <input
+          className="form_input"
+          value={this.props.appearance[key]}
+          onChange={this.onInput_updateAppearance.bind(this, key)}
+        />
+      </div>
+    );
+  }
+
+  // intentionally not rendering option to change sides because it disrupts width of cards
+  //  {this.renderPaddingInputRow("Sides", "paddingSides")}
+  renderPadding = () => {
+    return (
+      <div className="form_input_container with_margin">
+        <h1 className="section_title">Padding</h1>
+        {this.renderPaddingInputRow("Top", "paddingTop")}
+        {this.renderPaddingInputRow("Bottom", "paddingBottom")}
+      </div>
+    );
+  }
+
+  // ===========================================================================
+  // render <DevFormInput/>
+  // ===========================================================================
+
   // render <DevFormInput/> ----------------------------------------------------
 
   render() {
-    return (
-      <div id="DevFormInput">
-        {this.renderFormOutputObject()}
-        {this.renderFormDetails()}
-        {this.renderConditionals()}
-      </div>
-    );
+
+    if (this.props.modificationMode === "Appearance") {
+      return (
+        <div id="DevFormInput">
+          {this.renderPadding()}
+        </div>
+      );
+    } else {
+      return (
+        <div id="DevFormInput">
+          {this.renderFormOutputObject()}
+          {this.renderFormDetails()}
+          {this.renderConditionals()}
+        </div>
+      );
+    }
   }
 }
 

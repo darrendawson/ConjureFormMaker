@@ -53,6 +53,13 @@ class ConjureForm {
       this.colors['backgroundColor'] = __cardColorDefault;
       this.colors['cardShadow'] = __shadowColorDefault;
     }
+
+    // padding for a container includes padding above, on the sides, and below
+    this.appearance = {
+      paddingTop: "10",
+      paddingSides: "20",
+      paddingBottom: "10"
+    };
   }
 
 
@@ -531,6 +538,31 @@ class ConjureForm {
   }
 
 
+  // similar to this.updateSectionDetails(), but does it for this.appearances instead of this.formDetails
+  updateSectionAppearances(sectionID, newAppearances) {
+
+    if (sectionID === this.formID) {
+      for (let key in newAppearances) {
+        this.appearance[key] = newAppearances[key];
+      }
+      return true;
+    }
+
+    for (let key in this.items) {
+      if (key === sectionID) {
+        this.items[key].updateItemAppearances(newAppearances);
+        return true;
+      }
+    }
+
+    for (let key in this.subforms) {
+      if (this.subforms[key].updateSectionAppearances(sectionID, newAppearances)) {
+        return true;
+      }
+    }
+  }
+
+
   // pass in a ConjureFormItem or ConjureForm object, and this function will replace the existing version of it in the ConjureTree
   updateWholeSection = (updatedSectionID, updatedSection) => {
 
@@ -749,6 +781,7 @@ class ConjureForm {
         items={this.items}
         order={this.order}
         formDetails={this.formDetails}
+        appearance={this.appearance}
         containerType={this.formDetails.containerType}
         formID={this.formID}
         backgroundColor={this.colors.backgroundColor}

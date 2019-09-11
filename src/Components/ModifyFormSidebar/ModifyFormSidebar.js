@@ -13,7 +13,8 @@ class FormSidebar extends Component {
     this.state = {
       createNewFormBarOpen: false,
       insertPre: false,
-      insertInto: true
+      insertInto: true,
+      modificationMode: "Details"
     }
   }
 
@@ -44,6 +45,13 @@ class FormSidebar extends Component {
     this.setState({createNewFormBarOpen: false});
   }
 
+
+  // selects a modification mode user wants to see
+  onClick_setModificationMode = (mode) => {
+    if (mode !== this.state.modificationMode && (['Details', 'Appearance'].indexOf(mode) >= 0)) {
+      this.setState({'modificationMode': mode});
+    }
+  }
   // Render --------------------------------------------------------------------
 
   renderDevFormInput = () => {
@@ -67,11 +75,16 @@ class FormSidebar extends Component {
     if (selectedSection.getClassName() === "ConjureForm") {
       return (
         <div id={scrollContainer_CSS}>
+          {this.renderSelectModeButtons()}
+
           <DevFormInput
+            modificationMode={this.state.modificationMode}
             formDetails={selectedSection.formDetails}
+            appearance={selectedSection.appearance}
             selectedID={selectedSection.formID}
             formOutput={this.props.formOutput}
             onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
+            onClick_updateFormAppearances={this.props.onClick_updateFormAppearances}
             onClick_selectFormSection={this.props.onClick_selectFormSection}
           />
         </div>
@@ -80,13 +93,18 @@ class FormSidebar extends Component {
     } else if (selectedSection.getClassName() === "ConjureFormItem") {
       return (
         <div id={scrollContainer_CSS}>
+          {this.renderSelectModeButtons()}
+
           <DevFormItemInput
+            modificationMode={this.state.modificationMode}
             itemType={selectedSection.itemType}
             itemDetails={selectedSection.getItemDetails()}
+            appearance={selectedSection.appearance}
             selectedID={selectedSection.itemID}
             selectedSection={selectedSection}
             formOutput={this.props.formOutput}
             onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
+            onClick_updateFormAppearances={this.props.onClick_updateFormAppearances}
             onClick_selectFormSection={this.props.onClick_selectFormSection}
             onClick_updateWholeSection={this.props.onClick_updateWholeSection}
           />
@@ -385,6 +403,48 @@ class FormSidebar extends Component {
       </div>
     );
   }
+
+
+  // render selected mode ------------------------------------------------------
+  /*
+    When a user has selected a ConjureForm/ConjureFormItem to modify, they can be modifying it in one of two views:
+     - Details:           this is where users can modify functional parts of the form
+                          modifications here change how the form/item actually work
+                          ex: question details, output object unique key, conditional render
+
+     - Appearance:        this is where users can modify how the form gets rendered
+                          modifications here don't change how the form/item works, just how it looks
+                          ex: padding, colors
+  */
+
+  renderSelectModeButtons = () => {
+
+    // only render the buttons if there is a selected form to render
+    if (this.props.selectedID === false) { return; }
+
+
+    // determine styling for buttons
+    let detailsButtonCSS = "select_mode_button_selected";
+    let appearanceButtonCSS = "select_mode_button_unselected";
+    if (this.state.modificationMode === "Appearance") {
+      detailsButtonCSS = "select_mode_button_unselected";
+      appearanceButtonCSS = "select_mode_button_selected";
+    }
+
+    return (
+      <div id="select_mode_buttons_row">
+        <div className="select_mode_button_container" onClick={() => this.onClick_setModificationMode('Details')}>
+          <h2 className={detailsButtonCSS}>Details</h2>
+        </div>
+        <div className="select_mode_button_container" onClick={() => this.onClick_setModificationMode('Appearance')}>
+          <h2 className={appearanceButtonCSS}>Appearance</h2>
+        </div>
+      </div>
+    );
+  }
+
+
+  // render <FormSidebar/> -----------------------------------------------------
 
   // renders <FormSidebar/>
   render() {

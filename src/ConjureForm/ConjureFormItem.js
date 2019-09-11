@@ -74,6 +74,25 @@ class ConjureFormItem {
       "title": __titleColorDefault,
       "background": __backgroundColorDefault
     };
+
+    // set default padding levels
+    if (itemType === "text") {
+      this.appearance = {
+        'paddingTop': '10',
+        'paddingBottom': '10',
+        'paddingSides': '10',
+        'paddingBelowSectionTitle': '2',
+        'paddingBelowRegularTitle': '2'
+      };
+    } else if (itemType === "question") {
+      this.appearance = {
+        'paddingTop': '10',
+        'paddingBottom': '10',
+        'paddingSides': '10',
+        'paddingBelowTitle': '2',
+        'paddingBelowDescription': '2'
+      };
+    }
   }
 
 
@@ -139,6 +158,11 @@ class ConjureFormItem {
     }
   }
 
+  updateItemAppearances = (newAppearances) => {
+    for (let key in newAppearances) {
+      this.appearance[key] = newAppearances[key];
+    }
+  }
   // Delete --------------------------------------------------------------------
 
   // used to delete conditional references to certain IDs.
@@ -260,6 +284,7 @@ class ConjureFormItem {
         itemID={this.itemID}
         itemType={this.itemType}
         itemDetails={itemDetails}
+        appearance={this.appearance}
         selectedID={selectedID}
         devModeOn={devModeOn}
         textColor={this.colors.text}

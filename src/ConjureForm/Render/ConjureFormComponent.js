@@ -46,9 +46,18 @@ class ConjureFormComponent extends Component {
   getContainerStyling = (containerType) => {
 
     let style = {'background-color': this.props.backgroundColor};
+
+    // add box shadow
     if (containerType === "card") {
       style['box-shadow'] = "5px 10px 15px " + this.props.shadowColor + "";
     }
+
+    // set margins / padding
+    style['padding-top'] = this.props.appearance.paddingTop + "px";
+    style['padding-bottom'] = this.props.appearance.paddingBottom + "px";
+    style['padding-left'] = this.props.appearance.paddingSides + "px";
+    style['padding-right'] = this.props.appearance.paddingSides + "px";
+
     return style;
   }
 

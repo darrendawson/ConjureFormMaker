@@ -235,6 +235,14 @@ class App extends Component {
     this.saveConjureForm(conjureForm);
   }
 
+  //
+  onClick_updateFormAppearances = (sectionID, newAppearances) => {
+    let conjureForm = this.state.truth[PT_conjureForm];
+    conjureForm.updateSectionAppearances(sectionID, newAppearances);
+    this.saveConjureForm(conjureForm);
+  }
+
+
   // pass in an updated ConjureFormItem object to replace its existing rendition in the ConjureForm tree
   onClick_updateWholeSection = (updatedSection) => {
     let conjureForm = this.state.truth[PT_conjureForm];
@@ -370,6 +378,7 @@ class App extends Component {
             onClick_createNewFormSection={this.onClick_createNewFormSection}
             onClick_deleteFormSection={this.onClick_deleteFormSection}
             onClick_updateFormSectionDetails={this.onClick_updateFormSectionDetails}
+            onClick_updateFormAppearances={this.onClick_updateFormAppearances}
             onClick_updateWholeSection={this.onClick_updateWholeSection}
           />
         </div>

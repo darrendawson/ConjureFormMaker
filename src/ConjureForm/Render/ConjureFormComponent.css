@@ -21,7 +21,6 @@
 #ConjureFormComponent .container_type_page {
   width: calc(100% - 40px);
   border-radius: 5px;
-  padding: 20px;
   border-bottom: 2px dotted black;
 }
 
@@ -29,7 +28,6 @@
   width: calc(100% - 40px);
   border-radius: 5px;
   margin: 20px 0px;
-  padding: 20px;
 }
 
 #ConjureFormComponent .container_type_subcard {
@@ -93,7 +91,6 @@
 
 #ConjureFormItemComponent .item_container {
   width: calc(100% - 40px);
-  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -102,6 +99,10 @@
 
 #ConjureFormItemComponent .item_container .item_text_margins {
   margin: 5px;
+}
+
+#ConjureFormItemComponent .item_container .item_text_no_margins {
+  margin: 0px;
 }
 
 #ConjureFormItemComponent .item_container #section_title_text_container {

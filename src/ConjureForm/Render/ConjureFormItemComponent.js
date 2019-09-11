@@ -25,13 +25,26 @@ class ConjureFormItemComponent extends Component {
     this.props.onClick_selectItem(this.getID());
   }
 
+
+  // padding -------------------------------------------------------------------
+
+  // returns a styles object with padding to wrap the entire <ConjureFormItem/>
+  getContainerPadding = () => {
+    let styling = {};
+    styling['padding-top'] = this.props.appearance.paddingTop + 'px';
+    styling['padding-bottom'] = this.props.appearance.paddingBottom + 'px';
+    styling['padding-left'] = this.props.appearance.paddingSides + 'px';
+    styling['padding-right'] = this.props.appearance.paddingSides + 'px';
+    return styling;
+  }
+
   // render --------------------------------------------------------------------
 
 
   renderSectionTitle = (titleText) => {
     if (titleText !== "") {
       return (
-        <div id="section_title_text_container" style={{'background-color': this.props.titleColor}}>
+        <div id="section_title_text_container" style={{'background-color': this.props.titleColor, 'margin-bottom': this.props.appearance.paddingBelowSectionTitle + 'px'}}>
           <h1 className="item_text_margins" style={{'color': this.props.backgroundColor}}>{titleText}</h1>
         </div>
       );
@@ -44,17 +57,17 @@ class ConjureFormItemComponent extends Component {
 
     if (this.props.itemType === "text") {
       return (
-        <div className="item_container">
+        <div className="item_container" style={this.getContainerPadding()}>
           {this.renderSectionTitle(itemDetails.sectionTitleText)}
-          <h1 className="item_text_margins" style={{'color': this.props.titleColor}}>{itemDetails.titleText}</h1>
-          <p className="item_text_margins" style={{'color': this.props.textColor}}>{itemDetails.descriptionText}</p>
+          <h1 className="item_text_no_margins" style={{'color': this.props.titleColor, 'margin-bottom': this.props.appearance.paddingBelowRegularTitle + 'px'}}>{itemDetails.titleText}</h1>
+          <p className="item_text_no_margins" style={{'color': this.props.textColor}}>{itemDetails.descriptionText}</p>
         </div>
       );
     } else if (this.props.itemType === "question") {
       return (
-        <div className="item_container">
-          <h1 className="item_text_margins" style={{'color': this.props.titleColor}}>{itemDetails.questionTitle}</h1>
-          <p className="item_text_margins" style={{'color': this.props.textColor}}>{itemDetails.questionDescription}</p>
+        <div className="item_container" style={this.getContainerPadding()}>
+          <h1 className="item_text_no_margins" style={{'color': this.props.titleColor, 'margin-bottom': this.props.appearance.paddingBelowTitle + 'px'}}>{itemDetails.questionTitle}</h1>
+          <p className="item_text_no_margins" style={{'color': this.props.textColor, 'margin-bottom': this.props.appearance.paddingBelowDescription + 'px'}}>{itemDetails.questionDescription}</p>
           {this.renderQuestion()}
         </div>
       );
@@ -153,7 +166,8 @@ class ConjureFormItemComponent extends Component {
         <div
           id="ConjureFormItemComponent"
           className={this.getBorderStyling()}
-          onClick={this.onClick_selectItem}>
+          onClick={this.onClick_selectItem}
+          >
 
           {this.renderItemDetails()}
 

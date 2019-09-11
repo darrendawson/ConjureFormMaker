@@ -41,7 +41,18 @@ class DevFormItemInput extends Component {
     this.props.onClick_updateWholeSection(newItem);
   }
 
-  // render --------------------------------------------------------------------
+
+  onInput_updateAppearance = (appearanceType, e) => {
+    let updatedAppearance = this.props.appearance;
+    updatedAppearance[appearanceType] = e.target.value;
+    this.props.onClick_updateFormAppearances(this.props.selectedID, updatedAppearance);
+  }
+
+
+  // ===========================================================================
+  // render Details
+  // ===========================================================================
+
 
   // renders <input/>s for a ConjureFormItem.text type
   // - sectionTitleText
@@ -347,18 +358,79 @@ class DevFormItemInput extends Component {
   }
 
 
-  // render --------------------------------------------------------------------
+  // ===========================================================================
+  // render Appearance
+  // ===========================================================================
+
+
+  // render padding ------------------------------------------------------------
+
+  renderPaddingInputRow = (title, key) => {
+    return (
+      <div className="input_row">
+        <h3 className="input_title">{title}</h3>
+        <input
+          className="form_input"
+          value={this.props.appearance[key]}
+          onChange={this.onInput_updateAppearance.bind(this, key)}
+        />
+      </div>
+    );
+  }
+
+
+  renderPadding = () => {
+
+    if (this.props.itemType === "text") {
+      return (
+        <div className="form_input_container with_margin">
+          <h1 className="section_title">Padding</h1>
+          {this.renderPaddingInputRow("Top", "paddingTop")}
+          {this.renderPaddingInputRow("Sides", "paddingSides")}
+          {this.renderPaddingInputRow("Bottom", "paddingBottom")}
+          {this.renderPaddingInputRow("Below Section Title", "paddingBelowSectionTitle")}
+          {this.renderPaddingInputRow("Below Title", "paddingBelowRegularTitle")}
+        </div>
+      );
+    } else if (this.props.itemType === "question") {
+      return (
+        <div className="form_input_container with_margin">
+          <h1 className="section_title">Padding</h1>
+          {this.renderPaddingInputRow("Top", "paddingTop")}
+          {this.renderPaddingInputRow("Sides", "paddingSides")}
+          {this.renderPaddingInputRow("Bottom", "paddingBottom")}
+          {this.renderPaddingInputRow("Below Title", "paddingBelowTitle")}
+          {this.renderPaddingInputRow("Below Description", "paddingBelowDescription")}
+        </div>
+      );
+    }
+  }
+
+
+
+  // ===========================================================================
+  // render <DevFormItemInput/>
+  // ===========================================================================
 
 
   render() {
-    return (
-      <div id="DevFormItemInput">
-        {this.renderFormOutputDetails()}
-        {this.renderFormItemText()}
-        {this.renderFormItemQuestion()}
-        {this.renderConditionals()}
-      </div>
-    );
+
+    if (this.props.modificationMode === "Appearance") {
+      return (
+        <div id="DevFormItemInput">
+          {this.renderPadding()}
+        </div>
+      );
+    } else {
+      return (
+        <div id="DevFormItemInput">
+          {this.renderFormOutputDetails()}
+          {this.renderFormItemText()}
+          {this.renderFormItemQuestion()}
+          {this.renderConditionals()}
+        </div>
+      );
+    }
   }
 }
 
