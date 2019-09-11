@@ -1,6 +1,7 @@
 #MultipleChoiceMaker {
   width: 100%;
   display: flex;
+  text-align: left;
 }
 
 #MultipleChoiceMaker #title_container {
@@ -44,8 +45,8 @@
 #MultipleChoiceMaker .choice_item {
   background-color: #5e5e5e;
   padding: 0px 10px;
-  text-align: center;
-  height: 35px;
+  text-align: left;
+  min-height: 35px;
   display: flex;
   align-items: center;
   border-radius: 3px;

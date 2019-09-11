@@ -6,6 +6,7 @@
   flex-direction: column;
   border: 1px solid transparent;
   border-radius: 5px;
+  text-align: left;
 }
 
 #ConjureFormComponent .dev_mode_hover:hover {
