@@ -18,6 +18,7 @@ const __allColorDefault = "#eaeaea";
 const __pageColorDefault = "#eaeaea";
 const __cardColorDefault = "#f4f4f4";
 const __shadowColorDefault = '#7c7c7c';
+const __subcardColorDefault = "#eaeaea";
 
 class ConjureForm {
 
@@ -60,6 +61,16 @@ class ConjureForm {
       paddingSides: "20",
       paddingBottom: "10"
     };
+
+    // add colors to appearance
+    if (formType === "page") {
+      this.appearance['colorBackground'] = __pageColorDefault;
+    } else if (formType === "card") {
+      this.appearance['colorBackground'] = __cardColorDefault;
+      this.appearance['colorCardShadow'] = __shadowColorDefault;
+    } else if (formType === "subcard") {
+      this.appearance['colorBackground'] = __subcardColorDefault;
+    }
   }
 
 

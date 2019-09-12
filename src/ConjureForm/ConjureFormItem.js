@@ -75,23 +75,37 @@ class ConjureFormItem {
       "background": __backgroundColorDefault
     };
 
+    this.appearance = {};
+
     // set default padding levels
     if (itemType === "text") {
-      this.appearance = {
-        'paddingTop': '10',
-        'paddingBottom': '10',
-        'paddingSides': '10',
-        'paddingBelowSectionTitle': '2',
-        'paddingBelowRegularTitle': '2'
-      };
+      this.appearance['paddingTop'] = '10';
+      this.appearance['paddingBottom'] = '10';
+      this.appearance['paddingSides'] = '10';
+      this.appearance['paddingBelowSectionTitle'] = '2';
+      this.appearance['paddingBelowRegularTitle'] = '2';
     } else if (itemType === "question") {
-      this.appearance = {
-        'paddingTop': '10',
-        'paddingBottom': '10',
-        'paddingSides': '10',
-        'paddingBelowTitle': '2',
-        'paddingBelowDescription': '2'
-      };
+      this.appearance['paddingTop'] = '10';
+      this.appearance['paddingBottom'] = '10';
+      this.appearance['paddingSides'] = '10';
+      this.appearance['paddingBelowTitle'] = '2';
+      this.appearance['paddingBelowDescription'] = '2';
+    }
+
+
+    // set default colors
+    if (itemType === "text") {
+      this.appearance['colorSectionTitleText'] = '#f4f4f4';
+      this.appearance['colorSectionTitleBackground'] = '#262626';
+      this.appearance['colorTitleText'] = '#262626';
+      this.appearance['colorDescriptionText'] = '#262626';
+    }  else if (itemType === "question") {
+      this.appearance['colorTitleText'] = '#262626';
+      this.appearance['colorDescriptionText'] = '#262626';
+      this.appearance['colorSelectedOption'] = '#262626';
+      this.appearance['colorInputBackground'] = '#ffffff';
+      this.appearance['colorInputText'] = '#262626';
+      this.appearance['colorInputBorder'] = '#ffffff';
     }
   }
 

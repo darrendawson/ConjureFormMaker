@@ -43,9 +43,19 @@ class ConjureFormItemComponent extends Component {
 
   renderSectionTitle = (titleText) => {
     if (titleText !== "") {
+
+      let containerStyle = {
+        'background-color': this.props.appearance.colorSectionTitleBackground,
+        'margin-bottom': this.props.appearance.paddingBelowSectionTitle + 'px'
+      };
+
+      let textStyle = {
+        'color': this.props.appearance.colorSectionTitleText
+      };
+
       return (
-        <div id="section_title_text_container" style={{'background-color': this.props.titleColor, 'margin-bottom': this.props.appearance.paddingBelowSectionTitle + 'px'}}>
-          <h1 className="item_text_margins" style={{'color': this.props.backgroundColor}}>{titleText}</h1>
+        <div id="section_title_text_container" style={containerStyle}>
+          <h1 className="item_text_margins" style={textStyle}>{titleText}</h1>
         </div>
       );
     }
@@ -60,7 +70,7 @@ class ConjureFormItemComponent extends Component {
       linesToRender.push(
         <p
           className="item_text_no_margins"
-          style={{'color': this.props.textColor}}>
+          style={{'color': this.props.appearance.colorDescriptionText}}>
           {linesOfText[i]}
         </p>
       );
@@ -82,14 +92,14 @@ class ConjureFormItemComponent extends Component {
       return (
         <div className="item_container" style={this.getContainerPadding()}>
           {this.renderSectionTitle(itemDetails.sectionTitleText)}
-          <h1 className="item_text_no_margins" style={{'color': this.props.titleColor, 'margin-bottom': this.props.appearance.paddingBelowRegularTitle + 'px'}}>{itemDetails.titleText}</h1>
+          <h1 className="item_text_no_margins" style={{'color': this.props.appearance.colorTitleText, 'margin-bottom': this.props.appearance.paddingBelowRegularTitle + 'px'}}>{itemDetails.titleText}</h1>
           {this.renderDescription(itemDetails.descriptionText)}
         </div>
       );
     } else if (this.props.itemType === "question") {
       return (
         <div className="item_container" style={this.getContainerPadding()}>
-          <h1 className="item_text_no_margins" style={{'color': this.props.titleColor, 'margin-bottom': this.props.appearance.paddingBelowTitle + 'px'}}>{itemDetails.questionTitle}</h1>
+          <h1 className="item_text_no_margins" style={{'color': this.props.appearance.colorTitleText, 'margin-bottom': this.props.appearance.paddingBelowTitle + 'px'}}>{itemDetails.questionTitle}</h1>
           {this.renderDescription(itemDetails.questionDescription)}
           {this.renderQuestion()}
         </div>
@@ -121,6 +131,9 @@ class ConjureFormItemComponent extends Component {
             prompt={itemDetails.inputPrompt}
             onInput_answerFormQuestion={this.props.onInput_answerFormQuestion}
             devModeOn={this.props.devModeOn}
+            backgroundColor={this.props.appearance.colorInputBackground}
+            textColor={this.props.appearance.colorInputText}
+            borderColor={this.props.appearance.colorInputBorder}
           />
         </div>
       );
@@ -136,9 +149,10 @@ class ConjureFormItemComponent extends Component {
           <MultipleChoice
             questionID={this.getID()}
             choices={itemDetails.choices}
-            backgroundColor={this.props.backgroundColor}
-            borderColor={this.props.titleColor}
-            textColor={this.props.textColor}
+            backgroundColor={this.props.appearance.colorInputBackground}
+            borderColor={this.props.appearance.colorInputBorder}
+            selectedColor={this.props.appearance.colorSelectedOption}
+            textColor={this.props.appearance.colorInputText}
             minSelected={itemDetails.minSelected}
             maxSelected={itemDetails.maxSelected}
             multipleChoiceType={itemDetails.multipleChoiceType}

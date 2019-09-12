@@ -365,7 +365,7 @@ class DevFormItemInput extends Component {
 
   // render padding ------------------------------------------------------------
 
-  renderPaddingInputRow = (title, key) => {
+  renderAppearanceInputRow = (title, key) => {
     return (
       <div className="input_row">
         <h3 className="input_title">{title}</h3>
@@ -385,24 +385,69 @@ class DevFormItemInput extends Component {
       return (
         <div className="form_input_container with_margin">
           <h1 className="section_title">Padding</h1>
-          {this.renderPaddingInputRow("Top", "paddingTop")}
-          {this.renderPaddingInputRow("Sides", "paddingSides")}
-          {this.renderPaddingInputRow("Bottom", "paddingBottom")}
-          {this.renderPaddingInputRow("Below Section Title", "paddingBelowSectionTitle")}
-          {this.renderPaddingInputRow("Below Title", "paddingBelowRegularTitle")}
+          {this.renderAppearanceInputRow("Top", "paddingTop")}
+          {this.renderAppearanceInputRow("Sides", "paddingSides")}
+          {this.renderAppearanceInputRow("Bottom", "paddingBottom")}
+          {this.renderAppearanceInputRow("Below Section Title", "paddingBelowSectionTitle")}
+          {this.renderAppearanceInputRow("Below Title", "paddingBelowRegularTitle")}
         </div>
       );
     } else if (this.props.itemType === "question") {
       return (
         <div className="form_input_container with_margin">
           <h1 className="section_title">Padding</h1>
-          {this.renderPaddingInputRow("Top", "paddingTop")}
-          {this.renderPaddingInputRow("Sides", "paddingSides")}
-          {this.renderPaddingInputRow("Bottom", "paddingBottom")}
-          {this.renderPaddingInputRow("Below Title", "paddingBelowTitle")}
-          {this.renderPaddingInputRow("Below Description", "paddingBelowDescription")}
+          {this.renderAppearanceInputRow("Top", "paddingTop")}
+          {this.renderAppearanceInputRow("Sides", "paddingSides")}
+          {this.renderAppearanceInputRow("Bottom", "paddingBottom")}
+          {this.renderAppearanceInputRow("Below Title", "paddingBelowTitle")}
+          {this.renderAppearanceInputRow("Below Description", "paddingBelowDescription")}
         </div>
       );
+    }
+  }
+
+
+  renderColors = () => {
+    console.log(this.props.itemDetails);
+
+    if (this.props.itemType === "text") {
+      return (
+        <div className="form_input_container with_margin">
+          <h1 className="section_title">Colors</h1>
+          {this.renderAppearanceInputRow("Section Title Text", "colorSectionTitleText")}
+          {this.renderAppearanceInputRow("Section Title Border", "colorSectionTitleBackground")}
+          {this.renderAppearanceInputRow("Title Text", "colorTitleText")}
+          {this.renderAppearanceInputRow("Description Text", "colorDescriptionText")}
+        </div>
+      );
+    } else if (this.props.itemType === "question") {
+
+      if (this.props.itemDetails.questionType === "input") {
+        return (
+          <div className="form_input_container with_margin">
+            <h1 className="section_title">Colors</h1>
+            {this.renderAppearanceInputRow("Title Text", "colorTitleText")}
+            {this.renderAppearanceInputRow("Description Text", "colorDescriptionText")}
+            {this.renderAppearanceInputRow("Input Background", "colorInputBackground")}
+            {this.renderAppearanceInputRow("Input Text", "colorInputText")}
+            {this.renderAppearanceInputRow("Input Border", "colorInputBorder")}
+          </div>
+        );
+
+      } else if (this.props.itemDetails.questionType === "multipleChoice") {
+        return (
+          <div className="form_input_container with_margin">
+            <h1 className="section_title">Colors</h1>
+            {this.renderAppearanceInputRow("Title Text", "colorTitleText")}
+            {this.renderAppearanceInputRow("Description Text", "colorDescriptionText")}
+            {this.renderAppearanceInputRow("Selection Option", "colorSelectedOption")}
+            {this.renderAppearanceInputRow("Unselected Option", "colorInputBackground")}
+            {this.renderAppearanceInputRow("MC Text", "colorInputText")}
+            {this.renderAppearanceInputRow("MC Border", "colorInputBorder")}
+          </div>
+        );
+      }
+
     }
   }
 
@@ -419,6 +464,7 @@ class DevFormItemInput extends Component {
       return (
         <div id="DevFormItemInput">
           {this.renderPadding()}
+          {this.renderColors()}
         </div>
       );
     } else {

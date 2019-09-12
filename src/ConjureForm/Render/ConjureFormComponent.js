@@ -45,11 +45,11 @@ class ConjureFormComponent extends Component {
   // box-shadow and backgroundColor are dynamically inserted using html style
   getContainerStyling = (containerType) => {
 
-    let style = {'background-color': this.props.backgroundColor};
+    let style = {'background-color': this.props.appearance.colorBackground};
 
     // add box shadow
     if (containerType === "card") {
-      style['box-shadow'] = "5px 10px 15px " + this.props.shadowColor + "";
+      style['box-shadow'] = "5px 10px 15px " + this.props.appearance.colorCardShadow + "";
     }
 
     // set margins / padding

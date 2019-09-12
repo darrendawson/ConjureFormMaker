@@ -22,16 +22,30 @@ class FormQuestionInput extends Component {
   // Renders <FormQuestionInput/>
   render() {
 
+    let inputStyle = {
+      'background-color': this.props.backgroundColor,
+      'color': this.props.textColor,
+      'border-color': this.props.borderColor
+    };
+
+
     if (this.props.devModeOn) {
       return (
         <div id="FormQuestionInput">
-          <input placeholder={this.props.prompt} value={this.props.inputValue}/>
+          <input
+            id="question_input"
+            style={inputStyle}
+            placeholder={this.props.prompt}
+            value={this.props.inputValue}
+          />
         </div>
       );
     } else {
       return (
         <div id="FormQuestionInput">
           <input
+            id="question_input"
+            style={inputStyle}
             placeholder={this.props.prompt}
             value={this.props.inputValue}
             onChange={this.onInput_answerQuestion.bind(this)}

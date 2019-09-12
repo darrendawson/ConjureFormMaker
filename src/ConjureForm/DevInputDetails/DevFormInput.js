@@ -209,7 +209,7 @@ class DevFormInput extends Component {
   // render padding ------------------------------------------------------------
 
 
-  renderPaddingInputRow = (title, key) => {
+  renderAppearanceInputRow = (title, key) => {
     return (
       <div className="input_row">
         <h3 className="input_title">{title}</h3>
@@ -223,16 +223,39 @@ class DevFormInput extends Component {
   }
 
   // intentionally not rendering option to change sides because it disrupts width of cards
-  //  {this.renderPaddingInputRow("Sides", "paddingSides")}
+  //  {this.renderAppearanceInputRow("Sides", "paddingSides")}
   renderPadding = () => {
     return (
       <div className="form_input_container with_margin">
         <h1 className="section_title">Padding</h1>
-        {this.renderPaddingInputRow("Top", "paddingTop")}
-        {this.renderPaddingInputRow("Bottom", "paddingBottom")}
+        {this.renderAppearanceInputRow("Top", "paddingTop")}
+        {this.renderAppearanceInputRow("Bottom", "paddingBottom")}
       </div>
     );
   }
+
+
+  // area for user to modify colors
+  renderColors = () => {
+    if (this.props.formDetails.containerType === "card") {
+      return (
+        <div className="form_input_container with_margin">
+          <h1 className="section_title">Colors</h1>
+          {this.renderAppearanceInputRow("Background", "colorBackground")}
+          {this.renderAppearanceInputRow("Card Shadow", "colorCardShadow")}
+        </div>
+      );
+    } else {
+      return (
+        <div className="form_input_container with_margin">
+          <h1 className="section_title">Colors</h1>
+          {this.renderAppearanceInputRow("Background", "colorBackground")}
+        </div>
+      );
+    }
+  }
+
+
 
   // ===========================================================================
   // render <DevFormInput/>
@@ -246,6 +269,7 @@ class DevFormInput extends Component {
       return (
         <div id="DevFormInput">
           {this.renderPadding()}
+          {this.renderColors()}
         </div>
       );
     } else {
