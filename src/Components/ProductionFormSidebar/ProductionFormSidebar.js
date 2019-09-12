@@ -46,10 +46,10 @@ class ProductionFormSidebar extends Component {
       );
     } else {
       return (
-        <div id="ProductionFormSidebar" style={{'background-color': this.props.formBackgroundColor}}>
+        <div id="ProductionFormSidebar" style={{'background-color': '#2b2b2b'}}>
           <h1
             className="expand_button"
-            style={{'background-color': this.props.formBackgroundColor, 'color': this.props.formTitleColor}}
+            style={{'background-color': '#2b2b2b', 'color': 'white'}}
             onClick={() => this.onClick_expandSidebar(true)}>
             {expandButtonText}
           </h1>

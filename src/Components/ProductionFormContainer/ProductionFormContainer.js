@@ -5,12 +5,20 @@ class ProductionFormContainer extends Component {
 
   constructor() {
     super();
-
-    this.state = {
-
-    }
   }
 
+
+  getBackgroundColorForPage = () => {
+    let conjureForm = this.props.conjureForm;
+    let pageIndex = this.props.currentPageIndex;
+    if (conjureForm['order'].length > pageIndex) {
+      let pageID = conjureForm['order'][pageIndex]['id'];
+      let pageInfo = conjureForm['subforms'][pageID];
+      return pageInfo.appearance.colorBackground;
+    } else {
+      return '#eaeaea'; // default
+    }
+  }
 
   // render --------------------------------------------------------------------
 
@@ -31,7 +39,7 @@ class ProductionFormContainer extends Component {
     let moveToPage = this.props.onClick_moveToPage;
 
     return (
-      <div id="ProductionFormContainer" style={{'background-color': this.props.backgroundColor}}>
+      <div id="ProductionFormContainer" style={{'background-color': this.getBackgroundColorForPage()}}>
         <div id="form_container">
           {conjureForm.render(formOutput, selectForm, devModeOn, selectedID, onInput_answerFormQuestion, answerMC, addNewSubformToArray, {}, -1, removeSubform, conditionalRenderLookup, moveToPage)}
         </div>
