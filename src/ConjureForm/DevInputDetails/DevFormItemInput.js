@@ -378,6 +378,20 @@ class DevFormItemInput extends Component {
     );
   }
 
+  renderColorInputRow = (title, key) => {
+    return (
+      <div className="input_row">
+        <h3 className="input_title">{title}</h3>
+        <div className="color_square" style={{'background-color': this.props.appearance[key]}}></div>
+        <input
+          className="form_input"
+          value={this.props.appearance[key]}
+          onChange={this.onInput_updateAppearance.bind(this, key)}
+        />
+      </div>
+    );
+  }
+
 
   renderPadding = () => {
 
@@ -414,10 +428,10 @@ class DevFormItemInput extends Component {
       return (
         <div className="form_input_container with_margin">
           <h1 className="section_title">Colors</h1>
-          {this.renderAppearanceInputRow("Section Title Text", "colorSectionTitleText")}
-          {this.renderAppearanceInputRow("Section Title Border", "colorSectionTitleBackground")}
-          {this.renderAppearanceInputRow("Title Text", "colorTitleText")}
-          {this.renderAppearanceInputRow("Description Text", "colorDescriptionText")}
+          {this.renderColorInputRow("Section Title Text", "colorSectionTitleText")}
+          {this.renderColorInputRow("Section Title Border", "colorSectionTitleBackground")}
+          {this.renderColorInputRow("Title Text", "colorTitleText")}
+          {this.renderColorInputRow("Description Text", "colorDescriptionText")}
         </div>
       );
     } else if (this.props.itemType === "question") {
@@ -426,11 +440,11 @@ class DevFormItemInput extends Component {
         return (
           <div className="form_input_container with_margin">
             <h1 className="section_title">Colors</h1>
-            {this.renderAppearanceInputRow("Title Text", "colorTitleText")}
-            {this.renderAppearanceInputRow("Description Text", "colorDescriptionText")}
-            {this.renderAppearanceInputRow("Input Background", "colorInputBackground")}
-            {this.renderAppearanceInputRow("Input Text", "colorInputText")}
-            {this.renderAppearanceInputRow("Input Border", "colorInputBorder")}
+            {this.renderColorInputRow("Title Text", "colorTitleText")}
+            {this.renderColorInputRow("Description Text", "colorDescriptionText")}
+            {this.renderColorInputRow("Input Background", "colorInputBackground")}
+            {this.renderColorInputRow("Input Text", "colorInputText")}
+            {this.renderColorInputRow("Input Border", "colorInputBorder")}
           </div>
         );
 
@@ -438,12 +452,12 @@ class DevFormItemInput extends Component {
         return (
           <div className="form_input_container with_margin">
             <h1 className="section_title">Colors</h1>
-            {this.renderAppearanceInputRow("Title Text", "colorTitleText")}
-            {this.renderAppearanceInputRow("Description Text", "colorDescriptionText")}
-            {this.renderAppearanceInputRow("Selection Option", "colorSelectedOption")}
-            {this.renderAppearanceInputRow("Unselected Option", "colorInputBackground")}
-            {this.renderAppearanceInputRow("MC Text", "colorInputText")}
-            {this.renderAppearanceInputRow("MC Border", "colorInputBorder")}
+            {this.renderColorInputRow("Title Text", "colorTitleText")}
+            {this.renderColorInputRow("Description Text", "colorDescriptionText")}
+            {this.renderColorInputRow("Selection Option", "colorSelectedOption")}
+            {this.renderColorInputRow("Unselected Option", "colorInputBackground")}
+            {this.renderColorInputRow("MC Text", "colorInputText")}
+            {this.renderColorInputRow("MC Border", "colorInputBorder")}
           </div>
         );
       }

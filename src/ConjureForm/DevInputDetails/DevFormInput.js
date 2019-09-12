@@ -222,6 +222,20 @@ class DevFormInput extends Component {
     );
   }
 
+  renderColorInputRow = (title, key) => {
+    return (
+      <div className="input_row">
+        <h3 className="input_title">{title}</h3>
+        <div className="color_square" style={{'background-color': this.props.appearance[key]}}></div>
+        <input
+          className="form_input"
+          value={this.props.appearance[key]}
+          onChange={this.onInput_updateAppearance.bind(this, key)}
+        />
+      </div>
+    );
+  }
+
   // intentionally not rendering option to change sides because it disrupts width of cards
   //  {this.renderAppearanceInputRow("Sides", "paddingSides")}
   renderPadding = () => {
@@ -241,11 +255,11 @@ class DevFormInput extends Component {
     let controlButtonText;
     let controlButtonBackground;
     if (this.props.formDetails.containerType === "page") {
-      controlButtonText = this.renderAppearanceInputRow("Next Page Button Text", "colorControlButtonText");
-      controlButtonBackground = this.renderAppearanceInputRow("Next Page Button Background", "colorControlButtonBackground");
+      controlButtonText = this.renderColorInputRow("Next Page Button Text", "colorControlButtonText");
+      controlButtonBackground = this.renderColorInputRow("Next Page Button Background", "colorControlButtonBackground");
     } else if (this.props.formDetails.maxForms > 1) {
-      controlButtonText = this.renderAppearanceInputRow("New Form Button Text", "colorControlButtonText");
-      controlButtonBackground = this.renderAppearanceInputRow("New Form Button Background", "colorControlButtonBackground");
+      controlButtonText = this.renderColorInputRow("New Form Button Text", "colorControlButtonText");
+      controlButtonBackground = this.renderColorInputRow("New Form Button Background", "colorControlButtonBackground");
     }
 
 
@@ -253,8 +267,8 @@ class DevFormInput extends Component {
       return (
         <div className="form_input_container with_margin">
           <h1 className="section_title">Colors</h1>
-          {this.renderAppearanceInputRow("Background", "colorBackground")}
-          {this.renderAppearanceInputRow("Card Shadow", "colorCardShadow")}
+          {this.renderColorInputRow("Background", "colorBackground")}
+          {this.renderColorInputRow("Card Shadow", "colorCardShadow")}
           {controlButtonText}
           {controlButtonBackground}
         </div>
@@ -263,7 +277,7 @@ class DevFormInput extends Component {
       return (
         <div className="form_input_container with_margin">
           <h1 className="section_title">Colors</h1>
-          {this.renderAppearanceInputRow("Background", "colorBackground")}
+          {this.renderColorInputRow("Background", "colorBackground")}
           {controlButtonText}
           {controlButtonBackground}
         </div>

@@ -72,3 +72,10 @@
   border-radius: 4px;
   margin-right: 15px;
 }
+
+.form_input_container .color_square {
+  height: 30px;
+  width: 30px;
+  border-radius: 3px;
+  margin-right: 25px;
+}
