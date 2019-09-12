@@ -63,6 +63,9 @@ class ConjureForm {
     };
 
     // add colors to appearance
+    this.appearance['colorControlButtonBackground'] = "#262626";
+    this.appearance['colorControlButtonText'] = "#ffffff";
+
     if (formType === "page") {
       this.appearance['colorBackground'] = __pageColorDefault;
     } else if (formType === "card") {

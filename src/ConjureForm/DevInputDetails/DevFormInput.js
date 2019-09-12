@@ -237,12 +237,26 @@ class DevFormInput extends Component {
 
   // area for user to modify colors
   renderColors = () => {
+
+    let controlButtonText;
+    let controlButtonBackground;
+    if (this.props.formDetails.containerType === "page") {
+      controlButtonText = this.renderAppearanceInputRow("Next Page Button Text", "colorControlButtonText");
+      controlButtonBackground = this.renderAppearanceInputRow("Next Page Button Background", "colorControlButtonBackground");
+    } else if (this.props.formDetails.maxForms > 1) {
+      controlButtonText = this.renderAppearanceInputRow("New Form Button Text", "colorControlButtonText");
+      controlButtonBackground = this.renderAppearanceInputRow("New Form Button Background", "colorControlButtonBackground");
+    }
+
+
     if (this.props.formDetails.containerType === "card") {
       return (
         <div className="form_input_container with_margin">
           <h1 className="section_title">Colors</h1>
           {this.renderAppearanceInputRow("Background", "colorBackground")}
           {this.renderAppearanceInputRow("Card Shadow", "colorCardShadow")}
+          {controlButtonText}
+          {controlButtonBackground}
         </div>
       );
     } else {
@@ -250,6 +264,8 @@ class DevFormInput extends Component {
         <div className="form_input_container with_margin">
           <h1 className="section_title">Colors</h1>
           {this.renderAppearanceInputRow("Background", "colorBackground")}
+          {controlButtonText}
+          {controlButtonBackground}
         </div>
       );
     }

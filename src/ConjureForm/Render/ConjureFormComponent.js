@@ -88,7 +88,7 @@ class ConjureFormComponent extends Component {
           <div id="new_array_subform_button_container">
             <button
               id="new_array_subform_button"
-              style={{'background-color': this.props.titleColor, 'color': this.props.backgroundColor}}
+              style={{'background-color': this.props.appearance.colorControlButtonBackground, 'color': this.props.appearance.colorControlButtonText}}
               onClick={() => this.props.onClick_addNewSubformToArray(this.getID())}>
               {this.props.formDetails.newSubformButtonText}
             </button>
@@ -122,8 +122,8 @@ class ConjureFormComponent extends Component {
   renderPageButtons = () => {
     if (this.props.formDetails.containerType === "page" && (! this.props.devModeOn)) {
       let buttonStyle = {
-        'background-color': this.props.titleColor,
-        'color': this.props.backgroundColor
+        'background-color': this.props.appearance.colorControlButtonBackground,
+        'color': this.props.appearance.colorControlButtonText
       }
       return (
         <div id="new_array_subform_button_container" style={{'margin-top': '20px'}}>
