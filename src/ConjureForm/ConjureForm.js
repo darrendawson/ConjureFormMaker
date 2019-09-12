@@ -42,18 +42,6 @@ class ConjureForm {
       "renderCondition": {'questionID': false, 'questionValue': false}
     };
 
-    // determine colors
-    this.colors = {};
-    if (formType === "all") {
-      this.colors['backgroundColor'] = __allColorDefault;
-      this.colors['cardShadow'] = __shadowColorDefault;
-    } else if (formType === "page") {
-      this.colors['backgroundColor'] = __pageColorDefault;
-      this.colors['cardShadow'] = __shadowColorDefault;
-    } else if (formType === "card") {
-      this.colors['backgroundColor'] = __cardColorDefault;
-      this.colors['cardShadow'] = __shadowColorDefault;
-    }
 
     // padding for a container includes padding above, on the sides, and below
     this.appearance = {
@@ -480,44 +468,6 @@ class ConjureForm {
   }
 
 
-  // updates the colors for the the entire ConjureForm tree
-  // colors = {background: "", card: "", text: ""}
-  //  - color values are hex and get passed to components through HTML style={}
-  updateAllColors(colors) {
-
-    let containerType = this.formDetails.containerType;
-
-    // update colors of this ConjureForm
-    if (containerType === "all") {
-      this.colors = colors;
-      this.colors.backgroundColor = colors.background;
-      this.colors.titleColor = colors.title;
-    } else if (containerType === "page") {
-      this.colors.backgroundColor = colors.background;
-      this.colors.titleColor = colors.title;
-    } else if (containerType === "card") {
-      this.colors.backgroundColor = colors.card;
-      this.colors.shadowColor = colors.shadow;
-      this.colors.titleColor = colors.title;
-    } else if (containerType === "subcard") {
-      this.colors.backgroundColor = colors.subcard;
-      this.colors.titleColor = colors.title;
-    }
-
-
-
-    // update the colors of items
-    for (let key in this.items) {
-      this.items[key].updateColors(colors);
-    }
-
-    // make sure all children update their colors
-    for (let key in this.subforms) {
-      this.subforms[key].updateAllColors(colors);
-    }
-  }
-
-
   // searches ConjureForm tree for the right ConjureForm(item) and updates its details
   // - if ConjureForm: update this.formDetails
   // - if ConjureFormItem: call updateItemDetails()
@@ -798,9 +748,6 @@ class ConjureForm {
         appearance={this.appearance}
         containerType={this.formDetails.containerType}
         formID={this.formID}
-        backgroundColor={this.colors.backgroundColor}
-        shadowColor={this.colors.shadowColor}
-        titleColor={this.colors.titleColor}
         devModeOn={devModeOn}
         selectedID={selectedID}
         formOutput={formOutput}

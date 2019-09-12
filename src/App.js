@@ -26,7 +26,6 @@ const PT_selectedFormSection = "selectedFormSection";
 
 const PT_conjureForm = "conjureForm";
 const PT_selectedFormID = "selectedFormArea";
-const PT_formColors = "formColors";
 
 const PT_devModeActive = "devModeActive";
 const PT_productionSidebarExpanded = "productionSidebarExpanded";
@@ -35,21 +34,10 @@ const PT_formOutput = "formOutput";
 const PT_currentPageIndex = "currentPageIndex";
 
 
-const defaultColors = {
-  "background": "#eaeaea",
-  "card": "#f4f4f4",
-  "shadow": "#7c7c7c",
-  "text": "#262626",
-  "title": "#262626",
-  "subcard": "#eaeaea"
-};
-
-
 // what App.state will look like
 let dataSkeleton = {
   [PT_conjureForm]: {},
   [PT_selectedFormID]: false,
-  [PT_formColors]: defaultColors,
   [PT_devModeActive]: true,
   [PT_productionSidebarExpanded]: false,
   [PT_formOutput]: {},
@@ -120,9 +108,7 @@ class App extends Component {
   }
 
   // takes an updated conjureForm and saves it to ustra
-  // -> calls conjureForm.updateAllColors() in order to keep the color scheme up to date
   saveConjureForm = (conjureForm) => {
-    conjureForm.updateAllColors(this.state.truth[PT_formColors]);
     let conjureFormOutput = conjureForm.getFormOutputObject();
     this.update(conjureForm, PT_conjureForm);
     this.update(conjureFormOutput, PT_formOutput);
@@ -221,11 +207,6 @@ class App extends Component {
     conjureForm.delete(itemID);
     this.saveConjureForm(conjureForm);
     this.update(false, PT_selectedFormID);
-  }
-
-  updateFormColors = (newColors) => {
-    this.update(newColors, PT_formColors);
-    this.saveConjureForm(this.state.truth[PT_conjureForm]);
   }
 
   // calls ConjureForm.updateSectionDetails() to update values in ConjureForm.formDetails or ConjureFormItem.textDetails/questionDetails
@@ -331,13 +312,6 @@ class App extends Component {
     let conjureForm = new ConjureForm();
     conjureForm.loadConjureForm(obj);
 
-    // get correct colors
-    let colors = obj['colors'];
-    delete colors['backgroundColor'];
-    delete colors['titleColor'];
-    conjureForm.updateAllColors(colors);
-    this.update(colors, PT_formColors);
-
     // save
     this.saveConjureForm(conjureForm);
   }
@@ -368,8 +342,6 @@ class App extends Component {
             selectedID={truth[PT_selectedFormID]}
             selectedSection={selectedSection}
             parentContainerType={parentContainerType}
-            formColors={truth[PT_formColors]}
-            updateColors={this.updateFormColors}
             formOutput={truth[PT_formOutput]}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
             onClick_selectFormSection={this.onClick_selectFormSection}
@@ -397,8 +369,6 @@ class App extends Component {
             formOutput={truth[PT_formOutput]}
             sidebarExpanded={truth[PT_productionSidebarExpanded]}
             sidebarExpandedTag={PT_productionSidebarExpanded}
-            formTitleColor={truth[PT_formColors]['title']}
-            formBackgroundColor={truth[PT_formColors]['background']}
             onClick_setDevModeActive={this.onClick_setDevModeActive}
             update={this.update}
           />
@@ -420,7 +390,6 @@ class App extends Component {
           <ModifyFormContainer
             conjureForm={conjureForm}
             formOutput={formOutput}
-            backgroundColor={truth[PT_formColors]['background']}
             devModeOn={truth[PT_devModeActive]}
             selectedID={truth[PT_selectedFormID]}
             onClick_selectFormSection={this.onClick_selectFormSection}
@@ -443,7 +412,6 @@ class App extends Component {
             conjureForm={conjureForm}
             formOutput={formOutput}
             currentPageIndex={truth[PT_currentPageIndex]}
-            backgroundColor={truth[PT_formColors]['background']}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
             onInput_answerFormQuestion={this.onInput_answerFormQuestion}
             onClick_answerMultipleChoiceQuestion={this.onClick_answerMultipleChoiceQuestion}

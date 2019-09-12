@@ -323,78 +323,6 @@ class FormSidebar extends Component {
 
 
 
-  // render inputs for updating ConjureForm color schemes
-  renderSelectColors = () => {
-
-    let colors = this.props.formColors;
-
-    return (
-      <div className="sidebar_section_align_left">
-        <h1 className="section_title">Form Colors</h1>
-        <div className="colors_input_row">
-          <h3 className="colors_title">Background</h3>
-          <div id="color_square" style={{'background-color': colors.background}}></div>
-          <input
-            className="color_input"
-            value={colors.background}
-            onChange={this.onInput_updateColor.bind(this, "background")}
-          />
-        </div>
-
-        <div className="colors_input_row">
-          <h3 className="colors_title">Card</h3>
-          <div id="color_square" style={{'background-color': colors.card}}></div>
-          <input
-            className="color_input"
-            value={colors.card}
-            onChange={this.onInput_updateColor.bind(this, "card")}
-          />
-        </div>
-
-        <div className="colors_input_row">
-          <h3 className="colors_title">Card Shadow</h3>
-          <div id="color_square" style={{'background-color': colors.shadow}}></div>
-          <input
-            className="color_input"
-            value={colors.shadow}
-            onChange={this.onInput_updateColor.bind(this, "shadow")}
-          />
-        </div>
-
-        <div className="colors_input_row">
-          <h3 className="colors_title">Subcard</h3>
-          <div id="color_square" style={{'background-color': colors.subcard}}></div>
-          <input
-            className="color_input"
-            value={colors.subcard}
-            onChange={this.onInput_updateColor.bind(this, "subcard")}
-          />
-        </div>
-
-        <div className="colors_input_row">
-          <h3 className="colors_title">Title Text</h3>
-          <div id="color_square" style={{'background-color': colors.title}}></div>
-          <input
-            className="color_input"
-            value={colors.title}
-            onChange={this.onInput_updateColor.bind(this, "title")}
-          />
-        </div>
-
-        <div className="colors_input_row">
-          <h3 className="colors_title">Text</h3>
-          <div id="color_square" style={{'background-color': colors.text}}></div>
-          <input
-            className="color_input"
-            value={colors.text}
-            onChange={this.onInput_updateColor.bind(this, "text")}
-          />
-        </div>
-      </div>
-    );
-  }
-
-
   renderFormOutputObject = () => {
     return (
       <div className="sidebar_section_align_left">
@@ -457,7 +385,6 @@ class FormSidebar extends Component {
           {this.renderTitleBar()}
           <div id="devform_input_container_tall">
             {this.renderFormOutputObject()}
-            {this.renderSelectColors()}
           </div>
 
         </div>

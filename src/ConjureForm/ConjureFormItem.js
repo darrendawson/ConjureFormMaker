@@ -68,13 +68,7 @@ class ConjureFormItem {
       };
     }
 
-    // set default colors
-    this.colors = {
-      "text": __textColorDefault,
-      "title": __titleColorDefault,
-      "background": __backgroundColorDefault
-    };
-
+    // default appearance
     this.appearance = {};
 
     // set default padding levels
@@ -197,18 +191,6 @@ class ConjureFormItem {
     }
   }
 
-  // UX ------------------------------------------------------------------------
-  /*
-
-  */
-
-  // updates the colors of this ConjureFormItem
-  updateColors(colors) {
-    this.colors.text = colors.text;
-    this.colors.title = colors.title;
-    this.colors.background = colors.card;
-  }
-
 
   // Convert -------------------------------------------------------------------
 
@@ -301,9 +283,6 @@ class ConjureFormItem {
         appearance={this.appearance}
         selectedID={selectedID}
         devModeOn={devModeOn}
-        textColor={this.colors.text}
-        titleColor={this.colors.title}
-        backgroundColor={this.colors.background}
         formOutput={formOutput}
         conditionalRenderLookup={conditionalRenderLookup}
         idConversionTable={idConversionTable}
