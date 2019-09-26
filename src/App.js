@@ -218,9 +218,16 @@ class App extends Component {
 
   //
   onClick_updateFormAppearances = (sectionID, newAppearances) => {
+
+    // update appearances
     let conjureForm = this.state.truth[PT_conjureForm];
     conjureForm.updateSectionAppearances(sectionID, newAppearances);
     this.saveConjureForm(conjureForm);
+
+    // if applicable, update styles
+    if (("styleID" in newAppearances) && (newAppearances['styleID'] !== '') && (newAppearances['styleRoot'] === true)) {
+      this.onClick_updateFormStyles(newAppearances['styleID'], newAppearances);
+    }
   }
 
 
@@ -228,6 +235,14 @@ class App extends Component {
   onClick_updateWholeSection = (updatedSection) => {
     let conjureForm = this.state.truth[PT_conjureForm];
     conjureForm.updateWholeSection(updatedSection.getConjureID(), updatedSection);
+    this.saveConjureForm(conjureForm);
+  }
+
+
+  // updates form styles, which will update appearances of all forms with that style
+  onClick_updateFormStyles = (styleID, styleObject) => {
+    let conjureForm = this.state.truth[PT_conjureForm];
+    conjureForm.updateFormStyles(styleID, styleObject);
     this.saveConjureForm(conjureForm);
   }
 
@@ -334,6 +349,12 @@ class App extends Component {
       parentContainerType = parentContainer.formDetails.containerType;
     }
 
+    // get form styles
+    let formStyles = conjureForm.formStyles;
+    let styleNames = [];
+    for (let key in formStyles) {
+      styleNames.push(key);
+    }
 
     if (truth[PT_devModeActive]) {
       return (
@@ -343,6 +364,7 @@ class App extends Component {
             selectedSection={selectedSection}
             parentContainerType={parentContainerType}
             formOutput={truth[PT_formOutput]}
+            formStyles={styleNames}
             onClick_deselectItem={() => this.onClick_selectFormSection(false)}
             onClick_selectFormSection={this.onClick_selectFormSection}
             onClick_createNewFormText={this.onClick_createNewFormText}
@@ -352,6 +374,7 @@ class App extends Component {
             onClick_updateFormSectionDetails={this.onClick_updateFormSectionDetails}
             onClick_updateFormAppearances={this.onClick_updateFormAppearances}
             onClick_updateWholeSection={this.onClick_updateWholeSection}
+            onClick_createNewStyle={this.onClick_updateFormStyles}
           />
         </div>
       );

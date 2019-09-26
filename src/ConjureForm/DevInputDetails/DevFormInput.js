@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './DevFormInput.css';
 
 import ConditionalMaker from './ConditionalMaker/ConditionalMaker.js';
+import StyleInput from './StyleInput/StyleInput.js';
 
 
 class DevFormInput extends Component {
@@ -33,6 +34,15 @@ class DevFormInput extends Component {
     this.props.onClick_updateFormAppearances(this.props.selectedID, updatedAppearance);
   }
 
+  onClick_updateAppearance = (appearanceType, appearanceValue) => {
+    let updatedAppearance = this.props.appearance;
+    updatedAppearance[appearanceType] = appearanceValue;
+    this.props.onClick_updateFormAppearances(this.props.selectedID, updatedAppearance);
+  }
+
+  onClick_createNewStyle = (newStyleID) => {
+    this.props.onClick_createNewStyle(newStyleID, this.props.appearance);
+  }
 
   // ===========================================================================
   // render Details
@@ -285,6 +295,22 @@ class DevFormInput extends Component {
     }
   }
 
+  
+  renderStyleSelect = () => {
+    return (
+      <div>
+        <StyleInput
+          selectedID={this.props.appearance.styleID}
+          styleOptions={this.props.formStyles}
+          rootMode={this.props.appearance.styleRoot}
+          onClick_updateAppearance={this.onClick_updateAppearance}
+          onClick_createNewStyle={this.props.onClick_createNewStyle}
+        />
+      </div>
+    );
+  }
+
+
 
 
   // ===========================================================================
@@ -298,6 +324,7 @@ class DevFormInput extends Component {
     if (this.props.modificationMode === "Appearance") {
       return (
         <div id="DevFormInput">
+          {this.renderStyleSelect()}
           {this.renderPadding()}
           {this.renderColors()}
         </div>

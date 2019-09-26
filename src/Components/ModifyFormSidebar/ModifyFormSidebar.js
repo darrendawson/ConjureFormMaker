@@ -83,9 +83,11 @@ class FormSidebar extends Component {
             appearance={selectedSection.appearance}
             selectedID={selectedSection.formID}
             formOutput={this.props.formOutput}
+            formStyles={this.props.formStyles}
             onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
             onClick_updateFormAppearances={this.props.onClick_updateFormAppearances}
             onClick_selectFormSection={this.props.onClick_selectFormSection}
+            onClick_createNewStyle={this.props.onClick_createNewStyle}
           />
         </div>
 
@@ -103,10 +105,12 @@ class FormSidebar extends Component {
             selectedID={selectedSection.itemID}
             selectedSection={selectedSection}
             formOutput={this.props.formOutput}
+            formStyles={this.props.formStyles}
             onClick_updateFormSectionDetails={this.props.onClick_updateFormSectionDetails}
             onClick_updateFormAppearances={this.props.onClick_updateFormAppearances}
             onClick_selectFormSection={this.props.onClick_selectFormSection}
             onClick_updateWholeSection={this.props.onClick_updateWholeSection}
+            onClick_createNewStyle={this.props.onClick_createNewStyle}
           />
         </div>
       );

@@ -106,6 +106,10 @@ class ConjureFormItem {
     this.appearance['fontSizeSectionTitle'] = '2.5';
     this.appearance['fontSizeTitle'] = '2.0';
     this.appearance['fontSizeDescription'] = '1.2';
+
+    // assign formStyles
+    this.appearance['styleID'] = '';
+    this.appearance['root'] = false;
   }
 
 
@@ -176,6 +180,17 @@ class ConjureFormItem {
       this.appearance[key] = newAppearances[key];
     }
   }
+
+  // if this ConjureFormItem relies on a style that is being changed, update it
+  // this will update all conjureformitem.appearance values that are shared with the updated style
+  updateFormStyles = (styleID, styleObject) => {
+    if ((this.appearance.styleID === styleID) && (this.appearance.styleRoot)) {
+      for (let key in styleObject) {
+        this.appearance[key] = styleObject[key];
+      }
+    }
+  }
+
   // Delete --------------------------------------------------------------------
 
   // used to delete conditional references to certain IDs.

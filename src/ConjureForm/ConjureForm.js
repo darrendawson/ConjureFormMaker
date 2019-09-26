@@ -62,6 +62,13 @@ class ConjureForm {
     } else if (formType === "subcard") {
       this.appearance['colorBackground'] = __subcardColorDefault;
     }
+
+    // assign formStyles
+    this.appearance['styleID'] = '';
+    this.appearance['root'] = false;
+    if (formType === "all") {
+      this.formStyles = {};
+    }
   }
 
 
@@ -502,7 +509,7 @@ class ConjureForm {
   }
 
 
-  // similar to this.updateSectionDetails(), but does it for this.appearances instead of this.formDetails
+  // similar to this.updateSectionDetails(), but does it for this.appearance instead of this.formDetails
   updateSectionAppearances(sectionID, newAppearances) {
 
     if (sectionID === this.formID) {
@@ -545,6 +552,36 @@ class ConjureForm {
     }
   }
 
+
+  // updates this.formStyles in the parent ConjureForm
+  //  - if the style already exists, this function will update it
+  //  - if the style DNE, this function will create it
+  // then recurses all the way down to update any ConjureForm/ConjureFormItems that would be impacted by changing the style
+  updateFormStyles = (styleID, styleObject) => {
+
+    // 0) update form style definition if applicable
+    if (this.formDetails.containerType === "all") {
+      this.formStyles[styleID] = styleObject; // add the new style to list of styles
+    }
+
+    // 1) make a style change to appearances if necessary
+    //    This will update all mutually shared appearance parameters between this form and the style
+    if ((this.appearance.styleID === styleID) && (this.appearance.styleRoot)) {
+      for (let key in styleObject) {
+        this.appearance[key] = styleObject[key];
+      }
+    }
+
+    // 2) recurse to children subforms
+    for (let key in this.subforms) {
+      this.subforms[key].updateFormStyles(styleID, styleObject);
+    }
+
+    // recurse to children items
+    for (let key in this.items) {
+      this.items[key].updateFormStyles(styleID, styleObject);
+    }
+  }
 
 
   // Form Output ---------------------------------------------------------------

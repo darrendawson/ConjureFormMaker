@@ -7,6 +7,7 @@ import './DevFormInput.css';
 
 import MultipleChoiceMaker from './MultipleChoiceMaker/MultipleChoiceMaker.js';
 import ConditionalMaker from './ConditionalMaker/ConditionalMaker.js';
+import StyleInput from './StyleInput/StyleInput.js';
 
 import ConjureFormConstants from '../ConjureFormConstants.js';
 const __conjureConstants = new ConjureFormConstants();
@@ -46,6 +47,16 @@ class DevFormItemInput extends Component {
     let updatedAppearance = this.props.appearance;
     updatedAppearance[appearanceType] = e.target.value;
     this.props.onClick_updateFormAppearances(this.props.selectedID, updatedAppearance);
+  }
+
+  onClick_updateAppearance = (appearanceType, appearanceValue) => {
+    let updatedAppearance = this.props.appearance;
+    updatedAppearance[appearanceType] = appearanceValue;
+    this.props.onClick_updateFormAppearances(this.props.selectedID, updatedAppearance);
+  }
+
+  onClick_createNewStyle = (newStyleID) => {
+    this.props.onClick_createNewStyle(newStyleID, this.props.appearance);
   }
 
 
@@ -488,6 +499,21 @@ class DevFormItemInput extends Component {
   }
 
 
+  renderStyleSelect = () => {
+    return (
+      <div>
+        <StyleInput
+          selectedID={this.props.appearance.styleID}
+          styleOptions={this.props.formStyles}
+          rootMode={this.props.appearance.styleRoot}
+          onClick_updateAppearance={this.onClick_updateAppearance}
+          onClick_createNewStyle={this.props.onClick_createNewStyle}
+        />
+      </div>
+    );
+  }
+
+
 
   // ===========================================================================
   // render <DevFormItemInput/>
@@ -499,6 +525,7 @@ class DevFormItemInput extends Component {
     if (this.props.modificationMode === "Appearance") {
       return (
         <div id="DevFormItemInput">
+          {this.renderStyleSelect()}
           {this.renderPadding()}
           {this.renderColors()}
           {this.renderFontSize()}
