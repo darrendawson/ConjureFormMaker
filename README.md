@@ -1,7 +1,7 @@
 ## Conjure Form Maker
 
 Conjure Forms are highly flexible Google Forms style surveys.
-You can view some [example](http://conjuredemo.netlify.com), or go to the [form maker website](http://conjure.netlify.com) to make your own.
+You can view some [example forms](http://conjuredemo.netlify.com), or go to the [form maker website](http://conjure.netlify.com) to make your own.
 
 
 ## Stack
