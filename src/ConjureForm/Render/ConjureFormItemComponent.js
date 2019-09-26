@@ -50,7 +50,8 @@ class ConjureFormItemComponent extends Component {
       };
 
       let textStyle = {
-        'color': this.props.appearance.colorSectionTitleText
+        'color': this.props.appearance.colorSectionTitleText,
+        'font-size': this.props.appearance.fontSizeSectionTitle + 'em'
       };
 
       return (
@@ -66,11 +67,16 @@ class ConjureFormItemComponent extends Component {
     let linesOfText = text.split("\\n");
     let linesToRender = [];
 
+    let descriptionStyle = {
+      'color': this.props.appearance.colorDescriptionText,
+      'font-size': this.props.appearance.fontSizeDescription + 'em'
+    }
+
     for (let i = 0; i < linesOfText.length; i++) {
       linesToRender.push(
         <p
           className="item_text_no_margins"
-          style={{'color': this.props.appearance.colorDescriptionText}}>
+          style={descriptionStyle}>
           {linesOfText[i]}
         </p>
       );
@@ -88,18 +94,24 @@ class ConjureFormItemComponent extends Component {
 
     let itemDetails = this.props.itemDetails;
 
+    let titleStyle = {
+      'color': this.props.appearance.colorTitleText,
+      'margin-bottom': this.props.appearance.paddingBelowRegularTitle + 'px',
+      'font-size': this.props.appearance.fontSizeTitle + 'em'
+    };
+
     if (this.props.itemType === "text") {
       return (
         <div className="item_container" style={this.getContainerPadding()}>
           {this.renderSectionTitle(itemDetails.sectionTitleText)}
-          <h1 className="item_text_no_margins" style={{'color': this.props.appearance.colorTitleText, 'margin-bottom': this.props.appearance.paddingBelowRegularTitle + 'px'}}>{itemDetails.titleText}</h1>
+          <h1 className="item_text_no_margins" style={titleStyle}>{itemDetails.titleText}</h1>
           {this.renderDescription(itemDetails.descriptionText)}
         </div>
       );
     } else if (this.props.itemType === "question") {
       return (
         <div className="item_container" style={this.getContainerPadding()}>
-          <h1 className="item_text_no_margins" style={{'color': this.props.appearance.colorTitleText, 'margin-bottom': this.props.appearance.paddingBelowTitle + 'px'}}>{itemDetails.questionTitle}</h1>
+          <h1 className="item_text_no_margins" style={titleStyle}>{itemDetails.questionTitle}</h1>
           {this.renderDescription(itemDetails.questionDescription)}
           {this.renderQuestion()}
         </div>

@@ -101,6 +101,11 @@ class ConjureFormItem {
       this.appearance['colorInputText'] = '#262626';
       this.appearance['colorInputBorder'] = '#ffffff';
     }
+
+    // set default font size
+    this.appearance['fontSizeSectionTitle'] = '2.5';
+    this.appearance['fontSizeTitle'] = '2.0';
+    this.appearance['fontSizeDescription'] = '1.2';
   }
 
 

@@ -422,7 +422,6 @@ class DevFormItemInput extends Component {
 
 
   renderColors = () => {
-    console.log(this.props.itemDetails);
 
     if (this.props.itemType === "text") {
       return (
@@ -466,6 +465,29 @@ class DevFormItemInput extends Component {
   }
 
 
+  renderFontSize = () => {
+
+    if (this.props.itemType === "text") {
+      return (
+        <div className="form_input_container with_margin">
+          <h1 className="section_title">Font Size</h1>
+          {this.renderAppearanceInputRow("Section Title", "fontSizeSectionTitle")}
+          {this.renderAppearanceInputRow("Title", "fontSizeTitle")}
+          {this.renderAppearanceInputRow("Description", "fontSizeDescription")}
+        </div>
+      );
+    } else if (this.props.itemType === "question") {
+      return (
+        <div className="form_input_container with_margin">
+          <h1 className="section_title">Font Size</h1>
+          {this.renderAppearanceInputRow("Title", "fontSizeTitle")}
+          {this.renderAppearanceInputRow("Description", "fontSizeDescription")}
+        </div>
+      );
+    }
+  }
+
+
 
   // ===========================================================================
   // render <DevFormItemInput/>
@@ -479,6 +501,7 @@ class DevFormItemInput extends Component {
         <div id="DevFormItemInput">
           {this.renderPadding()}
           {this.renderColors()}
+          {this.renderFontSize()}
         </div>
       );
     } else {
