@@ -9,9 +9,9 @@ import ConjureFormItemComponent from './Render/ConjureFormItemComponent.js';
 
 const __questionTypes = ["input", "multipleChoice", "code"];
 
-const __textColorDefault = "#262626";
-const __titleColorDefault = "#262626";
-const __backgroundColorDefault = "#eaeaea";
+const __textColorDefault = "#2F2F2F";
+const __titleColorDefault = "#2F2F2F";
+const __backgroundColorDefault = "#EDEDED";
 
 
 /*
@@ -89,17 +89,17 @@ class ConjureFormItem {
 
     // set default colors
     if (itemType === "text") {
-      this.appearance['colorSectionTitleText'] = '#f4f4f4';
-      this.appearance['colorSectionTitleBackground'] = '#262626';
-      this.appearance['colorTitleText'] = '#262626';
-      this.appearance['colorDescriptionText'] = '#262626';
+      this.appearance['colorSectionTitleText'] = '#F6F6F6';
+      this.appearance['colorSectionTitleBackground'] = '#2F2F2F';
+      this.appearance['colorTitleText'] = '#2F2F2F';
+      this.appearance['colorDescriptionText'] = '#2F2F2F';
     }  else if (itemType === "question") {
-      this.appearance['colorTitleText'] = '#262626';
-      this.appearance['colorDescriptionText'] = '#262626';
-      this.appearance['colorSelectedOption'] = '#262626';
-      this.appearance['colorInputBackground'] = '#ffffff';
-      this.appearance['colorInputText'] = '#262626';
-      this.appearance['colorInputBorder'] = '#ffffff';
+      this.appearance['colorTitleText'] = '#2F2F2F';
+      this.appearance['colorDescriptionText'] = '#2F2F2F';
+      this.appearance['colorSelectedOption'] = '#2F2F2F';
+      this.appearance['colorInputBackground'] = '#FFFFFF';
+      this.appearance['colorInputText'] = '#2F2F2F';
+      this.appearance['colorInputBorder'] = '#FFFFFF';
     }
 
     // set default font size

@@ -14,11 +14,11 @@ import ConjureFormOutput from './ConjureFormOutput.js';
 const __containerTypes = ["all", "page", "card", "subcard"];
 
 // default colors
-const __allColorDefault = "#eaeaea";
-const __pageColorDefault = "#eaeaea";
-const __cardColorDefault = "#f4f4f4";
-const __shadowColorDefault = '#7c7c7c';
-const __subcardColorDefault = "#eaeaea";
+const __allColorDefault = "#EDEDED";
+const __pageColorDefault = "#EDEDED";
+const __cardColorDefault = "#F6F6F6";
+const __shadowColorDefault = '#808080';
+const __subcardColorDefault = "#EDEDED";
 
 class ConjureForm {
 
@@ -51,8 +51,8 @@ class ConjureForm {
     };
 
     // add colors to appearance
-    this.appearance['colorControlButtonBackground'] = "#262626";
-    this.appearance['colorControlButtonText'] = "#ffffff";
+    this.appearance['colorControlButtonBackground'] = "#2F2F2F";
+    this.appearance['colorControlButtonText'] = "#FFFFFF";
 
     if (formType === "page") {
       this.appearance['colorBackground'] = __pageColorDefault;
