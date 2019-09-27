@@ -219,13 +219,24 @@ class App extends Component {
   //
   onClick_updateFormAppearances = (sectionID, newAppearances) => {
 
-    // update appearances
+    // get form styles to pass into object
     let conjureForm = this.state.truth[PT_conjureForm];
+    let styleName = newAppearances.styleID;
+    if ((styleName !== '') && (styleName in conjureForm.formStyles)) {
+      let selectedStyle = conjureForm.formStyles[styleName];
+      for (let key in selectedStyle) {
+        newAppearances[key] = selectedStyle[key];
+      }
+    }
+
+
+    // update appearances
     conjureForm.updateSectionAppearances(sectionID, newAppearances);
     this.saveConjureForm(conjureForm);
 
     // if applicable, update styles
-    if (("styleID" in newAppearances) && (newAppearances['styleID'] !== '') && (newAppearances['styleRoot'] === true)) {
+    //if (("styleID" in newAppearances) && (newAppearances['styleID'] !== '') && (newAppearances['styleRoot'] === true)) {
+    if (("styleID" in newAppearances) && (newAppearances['styleID'] !== '')) {
       this.onClick_updateFormStyles(newAppearances['styleID'], newAppearances);
     }
   }
