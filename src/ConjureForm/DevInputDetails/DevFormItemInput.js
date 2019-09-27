@@ -8,6 +8,7 @@ import './DevFormInput.css';
 import MultipleChoiceMaker from './MultipleChoiceMaker/MultipleChoiceMaker.js';
 import ConditionalMaker from './ConditionalMaker/ConditionalMaker.js';
 import StyleInput from './StyleInput/StyleInput.js';
+import ColorInput from './ColorInput/ColorInput.js';
 
 import ConjureFormConstants from '../ConjureFormConstants.js';
 const __conjureConstants = new ConjureFormConstants();
@@ -391,15 +392,12 @@ class DevFormItemInput extends Component {
 
   renderColorInputRow = (title, key) => {
     return (
-      <div className="input_row">
-        <h3 className="input_title">{title}</h3>
-        <div className="color_square" style={{'background-color': this.props.appearance[key]}}></div>
-        <input
-          className="form_input"
-          value={this.props.appearance[key]}
-          onChange={this.onInput_updateAppearance.bind(this, key)}
-        />
-      </div>
+      <ColorInput
+        selectedColor={this.props.appearance[key]}
+        colorName={title}
+        colorKey={key}
+        onClick_updateColor={this.onClick_updateAppearance}
+      />
     );
   }
 

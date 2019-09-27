@@ -3,6 +3,7 @@ import './DevFormInput.css';
 
 import ConditionalMaker from './ConditionalMaker/ConditionalMaker.js';
 import StyleInput from './StyleInput/StyleInput.js';
+import ColorInput from './ColorInput/ColorInput.js';
 
 
 class DevFormInput extends Component {
@@ -234,15 +235,12 @@ class DevFormInput extends Component {
 
   renderColorInputRow = (title, key) => {
     return (
-      <div className="input_row">
-        <h3 className="input_title">{title}</h3>
-        <div className="color_square" style={{'background-color': this.props.appearance[key]}}></div>
-        <input
-          className="form_input"
-          value={this.props.appearance[key]}
-          onChange={this.onInput_updateAppearance.bind(this, key)}
-        />
-      </div>
+      <ColorInput
+        selectedColor={this.props.appearance[key]}
+        colorName={title}
+        colorKey={key}
+        onClick_updateColor={this.onClick_updateAppearance}
+      />
     );
   }
 
@@ -295,7 +293,7 @@ class DevFormInput extends Component {
     }
   }
 
-  
+
   renderStyleSelect = () => {
     return (
       <div>
