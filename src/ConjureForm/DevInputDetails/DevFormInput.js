@@ -28,22 +28,30 @@ class DevFormInput extends Component {
     updatedFormDetails[detailType] = detailValue;
     this.props.onClick_updateFormSectionDetails(this.props.selectedID, updatedFormDetails);
   }
-
+  
   onInput_updateAppearance = (appearanceType, e) => {
-    let updatedAppearance = this.props.appearance;
+    let updatedAppearance = this.__makeCopyOfDict(this.props.appearance);
     updatedAppearance[appearanceType] = e.target.value;
     this.props.onClick_updateFormAppearances(this.props.selectedID, updatedAppearance);
   }
 
   onClick_updateAppearance = (appearanceType, appearanceValue) => {
-    let updatedAppearance = this.props.appearance;
+    let updatedAppearance = this.__makeCopyOfDict(this.props.appearance);
     updatedAppearance[appearanceType] = appearanceValue;
     this.props.onClick_updateFormAppearances(this.props.selectedID, updatedAppearance);
   }
 
-  onClick_createNewStyle = (newStyleID) => {
-    this.props.onClick_createNewStyle(newStyleID, this.props.appearance);
+  // instantiates an entirely new dictionary and copies values from another dict into it
+  // use this in situations where you don't want to modify the original dict
+  // this is necessary for the updatedAppearance() functions because JS handles referencing in an annoying way
+  __makeCopyOfDict = (obj) => {
+    let copy = {};
+    for (let key in obj) {
+      copy[key] = obj[key];
+    }
+    return copy;
   }
+
 
   // ===========================================================================
   // render Details
@@ -302,7 +310,6 @@ class DevFormInput extends Component {
           styleOptions={this.props.formStyles}
           rootMode={this.props.appearance.styleRoot}
           onClick_updateAppearance={this.onClick_updateAppearance}
-          onClick_createNewStyle={this.props.onClick_createNewStyle}
         />
       </div>
     );

@@ -109,7 +109,6 @@ class ConjureFormItem {
 
     // assign formStyles
     this.appearance['styleID'] = '';
-    this.appearance['root'] = false;
   }
 
 
@@ -184,12 +183,16 @@ class ConjureFormItem {
   // if this ConjureFormItem relies on a style that is being changed, update it
   // this will update all conjureformitem.appearance values that are shared with the updated style
   updateFormStyles = (styleID, styleObject) => {
-    if ((this.appearance.styleID === styleID) && (this.appearance.styleRoot)) {
+
+    if (styleID === '') { return; } // don't update if the styleID is empty
+
+    if (this.appearance.styleID === styleID) {
       for (let key in styleObject) {
         this.appearance[key] = styleObject[key];
       }
     }
   }
+
 
   // Delete --------------------------------------------------------------------
 
@@ -259,6 +262,18 @@ class ConjureFormItem {
     }
   }
 
+
+  // Debugging -----------------------------------------------------------------
+  /*
+    Hidden functions meant to make debugging easier
+  */
+
+  __printStyles(includeNull = true) {
+    let styleID = (this.appearance.styleID === '') ? '(null)' : this.appearance.styleID;
+    if (includeNull || this.appearance.styleID !== '') {
+      console.log(this.getConjureID() + " -> " + styleID);
+    }
+  }
 
   // export --------------------------------------------------------------------
   /*

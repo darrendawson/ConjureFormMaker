@@ -216,29 +216,67 @@ class App extends Component {
     this.saveConjureForm(conjureForm);
   }
 
-  //
-  onClick_updateFormAppearances = (sectionID, newAppearances) => {
+  // gets called when a user updates an appearance value in a ConjureForm/Item
+  // -> handles updating individual form appearances as well as managing form styles
+  onClick_updateFormAppearances = (sectionID, newAppearanceObj) => {
 
-    // get form styles to pass into object
+    // get relevant info about styles for the current form
     let conjureForm = this.state.truth[PT_conjureForm];
-    let styleName = newAppearances.styleID;
-    if ((styleName !== '') && (styleName in conjureForm.formStyles)) {
-      let selectedStyle = conjureForm.formStyles[styleName];
-      for (let key in selectedStyle) {
-        newAppearances[key] = selectedStyle[key];
+    let formToUpdate = conjureForm.get(sectionID);
+    let oldStyleID = formToUpdate.appearance.styleID;
+    let newStyleID = newAppearanceObj.styleID;
+
+    // there are 4 cases:
+    //    1) user is updating an already selected style -> we want to push those updates to all forms of that style
+    //    2) user is changing this form to use a different style -> we want to modify the newAppearanceObj to use that style
+    //    3) user is changing this form to use a style that DNE yet -> we want to register the new style
+    //    4) user is setting this form's style to null              -> update the appearance as normal (in order to deselect style)
+
+
+    // case 4) user is setting the form's style to null
+    if (newStyleID === '') {
+      conjureForm.updateSectionAppearances(sectionID, newAppearanceObj);
+
+    // case 1) user is updating an already existing style
+    } else if (newStyleID === oldStyleID) {
+
+      // modify the style declaration to use these new modifications
+      let styleObject = conjureForm.formStyles[oldStyleID];
+      for (let key in newAppearanceObj) {
+        styleObject[key] = newAppearanceObj[key];
       }
+
+      // update the style object and all forms that use it
+      conjureForm.updateFormStyles(oldStyleID, styleObject);
+
+    // cases 2) where user is switching to an existing style
+    } else if (newStyleID in conjureForm.formStyles) {
+
+      // modify the newAppearanceObj to use the newly selected style
+      let styleObject = conjureForm.formStyles[newStyleID];
+      for (let key in styleObject) {
+        newAppearanceObj[key] = styleObject[key];
+      }
+
+      // save the appearance of this form
+      // (there is no need to update the rest of the forms that use this style because the style wasn't changed)
+      conjureForm.updateSectionAppearances(sectionID, newAppearanceObj);
+
+    // case 3) user is trying to create a new style
+    } else {
+
+      // register the style
+      conjureForm.registerFormStyle(newStyleID, newAppearanceObj);
+
+      // save the appearance of this form
+      // (there is no need to update all forms that use this style because this form is the only one)
+      conjureForm.updateSectionAppearances(sectionID, newAppearanceObj);
+
     }
 
-
-    // update appearances
-    conjureForm.updateSectionAppearances(sectionID, newAppearances);
+    // save updates and return!
     this.saveConjureForm(conjureForm);
-
-    // if applicable, update styles
-    //if (("styleID" in newAppearances) && (newAppearances['styleID'] !== '') && (newAppearances['styleRoot'] === true)) {
-    if (("styleID" in newAppearances) && (newAppearances['styleID'] !== '')) {
-      this.onClick_updateFormStyles(newAppearances['styleID'], newAppearances);
-    }
+    return;
   }
 
 
@@ -246,14 +284,6 @@ class App extends Component {
   onClick_updateWholeSection = (updatedSection) => {
     let conjureForm = this.state.truth[PT_conjureForm];
     conjureForm.updateWholeSection(updatedSection.getConjureID(), updatedSection);
-    this.saveConjureForm(conjureForm);
-  }
-
-
-  // updates form styles, which will update appearances of all forms with that style
-  onClick_updateFormStyles = (styleID, styleObject) => {
-    let conjureForm = this.state.truth[PT_conjureForm];
-    conjureForm.updateFormStyles(styleID, styleObject);
     this.saveConjureForm(conjureForm);
   }
 
@@ -385,7 +415,6 @@ class App extends Component {
             onClick_updateFormSectionDetails={this.onClick_updateFormSectionDetails}
             onClick_updateFormAppearances={this.onClick_updateFormAppearances}
             onClick_updateWholeSection={this.onClick_updateWholeSection}
-            onClick_createNewStyle={this.onClick_updateFormStyles}
           />
         </div>
       );

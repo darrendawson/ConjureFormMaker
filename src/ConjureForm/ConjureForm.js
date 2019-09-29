@@ -65,7 +65,6 @@ class ConjureForm {
 
     // assign formStyles
     this.appearance['styleID'] = '';
-    this.appearance['root'] = false;
     if (formType === "all") {
       this.formStyles = {};
     }
@@ -559,14 +558,17 @@ class ConjureForm {
   // then recurses all the way down to update any ConjureForm/ConjureFormItems that would be impacted by changing the style
   updateFormStyles = (styleID, styleObject) => {
 
+    // make sure there is a styleID assigned
+    if (styleID === '') { return; }
+
     // 0) update form style definition if applicable
     if (this.formDetails.containerType === "all") {
-      this.formStyles[styleID] = styleObject; // add the new style to list of styles
+      this.formStyles[styleID] = styleObject; // add the new style to dict of styles
     }
 
     // 1) make a style change to appearances if necessary
     //    This will update all mutually shared appearance parameters between this form and the style
-    if ((this.appearance.styleID === styleID) && (this.appearance.styleRoot)) {
+    if (this.appearance.styleID === styleID) {
       for (let key in styleObject) {
         this.appearance[key] = styleObject[key];
       }
@@ -580,6 +582,13 @@ class ConjureForm {
     // recurse to children items
     for (let key in this.items) {
       this.items[key].updateFormStyles(styleID, styleObject);
+    }
+  }
+
+  // adds a new style definition to lookup
+  registerFormStyle = (styleID, styleObject) => {
+    if (this.formDetails.containerType === "all") {
+      this.formStyles[styleID] = styleObject;
     }
   }
 
@@ -708,6 +717,25 @@ class ConjureForm {
       }
     }
   }
+
+
+  // prints out the styleIDs for every ConjureForm/Item
+  __printStyles(includeNull = true) {
+
+    let styleID = (this.appearance.styleID === '') ? '(null)' : this.appearance.styleID;
+    if (includeNull || this.appearance.styleID !== '') {
+      console.log(this.getConjureID() + " -> " + styleID);
+    }
+
+    for (let key in this.items) {
+      this.items[key].__printStyles(includeNull);
+    }
+
+    for (let key in this.subforms) {
+      this.subforms[key].__printStyles(includeNull);
+    }
+  }
+
 
 
   // Import --------------------------------------------------------------------
